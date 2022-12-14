@@ -2,7 +2,7 @@
 TDT project backend repository
 
 
-1. ##개발 환경
+## 개발 환경
 *언어* Java(JDK 11)
 *서버* Apache Tomcat , AWS EC2, ubuntu
 *프레임워크* SpringBoot ,SpringJPA
