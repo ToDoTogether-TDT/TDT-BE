@@ -18,3 +18,6 @@ TDT project backend repository
 *CI/CD* Git, GitAction, CodeDeploy
 
 *보안* SpringSecurity, SSL
+
+ERD
+https://www.erdcloud.com/d/x2Je4RTCRL7D9oXuY
