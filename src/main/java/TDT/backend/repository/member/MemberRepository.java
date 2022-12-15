@@ -1,4 +1,4 @@
-package TDT.backend.repository;
+package TDT.backend.repository.member;
 
 import TDT.backend.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,7 +1,8 @@
 package TDT.backend.security.service;
 
 import TDT.backend.entity.Member;
-import TDT.backend.repository.MemberRepository;
+
+import TDT.backend.repository.member.MemberRepository;
 import TDT.backend.security.dto.OAuthAttributes;
 import TDT.backend.security.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import javax.servlet.http.HttpSession;
+//import javax.servlet.http.HttpSession;
 import java.util.Collections;
 
 @RequiredArgsConstructor
@@ -21,7 +22,7 @@ import java.util.Collections;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final MemberRepository memberRepository;
-    private final HttpSession httpSession;
+//    private final HttpSession httpSession;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -38,7 +39,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuthAttributes attributes = OAuthAttributes.of(provider, userNameAttributeName, oAuth2User.getAttributes());
 
         Member member = saveOrUpdate(attributes);
-        httpSession.setAttribute("member", new SessionUser(member));
+//        httpSession.setAttribute("member", new SessionUser(member));
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority(member.getRole().getKey())),

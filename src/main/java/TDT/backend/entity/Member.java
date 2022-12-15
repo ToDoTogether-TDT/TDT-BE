@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -17,6 +19,8 @@ public class Member {
     private Long id;
     @OneToOne
     private Image image;
+    @OneToMany(mappedBy = "member")
+    private List<TeamMember> teamMembers = new ArrayList<>();
     private String email;
     private String name;
     private String nickname;
