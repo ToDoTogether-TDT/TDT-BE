@@ -2,8 +2,6 @@ package TDT.backend.security.config;
 
 import TDT.backend.security.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.autoconfigure.security.ConditionalOnDefaultWebSecurity;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,6 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 @EnableWebSecurity
 @Configuration
+
 public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
@@ -33,6 +32,7 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/")
                 .and()
                 .oauth2Login()
+
                 .userInfoEndpoint()
                 .userService(customOAuth2UserService);
 

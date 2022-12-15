@@ -1,7 +1,7 @@
 package TDT.backend.security.service;
 
 import TDT.backend.entity.Member;
-import TDT.backend.repository.MemberRepository;
+import TDT.backend.repository.member.MemberRepository;
 import TDT.backend.security.dto.OAuthAttributes;
 import TDT.backend.security.dto.SessionMember;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +20,14 @@ import java.util.Collections;
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
+
     private final MemberRepository memberRepository;
     private final HttpSession httpSession;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
+        System.out.println("loadUser");
         //security용 delegate
         OAuth2UserService delegate = new DefaultOAuth2UserService();
 
@@ -35,7 +37,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails()
                 .getUserInfoEndpoint().getUserNameAttributeName();
-        OAuthAttributes attributes = OAuthAttributes.of(provider, userNameAttributeName, oAuth2User.getAttributes());
+        OAuthAttributes attributes = OAuthAttributes.of(provider, userNameAttributeName ,oAuth2User.getAttributes());
 
         Member member = saveOrUpdate(attributes);
         httpSession.setAttribute("member", new SessionMember(member));
@@ -55,8 +57,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
      */
     private Member saveOrUpdate(OAuthAttributes attributes) {
 
+        System.out.println(attributes.getAttributes() +attributes.getEmail());
         Member member = memberRepository.findByEmail(attributes.getEmail())
-                .map(e -> e.update(attributes.getName(), attributes.getEmail()))
+                .map(e -> e.oauth2Login(attributes.getName(), attributes.getEmail(), attributes.getProvider(), attributes.getProviderId()))
                 .orElse(attributes.toEntity());
 
         return memberRepository.save(member);

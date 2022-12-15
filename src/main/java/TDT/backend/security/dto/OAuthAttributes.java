@@ -4,6 +4,7 @@ import TDT.backend.entity.Member;
 import TDT.backend.entity.Role;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 
 import java.util.Map;
 
@@ -15,11 +16,13 @@ public class OAuthAttributes {
     private String email;
     private String picture;
 
+    private String provider;
 
+    private String providerId;
     @Builder
     public OAuthAttributes(Map<String, Object> attributes,
                            String nameAttributeKey, String name,
-                           String email, String picture) {
+                           String email, String picture,String provider) {
         this.attributes = attributes;
         this.nameAttributeKey= nameAttributeKey;
         this.name = name;
@@ -27,15 +30,17 @@ public class OAuthAttributes {
         this.picture = picture;
     }
 
-    public static OAuthAttributes of(String registrationId,
+    public static OAuthAttributes of(String provider,
                                      String userNameAttributeName,
                                      Map<String, Object> attributes) {
-        return ofGoogle(userNameAttributeName, attributes);
+        return ofGoogle(provider ,userNameAttributeName, attributes);
     }
 
-    private static OAuthAttributes ofGoogle(String userNameAttributeName,
+    private static OAuthAttributes ofGoogle(
+            String provider, String userNameAttributeName,
                                             Map<String, Object> attributes) {
         return OAuthAttributes.builder()
+                .provider(provider)
                 .name((String) attributes.get("name"))
                 .email((String) attributes.get("email"))
                 .picture((String) attributes.get("picture"))
@@ -47,6 +52,8 @@ public class OAuthAttributes {
 
     public Member toEntity() {
         return Member.builder()
+                .provider(provider)
+                .providerId(providerId)
                 .name(name)
                 .email(email)
                 .role(Role.GUEST)
