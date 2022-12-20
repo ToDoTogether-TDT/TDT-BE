@@ -24,4 +24,5 @@ public class Team {
     @Enumerated(value = EnumType.STRING)
     private Tag tag;
 
+    private boolean isLeader;
 }

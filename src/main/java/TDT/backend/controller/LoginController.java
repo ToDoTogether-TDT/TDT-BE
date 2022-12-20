@@ -1,22 +1,23 @@
 package TDT.backend.controller;
 
-import TDT.backend.security.dto.SessionMember;
+import TDT.backend.dto.InsertMemberReq;
+import TDT.backend.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpSession;
 
 @RestController
 @Slf4j
+@RequiredArgsConstructor
 public class LoginController {
 
-    @PostMapping("/users")
-    public ResponseEntity login(@RequestBody String name) {
-        log.info("user: {}", name);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    private final MemberService memberService;
+    @PostMapping(value = "/users")
+    public ResponseEntity<Boolean> login(@RequestBody InsertMemberReq req) {
+        return ResponseEntity.ok(memberService.addMember(req));
     }
 
     @GetMapping(value = "/login/google")

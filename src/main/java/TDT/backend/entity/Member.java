@@ -18,27 +18,23 @@ public class Member {
     private Long id;
     @OneToOne
     private Image image;
+    private String pictures;
     private String email;
     private String name;
     private String nickname;
     private String introduction;
     private Tag tag;
 
-    //Oauth2 로그인할때 쓰는거
-    private String provider;
-    private String providerId;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
 
     @Builder
-    public Member(String name, String email, Role role, String provider, String providerId) {
+    public Member(String name, String email, Role role, Image image) {
         this.name = name;
         this.email = email;
         this.role = role;
-        this.provider = provider;
-        this.providerId = providerId;
+        this.image = image;
     }
     public Member update(String name, String email) {
         this.name = name;
@@ -49,8 +45,6 @@ public class Member {
     public Member oauth2Login(String name, String email, String provider, String providerId) {
         this.name = name;
         this.email = email;
-        this.provider = provider;
-        this.providerId = providerId;
         return this;
     }
 }
