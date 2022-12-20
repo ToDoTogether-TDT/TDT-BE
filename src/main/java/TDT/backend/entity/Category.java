@@ -2,5 +2,5 @@ package TDT.backend.entity;
 
 public enum Category {
 
-    TOEIC, JAVA, PYTHON
+    PROGRAMMING, EMPLOYMENT, EXAM, HOBBY, LANGUAGE, READING, ETC
 }

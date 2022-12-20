@@ -13,6 +13,8 @@ public class InsertMemberReq {
     private Role role;
 
     public Member toEntity() {
+
+
         return Member.builder()
                 .name(name)
                 .email(email)

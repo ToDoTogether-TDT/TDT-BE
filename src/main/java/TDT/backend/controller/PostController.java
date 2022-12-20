@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class PostController {
 
-    @GetMapping("/test")
-    public ResponseEntity test() {
+    @GetMapping("/post")
+    public ResponseEntity post() {
+
         return new ResponseEntity<>("test", HttpStatus.OK);
     }
 }
