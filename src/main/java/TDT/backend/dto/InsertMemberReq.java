@@ -16,7 +16,7 @@ public class InsertMemberReq {
         return Member.builder()
                 .name(name)
                 .email(email)
-                .image(Image.builder().url(picture).build())
+                .picture(picture)
                 .role(Role.GUEST)
                 .build();
     }

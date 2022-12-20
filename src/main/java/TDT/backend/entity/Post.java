@@ -19,6 +19,6 @@ public class Post {
     private Member member;
     private String title;
     private String content;
-    private Tag tag;
+    private Category category;
     private LocalDateTime createdAt;
 }

@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -16,25 +15,35 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long id;
-    @OneToOne
-    private Image image;
-    private String pictures;
+
+    /**
+     * 굳이 필요없을듯
+     */
+//    @OneToOne
+//    private Image image;
+
+    private String picture;
     private String email;
     private String name;
+
+
+    /**
+     *  프로필 만들때 넣어야하는 부분
+     */
     private String nickname;
     private String introduction;
-    private Tag tag;
+    private Category category;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
 
     @Builder
-    public Member(String name, String email, Role role, Image image) {
+    public Member(String name, String email, Role role, String picture) {
         this.name = name;
         this.email = email;
         this.role = role;
-        this.image = image;
+        this.picture = picture;
     }
     public Member update(String name, String email) {
         this.name = name;

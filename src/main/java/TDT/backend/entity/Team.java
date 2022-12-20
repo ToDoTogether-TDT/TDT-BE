@@ -22,7 +22,7 @@ public class Team {
     @OneToMany(mappedBy = "team")
     private List<TeamMember> teamMembers;
     @Enumerated(value = EnumType.STRING)
-    private Tag tag;
+    private Category category;
 
     private boolean isLeader;
 }

@@ -1,6 +1,6 @@
 package TDT.backend.entity;
 
-public enum Tag {
+public enum Category {
 
     TOEIC, JAVA, PYTHON
 }
