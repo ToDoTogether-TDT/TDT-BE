@@ -14,7 +14,7 @@ public class ExceptionAdvice {
     public ResponseEntity handleBusinessLogicException(BusinessException e) {
         final ErrorResponse response = ErrorResponse.of(e.getExceptionCode());
 
-        log.info("BusinessError : {}", e.getExceptionCode());
+        log.info("BusinessError : {}", e.getExceptionCode().getMessage());
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(e.getExceptionCode().getStatus()));
     }

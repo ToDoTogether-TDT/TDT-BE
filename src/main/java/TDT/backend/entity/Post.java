@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,6 +24,8 @@ public class Post {
     @Enumerated(value = EnumType.STRING)
     private Category category;
     private LocalDateTime createdAt;
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments;
 
     @Builder
     public Post(Member member, String title, String content, Category category, LocalDateTime createdAt) {
@@ -31,5 +34,11 @@ public class Post {
         this.content = content;
         this.category = category;
         this.createdAt = createdAt;
+    }
+
+    public void edit(String title, String content, Category category) {
+        this.title = title;
+        this.content = content;
+        this.category = category;
     }
 }

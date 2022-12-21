@@ -6,9 +6,14 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class InsertPostReq {
+public class PostResDto {
+
+    private Long id;
     private String title;
     private String content;
-    private String writer;
+    private String nickname;
+    private LocalDateTime createdAt;
     private Category category;
+    private Integer commentsLength;
+
 }
