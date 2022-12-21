@@ -10,6 +10,6 @@ import java.util.Optional;
 public interface TeamMemberRepository extends JpaRepository<TeamMember, Long>{
 
 
-
+    Optional<TeamMember> findByTeamId(Long teamId);
     Optional<Team> findByTeam(Team team);
 }
