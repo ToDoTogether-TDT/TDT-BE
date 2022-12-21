@@ -1,16 +1,13 @@
 package TDT.backend.service;
 
-import TDT.backend.dto.comment.CommentRes;
-import TDT.backend.dto.post.EditPostReq;
-import TDT.backend.dto.post.InsertPostReq;
-import TDT.backend.dto.post.PostDetailResDto;
-import TDT.backend.dto.post.PostPageResDto;
+import TDT.backend.dto.EditPostReq;
+import TDT.backend.dto.InsertPostReq;
+import TDT.backend.dto.PostResDto;
 import TDT.backend.entity.Category;
 import TDT.backend.entity.Member;
 import TDT.backend.entity.Post;
 import TDT.backend.exception.BusinessException;
 import TDT.backend.exception.ExceptionCode;
-import TDT.backend.repository.comment.CommentRepository;
 import TDT.backend.repository.member.MemberRepository;
 import TDT.backend.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +26,6 @@ import java.util.stream.Collectors;
 public class PostService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
-    private final CommentRepository commentRepository;
 
     public Long post(InsertPostReq insertPostReq) {
         Member member = memberRepository.findByNickname(insertPostReq.getWriter())
@@ -50,35 +44,14 @@ public class PostService {
         return post.getId();
     }
 
-    @Transactional
-    public PostDetailResDto getPost(Long postId) {
+    public Post getPost(Long postId) {
 
         Post post = findPost(postId);
 
-        List<CommentRes> comments = post.getComments().stream().map(comment ->
-                CommentRes.builder()
-                        .writer(comment.getMember().getNickname())
-                        .content(comment.getContent())
-                        .createdAt(comment.getCreatedAt())
-                        .build()
-        ).collect(Collectors.toList());
-        post.addView();
-        PostDetailResDto response = PostDetailResDto.builder()
-                .postId(post.getId())
-                .writer(post.getMember().getNickname())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .category(post.getCategory())
-                .comments(comments)
-                .createdAt(post.getCreatedAt())
-                .view(post.getView())
-                .build();
-
-        return response;
+        return post;
     }
 
-    @Transactional(readOnly = true)
-    public Page<PostPageResDto> getPostList(int page, Category category) {
+    public Page<PostResDto> getPostList(int page, Category category) {
         Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("id").descending());
 
         return postRepository.getList(pageable, category);
@@ -88,18 +61,14 @@ public class PostService {
 
         Post post = findPost(postId);
 
-        if (post.getMember().getNickname().equals(editPostReqDto.getNickname())) {
-            post.edit(editPostReqDto.getTitle(), editPostReqDto.getContent(), editPostReqDto.getCategory());
-        } else throw new BusinessException(ExceptionCode.UNAUTHORIZED_ERROR);
+        post.edit(editPostReqDto.getTitle(), editPostReqDto.getContent(), editPostReqDto.getCategory());
     }
 
-    public void deletePost(Long postId, String nickname) {
+    public void deletePost(Long postId) {
 
         Post post = findPost(postId);
 
-        if (post.getMember().getNickname().equals(nickname)) {
-            postRepository.delete(post);
-        } else throw new BusinessException(ExceptionCode.UNAUTHORIZED_ERROR);
+        postRepository.delete(post);
     }
 
     private Post findPost(Long postId) {
