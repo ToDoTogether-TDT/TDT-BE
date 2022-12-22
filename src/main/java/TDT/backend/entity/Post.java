@@ -24,7 +24,7 @@ public class Post {
     @Enumerated(value = EnumType.STRING)
     private Category category;
     private LocalDateTime createdAt;
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
     @Builder

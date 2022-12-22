@@ -1,4 +1,4 @@
-package TDT.backend.dto;
+package TDT.backend.dto.post;
 
 import TDT.backend.entity.Category;
 import lombok.Data;
@@ -6,14 +6,9 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class PostResDto {
-
-    private Long id;
+public class InsertPostReq {
     private String title;
     private String content;
-    private String nickname;
-    private LocalDateTime createdAt;
+    private String writer;
     private Category category;
-    private Integer commentsLength;
-
 }

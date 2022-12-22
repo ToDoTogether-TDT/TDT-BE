@@ -30,4 +30,8 @@ public class Comment {
         this.content = content;
         this.createdAt = createdAt;
     }
+
+    public void edit(String content) {
+        this.content = content;
+    }
 }

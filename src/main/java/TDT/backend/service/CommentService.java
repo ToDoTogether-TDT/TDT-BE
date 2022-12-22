@@ -1,6 +1,7 @@
 package TDT.backend.service;
 
-import TDT.backend.dto.InsertCommentReq;
+import TDT.backend.dto.comment.EditCommentReq;
+import TDT.backend.dto.comment.InsertCommentReq;
 import TDT.backend.entity.Comment;
 import TDT.backend.entity.Member;
 import TDT.backend.entity.Post;
@@ -36,6 +37,25 @@ public class CommentService {
                 .build();
 
         commentRepository.save(comment);
+
+    }
+
+    public void editComment(Long commentId, EditCommentReq editCommentReq) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new BusinessException(ExceptionCode.COMMENT_NOT_EXISTS));
+
+        if (comment.getMember().getNickname().equals(editCommentReq.getWriter())) {
+            comment.edit(editCommentReq.getContent());
+        } else throw new BusinessException(ExceptionCode.UNAUTHORIZED_ERROR);
+    }
+
+    public void deleteComment(Long commentId, String nickname) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new BusinessException(ExceptionCode.COMMENT_NOT_EXISTS));
+
+        if (comment.getMember().getNickname().equals(nickname)) {
+            commentRepository.delete(comment);
+        } else throw new BusinessException(ExceptionCode.UNAUTHORIZED_ERROR);
 
     }
 }
