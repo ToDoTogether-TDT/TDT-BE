@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public enum Category {
 
+
     PROGRAMMING("프로그래밍", 1),
     EMPLOYMENT("취업", 2),
     EXAM("시험", 3),
@@ -20,4 +21,5 @@ public enum Category {
         this.name = name;
         this.num = num;
     }
+
 }

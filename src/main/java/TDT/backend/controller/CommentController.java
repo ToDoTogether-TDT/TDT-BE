@@ -16,8 +16,10 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/comment/{postId}")
-    public ResponseEntity writeComment(@PathVariable String postId,
+    public ResponseEntity createComment(@PathVariable Long postId,
                                        @RequestBody InsertCommentReq insertCommentReq) {
+
+        commentService.createComment(postId, insertCommentReq);
 
         return new ResponseEntity(HttpStatus.OK);
     }

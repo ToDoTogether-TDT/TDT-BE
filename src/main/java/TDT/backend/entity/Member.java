@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,18 +28,22 @@ public class Member {
     private String email;
     private String name;
 
+    @OneToMany(mappedBy = "member")
+    private List<TeamMember> teamMembers = new ArrayList<>();
+
 
     /**
      *  프로필 만들때 넣어야하는 부분
      */
     private String nickname;
+
     private String introduction;
+    @Enumerated(EnumType.STRING)
     private Category category;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
-
     @Builder
     public Member(String name, String email, Role role, String picture) {
         this.name = name;
@@ -51,9 +57,4 @@ public class Member {
         return this;
     }
 
-    public Member oauth2Login(String name, String email, String provider, String providerId) {
-        this.name = name;
-        this.email = email;
-        return this;
-    }
 }
