@@ -18,12 +18,6 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    /**
-     * 굳이 필요없을듯
-     */
-//    @OneToOne
-//    private Image image;
-
     private String picture;
     private String email;
     private String name;

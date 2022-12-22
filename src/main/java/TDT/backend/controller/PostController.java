@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,7 +21,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/post")
-    public ResponseEntity post(@RequestBody InsertPostReq insertPostReq) {
+    public ResponseEntity post(@RequestBody @Valid InsertPostReq insertPostReq) {
 
         Long postId = postService.post(insertPostReq);
 
@@ -46,7 +47,7 @@ public class PostController {
 
     @PutMapping("/post/{postId}")
     public ResponseEntity editPost(@PathVariable Long postId,
-                                   @RequestBody EditPostReq editPostReqDto) {
+                                   @RequestBody @Valid EditPostReq editPostReqDto) {
 
         postService.editPost(postId, editPostReqDto);
 

@@ -15,5 +15,6 @@ public class PostPageResDto {
     private LocalDateTime createdAt;
     private Category category;
     private Integer commentsLength;
+    private Integer view;
 
 }

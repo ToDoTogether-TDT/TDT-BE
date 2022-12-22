@@ -46,12 +46,14 @@ public class PostService {
         return post.getId();
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public PostDetailResDto getPost(Long postId) {
 
         Post post = findPost(postId);
 
         List<CommentRes> comments = commentRepository.findCommentsByPostId(postId);
+
+        post.addView();
 
         PostDetailResDto response = PostDetailResDto.builder()
                 .postId(post.getId())
@@ -61,6 +63,7 @@ public class PostService {
                 .category(post.getCategory())
                 .comments(comments)
                 .createdAt(post.getCreatedAt())
+                .view(post.getView())
                 .build();
 
         return response;

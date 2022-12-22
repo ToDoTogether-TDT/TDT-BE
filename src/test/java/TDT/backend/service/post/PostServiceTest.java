@@ -190,4 +190,22 @@ class PostServiceTest {
         assertThrows(BusinessException.class, () -> postService.editPost(post.getId(), editPostReq));
     }
 
+    @Test
+    @DisplayName("조회수 증가")
+    public void addViewTest() throws Exception {
+        //given
+        Post post = new Post(member, "제목", "내용", Category.PROMOTION, LocalDateTime.MAX);
+        postRepository.save(post);
+
+        //when
+        PostDetailResDto response = postService.getPost(post.getId());
+
+        //then
+        assertEquals(1, response.getView());
+
+        PostDetailResDto response2 = postService.getPost(post.getId());
+
+        assertEquals(2, response2.getView());
+    }
+
 }
