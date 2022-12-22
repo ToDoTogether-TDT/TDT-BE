@@ -1,12 +1,9 @@
 package TDT.backend.repository.post;
 
-import TDT.backend.dto.PostResDto;
+import TDT.backend.dto.post.PostPageResDto;
 import TDT.backend.entity.Category;
-import TDT.backend.entity.QPost;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.util.StringUtils;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +24,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
 
 
     @Override
-    public Page<PostResDto> getList(Pageable pageable, Category category) {
+    public Page<PostPageResDto> getList(Pageable pageable, Category category) {
 
         BooleanBuilder builder = new BooleanBuilder();
         if(category != null) {
@@ -35,8 +32,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
         }
 
 
-        List<PostResDto> content = queryFactory
-                .select(Projections.fields(PostResDto.class,
+        List<PostPageResDto> content = queryFactory
+                .select(Projections.fields(PostPageResDto.class,
                         post.id, post.title, post.content, post.member.nickname, post.createdAt, post.category, post.comments.size().as("commentsLength")))
                 .from(post)
                 .where(builder)
