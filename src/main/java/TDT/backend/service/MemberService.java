@@ -12,7 +12,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     public void addMember(InsertMemberReq req) {
-        if(validateDuplicateMember(req.getEmail())) {
+        if(!validateDuplicateMember(req.getEmail())) {
             memberRepository.save(req.toEntity());
         }
     }

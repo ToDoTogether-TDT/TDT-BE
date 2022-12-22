@@ -18,12 +18,6 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    /**
-     * 굳이 필요없을듯
-     */
-//    @OneToOne
-//    private Image image;
-
     private String picture;
     private String email;
     private String name;
@@ -57,4 +51,9 @@ public class Member {
         return this;
     }
 
+    public void profileUpdate (String nickname, String introduction, Category category) {
+        this.nickname = nickname;
+        this.introduction = introduction;
+        this.category = category;
+    }
 }

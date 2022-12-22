@@ -1,6 +1,5 @@
 package TDT.backend.dto;
 
-import TDT.backend.entity.Image;
 import TDT.backend.entity.Member;
 import TDT.backend.entity.Role;
 import lombok.Data;
