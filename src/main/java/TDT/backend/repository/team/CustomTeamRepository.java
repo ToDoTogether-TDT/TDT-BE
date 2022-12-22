@@ -8,6 +8,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface CustomTeamRepository {
 
-    StudyResponseDto findByIdAndCategory(Integer studyId, String category);
+    StudyResponseDto findByIdAndCategory(Long studyId, String category);
     Page<StudyListResponseDto> findAllByCategoryAndPageable(String category, Pageable pageable);
 }

@@ -1,14 +1,14 @@
 package TDT.backend.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import TDT.backend.dto.schedule.ScheduleRequestDto;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Builder
+@RequiredArgsConstructor
 public class TeamSchedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,5 +17,15 @@ public class TeamSchedule {
     private Schedule schedule;
     @ManyToOne(fetch = FetchType.LAZY)
     private Team team;
+
+
+
+
+    public static TeamSchedule of(Team team, ScheduleRequestDto dto) {
+        return TeamSchedule.builder()
+
+                .team(team).
+                build();
+    }
 
 }

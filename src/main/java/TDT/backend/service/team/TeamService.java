@@ -41,7 +41,7 @@ public class TeamService {
         return teamRepository.save(team).getId();
     }
 
-    public StudyResponseDto getStudy(String category, Integer studyId) {
+    public StudyResponseDto getStudy(String category, Long studyId) {
         return teamRepository.findByIdAndCategory(studyId, category);
     }
 
@@ -56,7 +56,6 @@ public class TeamService {
         if (member.getNickname().equals(team.getName())) {
             TeamMember teamMember = teamMemberRepository.findByTeamId(studyId).orElseThrow(
                     () -> new BusinessException(ExceptionCode.TEAM_NOT_EXISTS));
-
             teamMemberRepository.delete(teamMember);
             teamRepository.delete(team);
         } else {
@@ -65,4 +64,11 @@ public class TeamService {
 
         return true;
     }
+
+//    public Boolean updateStudy(Long studyId, Long id) {
+//        /**
+//         *
+//         *
+//         */
+//    }
 }

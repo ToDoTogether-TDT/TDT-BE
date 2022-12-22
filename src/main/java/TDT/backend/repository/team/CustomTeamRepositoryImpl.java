@@ -35,12 +35,12 @@ public class CustomTeamRepositoryImpl implements CustomTeamRepository {
     }
 
     @Override
-    public StudyResponseDto findByIdAndCategory(Integer studyId, String category) {
+    public StudyResponseDto findByIdAndCategory(Long studyId, String category) {
         QTeamMember teamMember = QTeamMember.teamMember;
         StudyResponseDto dto = jpaQueryFactory.select(new QStudyResponseDto(team, teamMember.member))
                 .from(team)
                 .join(team.teamMembers, teamMember).fetchJoin()
-                .where(team.id.eq(Long.valueOf(studyId))).fetchOne();
+                .where(team.id.eq(studyId)).fetchOne();
 
         return dto;
     }
