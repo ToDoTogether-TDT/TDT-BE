@@ -57,4 +57,9 @@ public class Member {
         return this;
     }
 
+    public void profileUpdate (String nickname, String introduction, Category category) {
+        this.nickname = nickname;
+        this.introduction = introduction;
+        this.category = category;
+    }
 }

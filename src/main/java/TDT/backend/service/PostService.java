@@ -60,6 +60,7 @@ public class PostService {
                 .content(post.getContent())
                 .category(post.getCategory())
                 .comments(comments)
+                .createdAt(post.getCreatedAt())
                 .build();
 
         return response;

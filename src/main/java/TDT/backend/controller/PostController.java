@@ -5,7 +5,6 @@ import TDT.backend.dto.post.InsertPostReq;
 import TDT.backend.dto.post.PostDetailResDto;
 import TDT.backend.dto.post.PostPageResDto;
 import TDT.backend.entity.Category;
-import TDT.backend.entity.Post;
 import TDT.backend.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
