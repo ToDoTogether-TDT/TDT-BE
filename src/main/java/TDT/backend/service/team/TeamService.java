@@ -1,5 +1,6 @@
 package TDT.backend.service.team;
 
+import TDT.backend.dto.team.StudyJoinReqDto;
 import TDT.backend.dto.team.StudyListResponseDto;
 import TDT.backend.dto.team.StudyRequestDto;
 import TDT.backend.dto.team.StudyResponseDto;
@@ -21,17 +22,19 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TeamService {
 
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final MemberRepository memberRepository;
 
+    @Transactional(readOnly = true)
     public Page<StudyListResponseDto> getAllStudy(String category, Pageable pageable) {
         return teamRepository.findAllByCategoryAndPageable(category, pageable);
     }
 
-    @Transactional
+
     public Long addTeam(final StudyRequestDto params) {
         Member member = memberRepository.findByNickname(
                 params.getWriter()).orElseThrow(() -> new BusinessException(ExceptionCode.MEMBER_NOT_EXISTS));
@@ -41,6 +44,17 @@ public class TeamService {
         return teamRepository.save(team).getId();
     }
 
+    public void joinTeam(StudyJoinReqDto params) {
+        Member member = memberRepository.findById(params.getMemberId())
+                .orElseThrow(() -> new BusinessException(ExceptionCode.MEMBER_NOT_EXISTS));
+        Team team = teamRepository.findById(params.getStudyId())
+                .orElseThrow(() -> new BusinessException(ExceptionCode.TEAM_NOT_EXISTS));
+
+        TeamMember teamMember = TeamMember.join(member, team);
+        teamMemberRepository.save(teamMember);
+    }
+
+    @Transactional(readOnly = true)
     public StudyResponseDto getStudy(String category, Long studyId) {
         return teamRepository.findByIdAndCategory(studyId, category);
     }

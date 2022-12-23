@@ -55,6 +55,9 @@ public class PostService {
 
         post.addView();
 
+        /*
+        map으로 쿼리하나 줄이기 왜 사라짐;;
+         */
         PostDetailResDto response = PostDetailResDto.builder()
                 .postId(post.getId())
                 .writer(post.getMember().getNickname())

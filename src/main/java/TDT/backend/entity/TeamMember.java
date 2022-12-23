@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.data.jpa.repository.query.JpaQueryMethodFactory;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,11 +22,22 @@ public class TeamMember {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private Team team;
+    private Boolean isLeader;
 
     public static TeamMember of(Member member, Team team) {
         return TeamMember.builder()
                 .member(member)
-                .team(team).build();
+                .team(team)
+                .isLeader(true)
+                .build();
+    }
+
+    public static TeamMember join(Member member, Team team) {
+        return TeamMember.builder()
+                .member(member)
+                .team(team)
+                .isLeader(false)
+                .build();
     }
 
 }
