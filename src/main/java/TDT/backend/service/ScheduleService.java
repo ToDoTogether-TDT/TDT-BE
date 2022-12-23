@@ -7,6 +7,7 @@ import TDT.backend.exception.BusinessException;
 import TDT.backend.exception.ExceptionCode;
 import TDT.backend.repository.schedule.ScheduleRepository;
 import TDT.backend.repository.team.TeamRepository;
+import TDT.backend.repository.teamScheduleRepository.TeamScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
     private final TeamRepository teamRepository;
+    private final TeamScheduleRepository teamScheduleRepository;
 
     @Transactional
     public ResponseEntity<?> addSchedule(ScheduleRequestDto dto) {
@@ -25,7 +27,7 @@ public class ScheduleService {
                 () -> new BusinessException(ExceptionCode.TEAM_NOT_EXISTS)
         );
         TeamSchedule teamSchedule = TeamSchedule.of(team, dto);
-        scheduleRepository.save(teamSchedule);
+        teamScheduleRepository.save(teamSchedule);
         return null;
     }
 }
