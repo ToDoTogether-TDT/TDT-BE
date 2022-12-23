@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
@@ -29,7 +30,6 @@ public class ScheduleService {
     private final TeamMemberRepository teamMemberRepository;
     private final MemberScheduleRepository memberScheduleRepository;
 
-    @Transactional
     public void addSchedule(ScheduleRequestDto dto) {
         Team team = teamRepository.findById(dto.getStudyId())
                 .orElseThrow(() -> new BusinessException(ExceptionCode.TEAM_NOT_EXISTS));
@@ -59,6 +59,7 @@ public class ScheduleService {
 
     }
 
+    @Transactional(readOnly = true)
     public List<ScheduleResForMember> getSchedulesForMember(Long memberId) {
 
         List<ScheduleResForMember> schedules = memberScheduleRepository.findSchedulesByMemberId(memberId);
@@ -66,6 +67,7 @@ public class ScheduleService {
         return schedules;
     }
 
+    @Transactional(readOnly = true)
     public List<ScheduleResForTeam> getSchedulesForTeam(Long studyId) {
 
         Team team = teamRepository.findById(studyId)

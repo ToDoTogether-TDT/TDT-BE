@@ -23,6 +23,8 @@ public class TeamMember {
     @JoinColumn(name = "team_id")
     private Team team;
     private Boolean isLeader;
+    @OneToMany(mappedBy = "teamMember", cascade = CascadeType.ALL)
+    private List<MemberSchedule> memberSchedules;
 
     public static TeamMember of(Member member, Team team) {
         return TeamMember.builder()
