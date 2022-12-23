@@ -23,7 +23,7 @@ public class StudyRequestDto {
                    .category(category)
                    .studyTypes(studyTypes)
                    .name(writer)
-                   .isLeader(true).build();
+                   .build();
 
     }
 }

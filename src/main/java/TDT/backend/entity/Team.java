@@ -22,7 +22,7 @@ public class Team {
     private String name;
     private String title;
     private String introduction;
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
     private List<Schedule> schedules;
     @Enumerated(value = EnumType.STRING)
     private Category category;
@@ -30,20 +30,17 @@ public class Team {
     @Enumerated(value = EnumType.STRING)
     private StudyTypes studyTypes;
 
-    private boolean isLeader;
 
     @OneToMany(mappedBy = "team")
     private List<TeamMember> teamMembers = new ArrayList<>();
 
     @Builder
-    public Team(String title, String introduction, Category category, StudyTypes studyTypes,
-                boolean isLeader,  String name) {
+    public Team(String title, String introduction, Category category, StudyTypes studyTypes, String name) {
         this.title = title;
         this.introduction = introduction;
         this.category = category;
         this.studyTypes = studyTypes;
         this.name = name;
-        this.isLeader = isLeader;
     }
 
     public static Team fromStudyRequestDto(StudyRequestDto dto) {
@@ -53,7 +50,6 @@ public class Team {
                 .category(dto.getCategory())
                 .studyTypes(dto.getStudyTypes())
                 .name(dto.getWriter())
-                .isLeader(true)
                 .build();
 
     }

@@ -18,6 +18,7 @@ public class Post {
     @Column(name = "post_id")
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member member;
     @Column(nullable = false)
     private String title;
