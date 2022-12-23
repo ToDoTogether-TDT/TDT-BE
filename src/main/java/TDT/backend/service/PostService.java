@@ -46,13 +46,18 @@ public class PostService {
         return post.getId();
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public PostDetailResDto getPost(Long postId) {
 
         Post post = findPost(postId);
 
         List<CommentRes> comments = commentRepository.findCommentsByPostId(postId);
 
+        post.addView();
+
+        /*
+        map으로 쿼리하나 줄이기 왜 사라짐;;
+         */
         PostDetailResDto response = PostDetailResDto.builder()
                 .postId(post.getId())
                 .writer(post.getMember().getNickname())
@@ -60,6 +65,8 @@ public class PostService {
                 .content(post.getContent())
                 .category(post.getCategory())
                 .comments(comments)
+                .createdAt(post.getCreatedAt())
+                .view(post.getView())
                 .build();
 
         return response;

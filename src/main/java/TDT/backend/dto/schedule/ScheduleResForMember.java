@@ -2,13 +2,10 @@ package TDT.backend.dto.schedule;
 
 import TDT.backend.entity.ScheduleStatus;
 import lombok.Data;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Getter
-@RequiredArgsConstructor
+@Data
 public class ScheduleResForMember {
 
     private String teamTitle;

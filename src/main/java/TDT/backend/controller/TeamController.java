@@ -1,5 +1,6 @@
 package TDT.backend.controller;
 
+import TDT.backend.dto.team.StudyJoinReqDto;
 import TDT.backend.dto.team.StudyListResponseDto;
 import TDT.backend.dto.team.StudyRequestDto;
 import TDT.backend.dto.team.StudyResponseDto;
@@ -7,6 +8,7 @@ import TDT.backend.service.team.TeamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +29,14 @@ public class TeamController {
     @PostMapping("/")
     public ResponseEntity<Long> addStudy(@RequestBody StudyRequestDto params) {
         return ResponseEntity.ok(teamService.addTeam(params));
+    }
+
+    @PostMapping("/join")
+    public ResponseEntity joinStudy(@RequestBody StudyJoinReqDto params) {
+
+        teamService.joinTeam(params);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

@@ -25,7 +25,6 @@ public class CustomMemberScheduleRepoImpl implements CustomMemberScheduleRepo{
                         memberSchedule.schedule.contents.as("scheduleContents"), memberSchedule.schedule.endAt, memberSchedule.schedule.status))
                 .from(memberSchedule)
                 .where(memberSchedule.teamMember.member.id.eq(memberId))
-                .orderBy(memberSchedule.schedule.endAt.asc())
                 .fetch();
     }
 }
