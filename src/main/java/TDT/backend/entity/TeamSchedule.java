@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Builder
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class TeamSchedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,6 @@ public class TeamSchedule {
 
     public static TeamSchedule of(Team team, ScheduleRequestDto dto) {
         return TeamSchedule.builder()
-
                 .team(team).
                 build();
     }

@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class ScheduleController {
 
     private ScheduleService scheduleService;
-
     @PostMapping
     public ResponseEntity<?> addSchedule(@RequestBody ScheduleRequestDto dto) {
+        System.out.println(dto.getContents());
         return scheduleService.addSchedule(dto);
     }
 }
