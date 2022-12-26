@@ -1,8 +1,13 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "Docker image url - tdt-docker",
+    "Name": "{AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-2.amazonaws.com/{REPOSITORY_NAME}:{TAG_NAME}",
     "Update": "true"
   },
-  "Ports": [ { "ContainerPort" : 8080} ]
+  "Ports": [
+    {
+      "ContainerPort": "8080",
+      "HostPort": "8080"
+    }
+  ]
 }
