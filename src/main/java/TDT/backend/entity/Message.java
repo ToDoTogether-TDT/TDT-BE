@@ -1,15 +1,17 @@
 package TDT.backend.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import TDT.backend.dto.message.MessageRequestDto;
+import lombok.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,4 +24,12 @@ public class Message {
     private String content;
     private LocalDateTime sendAt;
 
+    public static Message of(MessageRequestDto dto, Member sender,Member receiver) {
+        return Message.builder()
+                .content(dto.getContents())
+                .sender(sender)
+                .receiver(receiver).build();
+    }
+
 }
+
