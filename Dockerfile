@@ -1,3 +1,4 @@
 FROM openjdk:11
-COPY backend/build/libs/backend-0.0.1-SNAPSHOT.jar tdt-backend.jar
+ARG JAR_FILE=build/libs/*.jar tdt-backend.jar
+COPY ${JAR_FILE} app.jar
 ENTRYPOINT ["java","-jar","/tdt-backend.jar"]
