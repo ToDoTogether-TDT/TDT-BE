@@ -33,9 +33,7 @@ public class TeamController {
 
     @PostMapping("/join")
     public ResponseEntity joinStudy(@RequestBody StudyJoinReqDto params) {
-
         teamService.joinTeam(params);
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
