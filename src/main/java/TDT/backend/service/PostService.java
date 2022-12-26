@@ -1,7 +1,10 @@
 package TDT.backend.service;
 
 import TDT.backend.dto.comment.CommentRes;
-import TDT.backend.dto.post.*;
+import TDT.backend.dto.post.EditPostReq;
+import TDT.backend.dto.post.InsertPostReq;
+import TDT.backend.dto.post.PostDetailResDto;
+import TDT.backend.dto.post.PostPageResDto;
 import TDT.backend.entity.Category;
 import TDT.backend.entity.Member;
 import TDT.backend.entity.Post;
@@ -20,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -51,13 +55,16 @@ public class PostService {
 
         Post post = findPost(postId);
 
-        List<CommentRes> comments = commentRepository.findCommentsByPostId(postId);
+        List<CommentRes> comments = post.getComments().stream().map(comment ->
+                CommentRes.builder()
+                        .writer(comment.getMember().getNickname())
+                        .content(comment.getContent())
+                        .createdAt(comment.getCreatedAt())
+                        .build()
+        ).collect(Collectors.toList());
 
         post.addView();
 
-        /*
-        map으로 쿼리하나 줄이기 왜 사라짐;;
-         */
         PostDetailResDto response = PostDetailResDto.builder()
                 .postId(post.getId())
                 .writer(post.getMember().getNickname())
@@ -83,7 +90,7 @@ public class PostService {
 
         Post post = findPost(postId);
 
-        if(post.getMember().getNickname().equals(editPostReqDto.getNickname())) {
+        if (post.getMember().getNickname().equals(editPostReqDto.getNickname())) {
             post.edit(editPostReqDto.getTitle(), editPostReqDto.getContent(), editPostReqDto.getCategory());
         } else throw new BusinessException(ExceptionCode.UNAUTHORIZED_ERROR);
     }
@@ -92,7 +99,7 @@ public class PostService {
 
         Post post = findPost(postId);
 
-        if(post.getMember().getNickname().equals(nickname)) {
+        if (post.getMember().getNickname().equals(nickname)) {
             postRepository.delete(post);
         } else throw new BusinessException(ExceptionCode.UNAUTHORIZED_ERROR);
     }

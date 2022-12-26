@@ -27,8 +27,8 @@ public class ScheduleController {
     }
 
     @GetMapping
-    public ResponseEntity getSchedulesForMember(@RequestParam(name = "memberId", required = false) Long memberId,
-                                                @RequestParam(name = "studyId", required = false) Long studyId) {
+    public ResponseEntity getSchedulesForMemberOrTeam(@RequestParam(name = "memberId", required = false) Long memberId,
+                                                      @RequestParam(name = "studyId", required = false) Long studyId) {
 
         if(memberId != null) {
             List<ScheduleResForMember> schedules = scheduleService.getSchedulesForMember(memberId);

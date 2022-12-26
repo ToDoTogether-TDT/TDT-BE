@@ -25,6 +25,8 @@ public class Schedule {
     private LocalDateTime endAt;
     @Enumerated(value = EnumType.STRING)
     private ScheduleStatus status;
+    @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL)
+    private List<MemberSchedule> memberSchedules;
 
     @Builder
     public Schedule(Team team, String title, String contents, LocalDateTime endAt, ScheduleStatus status) {
