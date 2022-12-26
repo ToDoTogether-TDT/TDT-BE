@@ -62,9 +62,7 @@ public class PostService {
                         .createdAt(comment.getCreatedAt())
                         .build()
         ).collect(Collectors.toList());
-
         post.addView();
-
         PostDetailResDto response = PostDetailResDto.builder()
                 .postId(post.getId())
                 .writer(post.getMember().getNickname())

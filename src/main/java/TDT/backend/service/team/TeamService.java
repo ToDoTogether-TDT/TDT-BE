@@ -76,6 +76,10 @@ public class TeamService {
 
         return true;
     }
+    /**
+     * Todo 권한주기
+     *
+     */
 
 //    public Boolean updateStudy(Long studyId, Long id) {
 //        /**
