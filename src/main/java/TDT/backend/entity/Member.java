@@ -1,5 +1,7 @@
 package TDT.backend.entity;
 
+import TDT.backend.dto.message.MessageRequestDto;
+import TDT.backend.service.MessageService;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -55,5 +57,9 @@ public class Member {
         this.nickname = nickname;
         this.introduction = introduction;
         this.category = category;
+    }
+
+    public void toMessageResponseDto(MessageRequestDto dto) {
+
     }
 }
