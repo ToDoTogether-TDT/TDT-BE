@@ -2,7 +2,6 @@ package TDT.backend.entity;
 
 import TDT.backend.dto.message.MessageRequestDto;
 import lombok.*;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
