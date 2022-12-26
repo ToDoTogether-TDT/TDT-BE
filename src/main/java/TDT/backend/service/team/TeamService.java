@@ -49,9 +49,7 @@ public class TeamService {
                 .orElseThrow(() -> new BusinessException(ExceptionCode.MEMBER_NOT_EXISTS));
         Team team = teamRepository.findById(params.getStudyId())
                 .orElseThrow(() -> new BusinessException(ExceptionCode.TEAM_NOT_EXISTS));
-
-        TeamMember teamMember = TeamMember.join(member, team);
-        teamMemberRepository.save(teamMember);
+        teamMemberRepository.save(TeamMember.join(member, team));
     }
 
     @Transactional(readOnly = true)
