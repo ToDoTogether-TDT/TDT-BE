@@ -1,0 +1,8 @@
+{
+  "AWSEBDockerrunVersion": "1",
+  "Image": {
+    "Name": "Docker image url - tdt-docker",
+    "Update": "true"
+  },
+  "Ports": [ { "ContainerPort" : 8080} ]
+}
