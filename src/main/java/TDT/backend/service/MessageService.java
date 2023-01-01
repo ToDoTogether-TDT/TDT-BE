@@ -1,6 +1,7 @@
 package TDT.backend.service;
 
 
+import TDT.backend.dao.FCMTokenDao;
 import TDT.backend.dto.message.MessageRequestDto;
 import TDT.backend.dto.message.MessageResponseDto;
 import TDT.backend.entity.Member;
@@ -12,13 +13,16 @@ import TDT.backend.repository.message.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class MessageService {
 
 
+    private final FCMTokenDao fcmTokenDao;
     private final MemberRepository memberRepository;
     private final MessageRepository messageRepository;
 
@@ -36,4 +40,10 @@ public class MessageService {
     public Page<MessageResponseDto> getMessages(Long id, Pageable pageable) {
         return messageRepository.findAllByIdAndPageable(id, pageable);
     }
+
+    public void deleteMessage(Long id) {
+        messageRepository.deleteById(id);
+    }
+
+
 }

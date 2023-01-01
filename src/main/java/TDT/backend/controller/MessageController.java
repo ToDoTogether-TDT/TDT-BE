@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +36,11 @@ public class MessageController {
 
     //메시지 보관함에서 메시지삭제
 
+    @DeleteMapping
+    public ResponseEntity<Boolean> deleteMessages(@RequestParam Long id) {
+        service.deleteMessage(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     //보낸 메시지 삭제
 }
