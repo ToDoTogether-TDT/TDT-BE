@@ -27,8 +27,8 @@ jobs:
       env:
         OCCUPY_SECRET: ${{ secrets.APPLICATION }}
         OCCUPY_SECRET_DIR: ./src/main/resources
-    - run: touch ./src/main/resources/application.yml
-    - run: echo "${{secrets.APPLICATION}}" | base64 --decode > ./src/main/resources/application.yml
+#     - run: touch ./src/main/resources/application.yml
+      run: echo "${{secrets.APPLICATION}}" | base64 --decode > ./src/main/resources/application.yml
 
     - name: Build with Gradle
       run: gradle build -x test
