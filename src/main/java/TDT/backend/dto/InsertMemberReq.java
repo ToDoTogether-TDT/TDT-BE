@@ -11,6 +11,7 @@ public class InsertMemberReq {
     private String picture;
     private Role role;
 
+    private String token;
     public Member toEntity() {
 
 
