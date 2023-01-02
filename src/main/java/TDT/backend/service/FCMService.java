@@ -1,37 +1,48 @@
 package TDT.backend.service;
 
 import TDT.backend.dao.FCMTokenDao;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingException;
-import com.google.firebase.messaging.Message;
+import TDT.backend.dto.schedule.ScheduleRequestDto;
+import TDT.backend.entity.TeamMember;
+import TDT.backend.repository.teamMember.TeamMemberRepository;
+import com.google.firebase.messaging.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-@Async
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class FCMService {
 
     private final FCMTokenDao fcmTokenDao;
+    private final TeamMemberRepository teamMemberRepository;
 
-    public void sendNotification(String email) {
-        if (!fcmTokenDao.hasKey(email)) return;
 
-    String token = fcmTokenDao.getToken(email);
-    Message message = Message.builder()
-            .putData("title", "스터디 알림")
-            .putData("content", "스터디 일정 추가 알림")
-            .setToken(token)
-            .build();
-    {
-        try {
-            String response = FirebaseMessaging.getInstance().send(message);
+    public void send(Message message) {
+        FirebaseMessaging.getInstance().sendAsync(message);
+    }
 
-        } catch (FirebaseMessagingException e) {
-            throw new RuntimeException(e);
-        }
+    public void sendNotification(final ScheduleRequestDto dto) {
+        List<TeamMember> allByTeamId = teamMemberRepository.findAllByTeamId(dto.getStudyId());
+
+        allByTeamId.forEach(teamMember -> {
+            if (!teamMember.getIsLeader()) {
+                String email = teamMember.getMember().getEmail();
+                System.out.println(email);
+                String token = fcmTokenDao.getToken(email);
+
+                System.out.println("b" + token);
+                Message message = Message.builder()
+                        .putData("title", "스터디 알림")
+                        .putData("content", "스터디 일정 추가 알림")
+                        .setToken(token)
+                        .build();
+                send(message);
+            }
+        });
     }
 }
 
-}
+

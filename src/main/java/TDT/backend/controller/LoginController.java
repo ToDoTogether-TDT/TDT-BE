@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.io.IOException;
 
 
 @RestController
@@ -18,9 +19,8 @@ public class LoginController {
     private final MemberService memberService;
     private final FCMTokenDao fcmService;
     @PostMapping(value = "/users")
-    public ResponseEntity<?> login(@RequestBody InsertMemberReq req) {
+    public ResponseEntity<?> login(@RequestBody InsertMemberReq req) throws IOException {
         memberService.addMember(req);
-        log.info(req.getToken());
         fcmService.saveToken(req);
         return new ResponseEntity<>(HttpStatus.OK);
     }
