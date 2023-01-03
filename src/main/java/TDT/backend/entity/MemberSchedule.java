@@ -20,10 +20,12 @@ public class MemberSchedule {
     @ManyToOne
     @JoinColumn(name = "schedule_id")
     private Schedule schedule;
+    private Boolean isDoneTodo;
 
     @Builder
-    public MemberSchedule(TeamMember teamMember, Schedule schedule) {
+    public MemberSchedule(TeamMember teamMember, Schedule schedule, Boolean isDoneTodo) {
         this.teamMember = teamMember;
         this.schedule = schedule;
+        this.isDoneTodo = isDoneTodo;
     }
 }
