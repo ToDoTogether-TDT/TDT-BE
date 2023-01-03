@@ -1,3 +1,7 @@
+# API
+로컬 서버 실행후 
+http://localhost:8080/swagger-ui.html 접속
+
 # TDT-BE
 TDT project backend repository
 
