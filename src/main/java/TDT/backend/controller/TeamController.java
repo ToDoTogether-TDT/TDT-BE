@@ -16,17 +16,16 @@ import org.springframework.data.domain.Pageable;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/study")
 public class TeamController {
 
     private final TeamService teamService;
 
-    @GetMapping("/")
-    public ResponseEntity<Page<StudyListResponseDto>> getAllStudy(@RequestParam String category,
+    @GetMapping("/{category}")
+    public ResponseEntity<Page<StudyListResponseDto>> getAllStudy(@PathVariable String category,
                                                                @PageableDefault(page = 0, size = 10) Pageable pageable) {
         return ResponseEntity.ok(teamService.getAllStudy(category, pageable));
     }
-    @PostMapping("/")
+    @PostMapping("/posting-study")
     public ResponseEntity<Long> addStudy(@RequestBody StudyRequestDto params) {
         return ResponseEntity.ok(teamService.addTeam(params));
     }
