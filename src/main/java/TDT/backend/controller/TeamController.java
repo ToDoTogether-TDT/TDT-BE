@@ -63,8 +63,8 @@ public class TeamController {
     @PostMapping("/{category}/{id}/join")
     public ResponseEntity joinStudy(@PathVariable("category") String category,
                                     @PathVariable("id") Long studyId,
-                                    @RequestBody StudyJoinReqDto params) {
-        teamService.joinTeam(params);
+                                    @RequestParam("memberId") Long memberId) {
+        teamService.joinTeam(studyId, memberId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

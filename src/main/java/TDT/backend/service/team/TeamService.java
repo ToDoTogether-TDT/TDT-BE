@@ -44,10 +44,10 @@ public class TeamService {
         return teamRepository.save(team).getId();
     }
 
-    public void joinTeam(StudyJoinReqDto params) {
-        Member member = memberRepository.findById(params.getMemberId())
+    public void joinTeam(Long studyId, Long memberId) {
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(ExceptionCode.MEMBER_NOT_EXISTS));
-        Team team = teamRepository.findById(params.getStudyId())
+        Team team = teamRepository.findById(studyId)
                 .orElseThrow(() -> new BusinessException(ExceptionCode.TEAM_NOT_EXISTS));
 
         TeamMember teamMember = TeamMember.join(member, team);
