@@ -51,15 +51,15 @@ public class TeamController {
     @ApiOperation(value = "스터디 상세정보 조회")
     @GetMapping("/{category}/{id}")
     public ResponseEntity<StudyResponseDto> getStudy(@PathVariable("category") String category,
-                                                     @PathVariable("id") Long studyId,
-                                                     @RequestBody Long memberId) {
+                                                     @PathVariable("id") Long studyId
+                                                     ) {
         /**Todo
          * memberId를 통해 내 스터디인지 확인
          */
         return ResponseEntity.ok(teamService.getStudy(category, studyId));
     }
 
-    @ApiOperation(value = "스터디 참여 요청")
+    @ApiOperation(value = "스터디 참여 수락")
     @PostMapping("/{category}/{id}/join")
     public ResponseEntity joinStudy(@PathVariable("category") String category,
                                     @PathVariable("id") Long studyId,

@@ -1,5 +1,6 @@
 package TDT.backend.repository.memberSchedule;
 
+import TDT.backend.dto.member.MemberDto;
 import TDT.backend.dto.schedule.ScheduleResForMember;
 import TDT.backend.entity.QMember;
 import TDT.backend.entity.QTeam;
@@ -26,6 +27,17 @@ public class CustomMemberScheduleRepoImpl implements CustomMemberScheduleRepo{
                 .from(memberSchedule)
                 .where(memberSchedule.teamMember.member.id.eq(memberId))
                 .orderBy(memberSchedule.schedule.endAt.asc())
+                .fetch();
+    }
+
+    @Override
+    public List<MemberDto> findIsDoneTodoMembers(Long scheduleId) {
+        return queryFactory
+                .select(Projections.fields(MemberDto.class,
+                        memberSchedule.teamMember.member.nickname, memberSchedule.teamMember.member.picture.as("image"),
+                        memberSchedule.teamMember.member.introduction))
+                .from(memberSchedule)
+                .where(memberSchedule.schedule.id.eq(scheduleId))
                 .fetch();
     }
 }

@@ -1,15 +1,15 @@
 package TDT.backend.dto.team;
 
+import TDT.backend.dto.schedule.ScheduleDto;
 import TDT.backend.entity.Category;
 import TDT.backend.entity.Member;
-import TDT.backend.entity.Schedule;
 import TDT.backend.entity.Team;
 import com.querydsl.core.annotations.QueryProjection;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -20,7 +20,7 @@ public class StudyResponseDto {
     private String title;
     private Category category;
     private String introduction;
-    private List<ScheduleDto> scheduleDto;
+    private List<ScheduleDto> todos = new ArrayList<>();
 
 
     @QueryProjection
@@ -31,23 +31,17 @@ public class StudyResponseDto {
         this.introduction = team.getIntroduction();
     }
 
-
     @Builder
-    static class ScheduleDto {
-        private Long scheduleId;
-        private String title;
-        private List<MemberDto> memberDto;
+    public StudyResponseDto(String writer, String title, Category category, String introduction, List<ScheduleDto> scheduleDto) {
+        this.writer = writer;
+        this.title = title;
+        this.category = category;
+        this.introduction = introduction;
+        this.todos = scheduleDto;
     }
 
-    @Builder
-    static class MemberDto{
-        private String nickname;
-        private String image;
-        private String introduction;
-        /**
-         * 스케줄 추가해야함
-         * 댓글 추가
-         */
-    }
-
+    /**
+     * 스케줄 추가해야함
+     * 댓글 추가
+     */
 }
