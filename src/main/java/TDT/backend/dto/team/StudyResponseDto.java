@@ -20,6 +20,7 @@ public class StudyResponseDto {
     private String title;
     private Category category;
     private String introduction;
+
     private List<ScheduleDto> scheduleDto;
 
 
