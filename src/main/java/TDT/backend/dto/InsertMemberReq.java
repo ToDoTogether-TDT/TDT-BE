@@ -10,8 +10,6 @@ public class InsertMemberReq {
     private String email;
     private String picture;
     private Role role;
-
-    private String token;
     public Member toEntity() {
 
 
