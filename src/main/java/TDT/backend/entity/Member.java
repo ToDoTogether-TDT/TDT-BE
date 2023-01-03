@@ -41,11 +41,12 @@ public class Member {
     @Column(nullable = false)
     private Role role;
     @Builder
-    public Member(String name, String email, Role role, String picture) {
+    public Member(String name, String email, Role role, String picture, String nickname) {
         this.name = name;
         this.email = email;
         this.role = role;
         this.picture = picture;
+        this.nickname = nickname;
     }
     public Member update(String name, String email) {
         this.name = name;
