@@ -6,8 +6,11 @@ import TDT.backend.entity.Schedule;
 import TDT.backend.entity.Team;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -17,7 +20,7 @@ public class StudyResponseDto {
     private String title;
     private Category category;
     private String introduction;
-    private MemberDto memberDto;
+    private List<ScheduleDto> scheduleDto;
 
 
     @QueryProjection
@@ -26,11 +29,17 @@ public class StudyResponseDto {
         this.title = team.getTitle();
         this.category = team.getCategory();
         this.introduction = team.getIntroduction();
-        this.memberDto = new MemberDto(member.getNickname(), member.getPicture(), member.getIntroduction());
     }
 
-    @Getter
-    @AllArgsConstructor
+
+    @Builder
+    static class ScheduleDto {
+        private Long scheduleId;
+        private String title;
+        private List<MemberDto> memberDto;
+    }
+
+    @Builder
     static class MemberDto{
         private String nickname;
         private String image;
