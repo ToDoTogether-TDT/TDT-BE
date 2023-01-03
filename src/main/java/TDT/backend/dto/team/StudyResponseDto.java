@@ -2,6 +2,7 @@ package TDT.backend.dto.team;
 
 import TDT.backend.entity.Category;
 import TDT.backend.entity.Member;
+import TDT.backend.entity.Schedule;
 import TDT.backend.entity.Team;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ public class StudyResponseDto {
     private Category category;
     private String introduction;
     private MemberDto memberDto;
+
 
     @QueryProjection
     public StudyResponseDto(Team team, Member member) {
@@ -35,6 +37,7 @@ public class StudyResponseDto {
         private String introduction;
         /**
          * 스케줄 추가해야함
+         * 댓글 추가
          */
     }
 
