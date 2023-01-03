@@ -3,6 +3,7 @@ package TDT.backend.service;
 import TDT.backend.dto.schedule.ScheduleRequestDto;
 import TDT.backend.dto.schedule.ScheduleResForMember;
 import TDT.backend.dto.schedule.ScheduleResForTeam;
+import TDT.backend.dto.schedule.TodoCheckRequestDto;
 import TDT.backend.entity.MemberSchedule;
 import TDT.backend.entity.Schedule;
 import TDT.backend.entity.Team;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
@@ -29,7 +31,6 @@ public class ScheduleService {
     private final TeamMemberRepository teamMemberRepository;
     private final MemberScheduleRepository memberScheduleRepository;
 
-    @Transactional
     public void addSchedule(ScheduleRequestDto dto) {
         Team team = teamRepository.findById(dto.getStudyId())
                 .orElseThrow(() -> new BusinessException(ExceptionCode.TEAM_NOT_EXISTS));
@@ -53,13 +54,13 @@ public class ScheduleService {
                         MemberSchedule.builder()
                                 .teamMember(teamMember)
                                 .schedule(schedule)
-                                .isDoneTodo(false)
                                 .build());
             }
         } else throw new BusinessException(ExceptionCode.UNAUTHORIZED_ERROR);
 
     }
 
+    @Transactional(readOnly = true)
     public List<ScheduleResForMember> getSchedulesForMember(Long memberId) {
 
         List<ScheduleResForMember> schedules = memberScheduleRepository.findSchedulesByMemberId(memberId);
@@ -67,6 +68,7 @@ public class ScheduleService {
         return schedules;
     }
 
+    @Transactional(readOnly = true)
     public List<ScheduleResForTeam> getSchedulesForTeam(Long studyId) {
 
         Team team = teamRepository.findById(studyId)
@@ -74,13 +76,13 @@ public class ScheduleService {
 
         List<ScheduleResForTeam> schedules =
                 team.getSchedules().stream().map(schedule ->
-                ScheduleResForTeam.builder()
-                        .title(schedule.getTitle())
-                        .contents(schedule.getContents())
-                        .endAt(schedule.getEndAt())
-                        .status(schedule.getStatus())
-                        .build()
-        ).collect(Collectors.toList());
+                        ScheduleResForTeam.builder()
+                                .title(schedule.getTitle())
+                                .contents(schedule.getContents())
+                                .endAt(schedule.getEndAt())
+                                .status(schedule.getStatus())
+                                .build()
+                ).collect(Collectors.toList());
 
         return schedules;
     }
@@ -107,6 +109,10 @@ public class ScheduleService {
         if (member.getIsLeader()) {
             scheduleRepository.delete(schedule);
         } else throw new BusinessException(ExceptionCode.UNAUTHORIZED_ERROR);
+    }
+
+    public void isDoneTodo(TodoCheckRequestDto dto) {
+
     }
 }
 

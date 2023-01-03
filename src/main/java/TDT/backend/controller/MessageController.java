@@ -24,8 +24,8 @@ public class MessageController {
     @ApiOperation(value = "메시지 보내기")
     @PostMapping
     public ResponseEntity<?> sendMessage(@RequestParam("receiverId") Long receiverId,
-                                      @RequestParam("senderId") Long senderId,
-                                      @RequestBody MessageRequestDto dto) {
+                                         @RequestParam("senderId") Long senderId,
+                                         @RequestBody MessageRequestDto dto) {
         return ResponseEntity.ok(service.sendMessage(dto, receiverId, senderId));
     }
 
@@ -33,7 +33,7 @@ public class MessageController {
     @ApiOperation(value = "메시지 보관함 확인")
     @GetMapping
     public ResponseEntity<Page<MessageResponseDto>> getMessages(@RequestParam Long id,
-                                                            @PageableDefault(page = 0, size = 10) Pageable pageable) {
+                                                                @PageableDefault(page = 0, size = 10) Pageable pageable) {
         return ResponseEntity.ok(service.getMessages(id, pageable));
     }
 
