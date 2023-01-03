@@ -4,6 +4,7 @@ import TDT.backend.dto.schedule.ScheduleRequestDto;
 import TDT.backend.dto.schedule.ScheduleResForMember;
 import TDT.backend.dto.schedule.ScheduleResForTeam;
 import TDT.backend.service.ScheduleService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,20 +13,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/study/schedule")
+@RequestMapping("/study/todo")
 @RequiredArgsConstructor
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
-
+    @ApiOperation(value = "Todo 추가")
     @PostMapping
     public ResponseEntity<?> addSchedule(@RequestBody ScheduleRequestDto dto) {
-
         scheduleService.addSchedule(dto);
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @ApiOperation(value = "사용 안함")
     @GetMapping
     public ResponseEntity getSchedulesForMemberOrTeam(@RequestParam(name = "memberId", required = false) Long memberId,
                                                       @RequestParam(name = "studyId", required = false) Long studyId) {
@@ -40,6 +40,7 @@ public class ScheduleController {
         }
     }
 
+    @ApiOperation(value = "Todo 수정")
     @PutMapping("/{scheduleId}")
     public ResponseEntity editSchedule(@PathVariable Long scheduleId,
                                        @RequestBody ScheduleRequestDto requestDto) {
@@ -49,6 +50,7 @@ public class ScheduleController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Todo 삭제")
     @DeleteMapping("/{scheduleId}")
     public ResponseEntity deleteSchedule(@PathVariable Long scheduleId,
                                          @RequestParam(name = "memberId") Long memberId,

@@ -36,4 +36,10 @@ public class MessageService {
     public Page<MessageResponseDto> getMessages(Long id, Pageable pageable) {
         return messageRepository.findAllByIdAndPageable(id, pageable);
     }
+
+    public void deleteMessage(Long id) {
+        messageRepository.deleteById(id);
+    }
+
+
 }

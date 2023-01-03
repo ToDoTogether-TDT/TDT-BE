@@ -34,6 +34,11 @@ public class TeamService {
         return teamRepository.findAllByCategoryAndPageable(category, pageable);
     }
 
+    @Transactional(readOnly = true)
+    public Page<StudyListResponseDto> getAllKindOfStudy(Pageable pageable) {
+        return teamRepository.findAllByPageable(pageable);
+    }
+
 
     public Long addTeam(final StudyRequestDto params) {
         Member member = memberRepository.findByNickname(

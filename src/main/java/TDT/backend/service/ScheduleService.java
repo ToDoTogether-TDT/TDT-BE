@@ -3,6 +3,7 @@ package TDT.backend.service;
 import TDT.backend.dto.schedule.ScheduleRequestDto;
 import TDT.backend.dto.schedule.ScheduleResForMember;
 import TDT.backend.dto.schedule.ScheduleResForTeam;
+import TDT.backend.dto.schedule.TodoCheckRequestDto;
 import TDT.backend.entity.MemberSchedule;
 import TDT.backend.entity.Schedule;
 import TDT.backend.entity.Team;
@@ -53,6 +54,7 @@ public class ScheduleService {
                         MemberSchedule.builder()
                                 .teamMember(teamMember)
                                 .schedule(schedule)
+                                .isDoneTodo(false)
                                 .build());
             }
         } else throw new BusinessException(ExceptionCode.UNAUTHORIZED_ERROR);
@@ -108,6 +110,10 @@ public class ScheduleService {
         if (member.getIsLeader()) {
             scheduleRepository.delete(schedule);
         } else throw new BusinessException(ExceptionCode.UNAUTHORIZED_ERROR);
+    }
+
+    public void isDoneTodo(TodoCheckRequestDto dto) {
+
     }
 }
 

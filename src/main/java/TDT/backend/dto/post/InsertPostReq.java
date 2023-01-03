@@ -16,12 +16,15 @@ public class InsertPostReq {
     private String writer;
     private Category category;
 
+    private LocalDateTime createdAt;
+
     // 테스트용
     @Builder
-    public InsertPostReq(String title, String content, String writer, Category category) {
+    public InsertPostReq(String title, String content, String writer, Category category, LocalDateTime createdAt) {
         this.title = title;
         this.content = content;
         this.writer = writer;
         this.category = category;
+        this.createdAt = createdAt;
     }
 }

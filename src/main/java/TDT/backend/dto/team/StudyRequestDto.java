@@ -14,6 +14,7 @@ public class StudyRequestDto {
     private Category category;
     private StudyTypes studyTypes;
 
+    private String content;
 
 
     public Team toEntity() {

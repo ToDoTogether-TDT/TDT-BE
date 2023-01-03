@@ -35,6 +35,17 @@ public class CustomTeamRepositoryImpl implements CustomTeamRepository {
     }
 
     @Override
+    public Page<StudyListResponseDto> findAllByPageable(Pageable pageable) {
+        QTeamMember teamMember = QTeamMember.teamMember;
+        JPAQuery<StudyListResponseDto> query = jpaQueryFactory.select(new QStudyListResponseDto(team, teamMember.member))
+                .from(team)
+                .join(team.teamMembers, teamMember).fetchJoin()
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset());
+        return new PageImpl<>(query.fetch(),pageable,query.fetchCount());
+    }
+
+    @Override
     public StudyResponseDto findByIdAndCategory(Long studyId, String category) {
         QTeamMember teamMember = QTeamMember.teamMember;
         StudyResponseDto dto = jpaQueryFactory.select(new QStudyResponseDto(team, teamMember.member))

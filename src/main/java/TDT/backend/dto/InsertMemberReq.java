@@ -9,8 +9,8 @@ public class InsertMemberReq {
     private String name;
     private String email;
     private String picture;
+    private String nickname;
     private Role role;
-
     public Member toEntity() {
 
 
@@ -19,6 +19,7 @@ public class InsertMemberReq {
                 .email(email)
                 .picture(picture)
                 .role(Role.GUEST)
+                .nickname(nickname)
                 .build();
     }
 
