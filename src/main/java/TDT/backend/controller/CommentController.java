@@ -22,6 +22,13 @@ public class CommentController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     TodoList
+     스터디 댓글
+     * @param commentId
+     * @param editCommentReq
+     * @return
+     */
     @PutMapping("/comment/{commentId}")
     public ResponseEntity editComment(@PathVariable Long commentId,
                                       @RequestBody EditCommentReq editCommentReq) {

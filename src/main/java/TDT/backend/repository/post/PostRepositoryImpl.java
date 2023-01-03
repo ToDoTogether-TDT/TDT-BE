@@ -50,4 +50,10 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
 
         return PageableExecutionUtils.getPage(content, pageable, count::fetchOne);
     }
+
+    @Override
+    public void deleteByMemberId(Long memberId) {
+
+        queryFactory.delete(post).where(post.member.id.eq(memberId)).execute();
+    }
 }
