@@ -23,14 +23,13 @@ public class StudyResponseDto {
     private List<ScheduleDto> scheduleDto;
 
 
-//    @QueryProjection
-//    public StudyResponseDto(Team team, Member member) {
-//        this.writer = team.getName();
-//        this.title = team.getTitle();
-//        this.category = team.getCategory();
-//        this.introduction = team.getIntroduction();
-//        this.ScheduleDto = new ScheduleDto(member.getNickname(), member.getPicture(), member.getIntroduction());
-//    }
+    @QueryProjection
+    public StudyResponseDto(Team team, Member member) {
+        this.writer = team.getName();
+        this.title = team.getTitle();
+        this.category = team.getCategory();
+        this.introduction = team.getIntroduction();
+    }
 
 
     @Builder
