@@ -1,5 +1,7 @@
 package TDT.backend.service.team;
 
+import TDT.backend.dto.member.MemberDto;
+import TDT.backend.dto.schedule.ScheduleDto;
 import TDT.backend.dto.team.StudyJoinReqDto;
 import TDT.backend.dto.team.StudyListResponseDto;
 import TDT.backend.dto.team.StudyRequestDto;
@@ -10,6 +12,8 @@ import TDT.backend.entity.TeamMember;
 import TDT.backend.exception.BusinessException;
 import TDT.backend.exception.ExceptionCode;
 import TDT.backend.repository.member.MemberRepository;
+import TDT.backend.repository.memberSchedule.MemberScheduleRepository;
+import TDT.backend.repository.schedule.ScheduleRepository;
 import TDT.backend.repository.team.TeamRepository;
 import TDT.backend.repository.teamMember.TeamMemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,6 +33,7 @@ public class TeamService {
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final MemberRepository memberRepository;
+    private final ScheduleRepository scheduleRepository;
 
     @Transactional(readOnly = true)
     public Page<StudyListResponseDto> getAllStudy(String category, Pageable pageable) {
@@ -56,7 +62,20 @@ public class TeamService {
 
     @Transactional(readOnly = true)
     public StudyResponseDto getStudy(String category, Long studyId) {
-        return teamRepository.findByIdAndCategory(studyId, category);
+
+        TeamMember leader = teamMemberRepository.findLeaderByTeamId(studyId);
+
+        List<ScheduleDto> schedules = scheduleRepository.findScheduleByStudyId(studyId);
+
+        StudyResponseDto response = StudyResponseDto.builder()
+                .writer(leader.getMember().getNickname())
+                .title(leader.getTeam().getTitle())
+                .introduction(leader.getTeam().getIntroduction())
+                .category(leader.getTeam().getCategory())
+                .scheduleDto(schedules)
+                .build();
+
+        return response;
     }
 
     public boolean deleteStudy(Long studyId, Long memberId) {
