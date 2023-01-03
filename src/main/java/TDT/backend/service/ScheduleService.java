@@ -54,6 +54,7 @@ public class ScheduleService {
                         MemberSchedule.builder()
                                 .teamMember(teamMember)
                                 .schedule(schedule)
+                                .isDoneTodo(false)
                                 .build());
             }
         } else throw new BusinessException(ExceptionCode.UNAUTHORIZED_ERROR);
