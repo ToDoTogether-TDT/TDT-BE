@@ -1,15 +1,15 @@
 package TDT.backend.dto.team;
 
-import TDT.backend.dto.schedule.ScheduleDto;
 import TDT.backend.entity.Category;
 import TDT.backend.entity.Member;
+import TDT.backend.entity.Schedule;
 import TDT.backend.entity.Team;
 import com.querydsl.core.annotations.QueryProjection;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -44,4 +44,6 @@ public class StudyResponseDto {
      * 스케줄 추가해야함
      * 댓글 추가
      */
+}
+
 }

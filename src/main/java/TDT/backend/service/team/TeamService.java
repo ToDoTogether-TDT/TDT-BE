@@ -40,11 +40,6 @@ public class TeamService {
         return teamRepository.findAllByCategoryAndPageable(category, pageable);
     }
 
-    @Transactional(readOnly = true)
-    public Page<StudyListResponseDto> getAllKindOfStudy(Pageable pageable) {
-        return teamRepository.findAllByPageable(pageable);
-    }
-
 
     public Long addTeam(final StudyRequestDto params) {
         Member member = memberRepository.findByNickname(
@@ -55,12 +50,14 @@ public class TeamService {
         return teamRepository.save(team).getId();
     }
 
-    public void joinTeam(StudyJoinReqDto params) {
-        Member member = memberRepository.findById(params.getMemberId())
+    public void joinTeam(Long studyId, Long memberId) {
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(ExceptionCode.MEMBER_NOT_EXISTS));
-        Team team = teamRepository.findById(params.getStudyId())
+        Team team = teamRepository.findById(studyId)
                 .orElseThrow(() -> new BusinessException(ExceptionCode.TEAM_NOT_EXISTS));
-        teamMemberRepository.save(TeamMember.join(member, team));
+
+        TeamMember teamMember = TeamMember.join(member, team);
+        teamMemberRepository.save(teamMember);
     }
 
     @Transactional(readOnly = true)
@@ -100,10 +97,6 @@ public class TeamService {
 
         return true;
     }
-    /**
-     * Todo 권한주기
-     *
-     */
 
 //    public Boolean updateStudy(Long studyId, Long id) {
 //        /**

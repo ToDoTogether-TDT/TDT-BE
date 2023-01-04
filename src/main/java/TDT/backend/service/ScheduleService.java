@@ -54,7 +54,6 @@ public class ScheduleService {
                         MemberSchedule.builder()
                                 .teamMember(teamMember)
                                 .schedule(schedule)
-                                .isDoneTodo(false)
                                 .build());
             }
         } else throw new BusinessException(ExceptionCode.UNAUTHORIZED_ERROR);
@@ -77,13 +76,13 @@ public class ScheduleService {
 
         List<ScheduleResForTeam> schedules =
                 team.getSchedules().stream().map(schedule ->
-                ScheduleResForTeam.builder()
-                        .title(schedule.getTitle())
-                        .contents(schedule.getContents())
-                        .endAt(schedule.getEndAt())
-                        .status(schedule.getStatus())
-                        .build()
-        ).collect(Collectors.toList());
+                        ScheduleResForTeam.builder()
+                                .title(schedule.getTitle())
+                                .contents(schedule.getContents())
+                                .endAt(schedule.getEndAt())
+                                .status(schedule.getStatus())
+                                .build()
+                ).collect(Collectors.toList());
 
         return schedules;
     }

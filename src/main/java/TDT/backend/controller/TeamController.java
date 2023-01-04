@@ -30,7 +30,7 @@ public class TeamController {
     @ApiOperation(value = "스터디 조회",notes = "모든 스터디 조회")
     @GetMapping("/{category}")
     public ResponseEntity<Page<StudyListResponseDto>> getAllStudy(@PathVariable(value = "category", required = false) String category,
-                                                               @PageableDefault(page = 0, size = 10) Pageable pageable) {
+                                                                  @PageableDefault(page = 0, size = 10) Pageable pageable) {
         return ResponseEntity.ok(teamService.getAllStudy(category, pageable));
     }
 
@@ -63,8 +63,8 @@ public class TeamController {
     @PostMapping("/{category}/{id}/join")
     public ResponseEntity joinStudy(@PathVariable("category") String category,
                                     @PathVariable("id") Long studyId,
-                                    @RequestBody StudyJoinReqDto params) {
-        teamService.joinTeam(params);
+                                    @RequestParam("memberId") Long memberId) {
+        teamService.joinTeam(studyId, memberId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
