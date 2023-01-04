@@ -9,6 +9,7 @@ import TDT.backend.dto.team.StudyResponseDto;
 import TDT.backend.entity.Category;
 import TDT.backend.service.ScheduleService;
 import TDT.backend.service.team.TeamService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,9 +28,16 @@ public class TeamController {
     private final TeamService teamService;
     private final ScheduleService scheduleService;
 
-    @ApiOperation(value = "스터디 조회",notes = "모든 스터디 조회")
+
+    @ApiOperation(value = "모든 스터디 조회", notes = "##추가 -> 모든 스터디 조회")
+    @GetMapping
+    public ResponseEntity<Page<StudyListResponseDto>> getAllKindOfStudy(@PageableDefault(page = 0, size = 10) Pageable pageable) {
+        return ResponseEntity.ok(teamService.getAllKindOfStudy(pageable));
+    }
+
+    @ApiOperation(value = "특정 카테고리 스터디 조회", notes = "##추가 -> 특정 카테고리 스터디 조회")
     @GetMapping("/{category}")
-    public ResponseEntity<Page<StudyListResponseDto>> getAllStudy(@PathVariable(value = "category", required = false) String category,
+    public ResponseEntity<Page<StudyListResponseDto>> getAllCategory(@PathVariable(value = "category", required = false) String category,
                                                                   @PageableDefault(page = 0, size = 10) Pageable pageable) {
         return ResponseEntity.ok(teamService.getAllStudy(category, pageable));
     }
@@ -63,8 +71,8 @@ public class TeamController {
     @PostMapping("/{category}/{id}/join")
     public ResponseEntity joinStudy(@PathVariable("category") String category,
                                     @PathVariable("id") Long studyId,
-                                    @RequestParam("memberId") Long memberId) {
-        teamService.joinTeam(studyId, memberId);
+                                    @RequestBody StudyJoinReqDto params) {
+        teamService.joinTeam(params);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
