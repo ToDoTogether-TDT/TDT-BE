@@ -34,7 +34,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
 
         List<PostPageResDto> content = queryFactory
                 .select(Projections.fields(PostPageResDto.class,
-                        post.id, post.title, post.content, post.member.nickname, post.createdAt, post.category, post.comments.size().as("commentsLength")))
+                        post.id, post.title, post.content, post.member.nickname, post.createdAt, post.category,
+                        post.comments.size().as("commentsLength"), post.view))
                 .from(post)
                 .where(builder)
                 .orderBy(post.id.desc())
@@ -48,5 +49,11 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
                 .where(builder);
 
         return PageableExecutionUtils.getPage(content, pageable, count::fetchOne);
+    }
+
+    @Override
+    public void deleteByMemberId(Long memberId) {
+
+        queryFactory.delete(post).where(post.member.id.eq(memberId)).execute();
     }
 }

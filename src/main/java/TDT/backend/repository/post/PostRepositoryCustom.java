@@ -7,4 +7,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface PostRepositoryCustom {
     Page<PostPageResDto> getList(Pageable pageable, Category category);
+
+    void deleteByMemberId(Long memberId);
 }
