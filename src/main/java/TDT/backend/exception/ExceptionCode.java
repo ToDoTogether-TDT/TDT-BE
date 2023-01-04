@@ -4,6 +4,7 @@ import lombok.Getter;
 
 public enum ExceptionCode {
 
+    ALREADY_EXIST_EMAIL(404, "이미 존재하는 이메일입니다"),
     MEMBER_NOT_EXISTS(404, "존재하지 않는 회원입니다."),
     POST_NOT_EXISTS(404, "존재하지 않는 글입니다."),
     TEAM_NOT_EXISTS(404, "존재하지 않는 팀입니다."),

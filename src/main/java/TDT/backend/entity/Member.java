@@ -1,5 +1,6 @@
 package TDT.backend.entity;
 
+import TDT.backend.dto.InsertMemberReq;
 import TDT.backend.dto.message.MessageRequestDto;
 import TDT.backend.service.MessageService;
 import lombok.AccessLevel;
@@ -61,6 +62,13 @@ public class Member {
     }
 
     public void toMessageResponseDto(MessageRequestDto dto) {
-
     }
+//
+//    public static  toMemberResponse(InsertMemberReq req) {
+//        this.email = req.getEmail();
+//        this.name = req.getName();
+//        this.nickname = req.getNickname();
+//        this.role = req.getRole();
+//        return this;
+//    }
 }

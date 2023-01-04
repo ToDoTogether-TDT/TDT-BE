@@ -3,6 +3,7 @@ package TDT.backend.dto;
 import TDT.backend.entity.Member;
 import TDT.backend.entity.Role;
 import lombok.Data;
+import lombok.Getter;
 
 @Data
 public class InsertMemberReq {
@@ -12,8 +13,6 @@ public class InsertMemberReq {
     private String nickname;
     private Role role;
     public Member toEntity() {
-
-
         return Member.builder()
                 .name(name)
                 .email(email)
@@ -22,5 +21,7 @@ public class InsertMemberReq {
                 .nickname(nickname)
                 .build();
     }
+
+
 
 }
