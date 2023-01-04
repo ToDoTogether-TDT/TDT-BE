@@ -37,13 +37,13 @@ public class TeamController {
 
     @ApiOperation(value = "특정 카테고리 스터디 조회", notes = "##추가 -> 특정 카테고리 스터디 조회")
     @GetMapping("/{category}")
-    public ResponseEntity<Page<StudyListResponseDto>> getAllCategory(@PathVariable(value = "category", required = false) String category,
-                                                                  @PageableDefault(page = 0, size = 10) Pageable pageable) {
+    public ResponseEntity<Page<StudyListResponseDto>> getAllStudy(@PathVariable(value = "category", required = false) String category,
+                                                                     @PageableDefault(page = 0, size = 10) Pageable pageable) {
         return ResponseEntity.ok(teamService.getAllStudy(category, pageable));
     }
 
     @ApiOperation(value = "스터디 추가",notes = "하나의 스터디 추가")
-    @PostMapping("/addition")
+    @PostMapping
     public ResponseEntity<Long> addStudy(@RequestBody StudyRequestDto params) {
         return ResponseEntity.ok(teamService.addTeam(params));
     }
@@ -60,7 +60,7 @@ public class TeamController {
     @GetMapping("/{category}/{id}")
     public ResponseEntity<StudyResponseDto> getStudy(@PathVariable("category") String category,
                                                      @PathVariable("id") Long studyId
-                                                     ) {
+    ) {
         /**Todo
          * memberId를 통해 내 스터디인지 확인
          */

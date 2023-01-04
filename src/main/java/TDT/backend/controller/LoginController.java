@@ -4,6 +4,7 @@ import TDT.backend.dto.InsertMemberReq;
 import TDT.backend.dto.member.ProfileReqDto;
 import TDT.backend.dto.member.ProfileResDto;
 import TDT.backend.entity.Member;
+import TDT.backend.service.LoginService;
 import TDT.backend.service.MemberService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 
 @RestController
@@ -20,11 +23,14 @@ import org.springframework.web.bind.annotation.*;
 public class LoginController {
 
     private final MemberService memberService;
+    private final LoginService loginService;
+
     @ApiOperation(value = "로그인",notes = "회원 로그인")
     @PostMapping
     public ResponseEntity<?> login(@RequestBody InsertMemberReq req) {
         log.info(req.getName());
         log.info(req.getNickname());
+        loginService.loginMember(req);
         memberService.addMember(req);
         return new ResponseEntity<>(HttpStatus.OK);
     }

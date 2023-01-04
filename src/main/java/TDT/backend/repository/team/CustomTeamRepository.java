@@ -10,4 +10,6 @@ public interface CustomTeamRepository {
 
     StudyResponseDto findByIdAndCategory(Long studyId, String category);
     Page<StudyListResponseDto> findAllByCategoryAndPageable(String category, Pageable pageable);
+
+    Page<StudyListResponseDto> findAllByPageable(Pageable pageable);
 }

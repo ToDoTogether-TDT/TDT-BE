@@ -5,24 +5,31 @@ import TDT.backend.entity.Category;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 public class PostDetailResDto {
     private Long postId;
     private String writer;
+    private String picture;
     private String title;
     private String content;
     private Category category;
     private List<CommentRes> comments;
+    private LocalDateTime createdAt;
+    private int view;
 
     @Builder
-    public PostDetailResDto(Long postId, String writer, String title, String content, Category category, List<CommentRes> comments) {
+    public PostDetailResDto(Long postId, String writer, String picture, String title, String content, Category category, List<CommentRes> comments, LocalDateTime createdAt, int view) {
         this.postId = postId;
         this.writer = writer;
+        this.picture = picture;
         this.title = title;
         this.content = content;
         this.category = category;
         this.comments = comments;
+        this.createdAt = createdAt;
+        this.view = view;
     }
 }
