@@ -1,6 +1,7 @@
 package TDT.backend.repository.team;
-import TDT.backend.dto.team.QStudyResponseDto;
+
 import TDT.backend.dto.team.QStudyListResponseDto;
+import TDT.backend.dto.team.QStudyResponseDto;
 import TDT.backend.dto.team.StudyListResponseDto;
 import TDT.backend.dto.team.StudyResponseDto;
 import TDT.backend.entity.Category;
@@ -9,7 +10,6 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
@@ -21,7 +21,6 @@ public class CustomTeamRepositoryImpl implements CustomTeamRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
 
-
     @Override
     public Page<StudyListResponseDto> findAllByCategoryAndPageable(String category, Pageable pageable) {
         QTeamMember teamMember = QTeamMember.teamMember;
@@ -31,7 +30,7 @@ public class CustomTeamRepositoryImpl implements CustomTeamRepository {
                 .where(team.category.eq(Category.valueOf(category)))
                 .limit(pageable.getPageSize())
                 .offset(pageable.getOffset());
-        return new PageImpl<>(query.fetch(),pageable,query.fetchCount());
+        return new PageImpl<>(query.fetch(), pageable, query.fetchCount());
     }
 
     @Override
@@ -42,7 +41,7 @@ public class CustomTeamRepositoryImpl implements CustomTeamRepository {
                 .join(team.teamMembers, teamMember).fetchJoin()
                 .limit(pageable.getPageSize())
                 .offset(pageable.getOffset());
-        return new PageImpl<>(query.fetch(),pageable,query.fetchCount());
+        return new PageImpl<>(query.fetch(), pageable, query.fetchCount());
     }
 
     @Override

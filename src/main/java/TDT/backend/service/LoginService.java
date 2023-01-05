@@ -23,7 +23,7 @@ public class LoginService implements UserDetailsService {
     private RedisTemplate<String, Object> redisTemplate;
     private final MemberRepository memberRepository;
     public void loginMember(InsertMemberReq req) {
-        HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
+        HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
         Map<String,String> map = new HashMap();
         map.put("name", req.getName());
         map.put("email", req.getEmail());

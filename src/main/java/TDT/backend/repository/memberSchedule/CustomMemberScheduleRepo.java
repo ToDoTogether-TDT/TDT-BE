@@ -11,4 +11,6 @@ public interface CustomMemberScheduleRepo {
     List<ScheduleResForMember> findSchedulesByMemberId(Long memberId);
 
     List<MemberDto> findIsDoneTodoMembers(Long scheduleId);
+
+    List<MemberDto> findMembersByStudyId(Long studyId);
 }

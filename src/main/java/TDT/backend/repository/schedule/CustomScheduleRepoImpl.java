@@ -1,8 +1,10 @@
 package TDT.backend.repository.schedule;
 
 import TDT.backend.dto.member.MemberDto;
+import TDT.backend.dto.schedule.ScheduleCheckedDto;
 import TDT.backend.dto.schedule.ScheduleDto;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -37,18 +39,17 @@ public class CustomScheduleRepoImpl implements CustomScheduleRepo {
 //    }
 
     public List<ScheduleDto> findScheduleByStudyId(Long studyId) {
-        return queryFactory
+        List<ScheduleDto> scheduleDtos = queryFactory
                 .from(schedule)
                 .join(memberSchedule).fetchJoin()
-                .on(memberSchedule.schedule.id.eq(schedule.id).and(memberSchedule.isDoneTodo.eq(true)))
-                .where(memberSchedule.teamMember.team.id.eq(studyId))
-                .transform(groupBy(schedule.id).list(
-                        Projections.fields(ScheduleDto.class,
-                                schedule.id.as("scheduleId"), schedule.title,
-                                list(
-                                        Projections.fields(MemberDto.class,
-                                        memberSchedule.teamMember.member.nickname, memberSchedule.teamMember.member.picture.as("image"),
-                                        memberSchedule.teamMember.member.introduction)).as("doneTodoMembers"))));
+                .on(memberSchedule.schedule.id.eq(schedule.id))
+                .where(schedule.team.id.eq(studyId))
+                .transform(groupBy(schedule.endAt.as("date"))
+                        .list(Projections.fields(ScheduleDto.class, schedule.endAt.as("date"),
+                                list(Projections.fields(ScheduleCheckedDto.class,
+                                        schedule.id.as("scheduleId"), schedule.title)).as("lists"))));
+
+        return scheduleDtos;
 
     }
 }

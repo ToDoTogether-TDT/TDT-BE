@@ -39,4 +39,15 @@ public class CustomMemberScheduleRepoImpl implements CustomMemberScheduleRepo{
                 .where(memberSchedule.schedule.id.eq(scheduleId))
                 .fetch();
     }
+
+    @Override
+    public List<MemberDto> findMembersByStudyId(Long studyId) {
+        return queryFactory
+                .select(Projections.fields(MemberDto.class,
+                        memberSchedule.schedule.id.as("scheduleId"), memberSchedule.teamMember.member.nickname,
+                        memberSchedule.teamMember.member.picture.as("image"), memberSchedule.isDoneTodo))
+                .from(memberSchedule)
+                .where(memberSchedule.teamMember.team.id.eq(studyId).and(memberSchedule.isDoneTodo.eq(true)))
+                .fetch();
+    }
 }

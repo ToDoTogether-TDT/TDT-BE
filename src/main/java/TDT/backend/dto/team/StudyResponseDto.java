@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class StudyResponseDto {
-
+    private Long studyId;
     private String writer;
     private String title;
     private Category category;
@@ -32,7 +32,8 @@ public class StudyResponseDto {
     }
 
     @Builder
-    public StudyResponseDto(String writer, String title, Category category, String introduction, List<ScheduleDto> scheduleDto) {
+    public StudyResponseDto(Long studyId, String writer, String title, Category category, String introduction, List<ScheduleDto> scheduleDto) {
+        this.studyId = studyId;
         this.writer = writer;
         this.title = title;
         this.category = category;

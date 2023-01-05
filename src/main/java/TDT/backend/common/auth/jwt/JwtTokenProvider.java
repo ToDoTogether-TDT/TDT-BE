@@ -14,6 +14,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -28,6 +29,7 @@ import java.util.Objects;
 public class JwtTokenProvider {
 
     private final RedisDao redisDao;
+    private final RedisTemplate<String, Object> redisTemplate;
     private final ObjectMapper objectMapper;
 
     @Value("${spring.jwt.key}")
@@ -81,7 +83,8 @@ public class JwtTokenProvider {
     }
 
     public TokenResponse reissueAtk(InsertMemberResponse response) throws JsonProcessingException {
-        String rtkInRedis = redisDao.getValues(response.getEmail());
+//        String rtkInRedis = redisDao.getValues(response.getEmail());
+        String rtkInRedis = (String) redisTemplate.opsForHash().get(response.getEmail(), "email");
         if (Objects.isNull(rtkInRedis)) throw new JwtException("인증 정보가 만료되었습니다.");
         Subject atkSubject = Subject.ac(
                 response.getMemberId(),

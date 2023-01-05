@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.data.domain.Pageable;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/study")
@@ -64,7 +66,7 @@ public class TeamController {
         /**Todo
          * memberId를 통해 내 스터디인지 확인
          */
-        return ResponseEntity.ok(teamService.getStudy(category, studyId));
+        return ResponseEntity.ok(teamService.getStudy(studyId));
     }
 
     @ApiOperation(value = "스터디 참여 수락")

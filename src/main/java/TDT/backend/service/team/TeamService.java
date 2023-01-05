@@ -18,12 +18,12 @@ import TDT.backend.repository.team.TeamRepository;
 import TDT.backend.repository.teamMember.TeamMemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +34,7 @@ public class TeamService {
     private final TeamMemberRepository teamMemberRepository;
     private final MemberRepository memberRepository;
     private final ScheduleRepository scheduleRepository;
+    private final MemberScheduleRepository memberScheduleRepository;
 
     @Transactional(readOnly = true)
     public Page<StudyListResponseDto> getAllStudy(String category, Pageable pageable) {
@@ -50,7 +51,7 @@ public class TeamService {
         Member member = memberRepository.findByNickname(
                 params.getWriter()).orElseThrow(() -> new BusinessException(ExceptionCode.MEMBER_NOT_EXISTS));
         Team team = Team.fromStudyRequestDto(params);
-        TeamMember teamMember = TeamMember.of(member,team);
+        TeamMember teamMember = TeamMember.of(member, team);
         teamMemberRepository.save(teamMember);
         return teamRepository.save(team).getId();
     }
@@ -64,13 +65,25 @@ public class TeamService {
     }
 
     @Transactional(readOnly = true)
-    public StudyResponseDto getStudy(String category, Long studyId) {
+    public StudyResponseDto getStudy(Long studyId) {
 
         TeamMember leader = teamMemberRepository.findLeaderByTeamId(studyId);
 
         List<ScheduleDto> schedules = scheduleRepository.findScheduleByStudyId(studyId);
 
+        List<MemberDto> members = memberScheduleRepository.findMembersByStudyId(studyId);
+
+
+        schedules.forEach(scheduleDto -> scheduleDto.getLists().stream().forEach(scheduleCheckedDto -> {
+                    for (MemberDto member : members) {
+                        if (member.getScheduleId().equals(scheduleCheckedDto.getScheduleId()))
+                            scheduleCheckedDto.getCheckedMembers().add(member.toMemberDto());
+                    }}));
+
+
+
         StudyResponseDto response = StudyResponseDto.builder()
+                .studyId(studyId)
                 .writer(leader.getMember().getNickname())
                 .title(leader.getTeam().getTitle())
                 .introduction(leader.getTeam().getIntroduction())
