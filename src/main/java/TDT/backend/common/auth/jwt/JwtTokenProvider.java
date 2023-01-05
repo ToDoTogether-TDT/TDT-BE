@@ -58,6 +58,7 @@ public class JwtTokenProvider {
         String atk = createToken(atkSubject, acToken);
         String rtk = createToken(rtkSubject, reToken);
         redisDao.setValues(response.getEmail(), rtk, Duration.ofMillis(reToken));
+        log.info("refreshToken = {}", redisDao.getValues(response.getEmail()));
         return new TokenResponse(atk, rtk);
     }
 
@@ -91,8 +92,7 @@ public class JwtTokenProvider {
                 response.getEmail(),
                 response.getNickname());
         String atk = createToken(atkSubject, acToken);
-        System.out.println("aaaa");
-        log.info(atk);
+        log.info("atk : {}", atk);
         return new TokenResponse(atk, null);
     }
 }

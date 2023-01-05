@@ -14,11 +14,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
@@ -33,9 +35,15 @@ public class LoginController {
     private final JwtTokenProvider jwtTokenProvider;
     @ApiOperation(value = "로그인",notes = "회원 로그인")
     @PostMapping
-    public ResponseEntity<?> login(@RequestBody InsertMemberReq req) throws JsonProcessingException {
-//        loginService.loginMember(req);
-        return ResponseEntity.ok(memberService.addMember(req));
+    public ResponseEntity<?> login(@RequestBody InsertMemberReq req, HttpServletResponse httpServletResponse) throws JsonProcessingException {
+
+        InsertMemberResponse response = memberService.addMember(req);
+
+        TokenResponse token = jwtTokenProvider.createTokensByLogin(response);
+
+        httpServletResponse.setHeader("Authorization", "Bearer " + token.getAtk());
+
+        return ResponseEntity.ok(response);
     }
 
     @ApiOperation(value = "회원 탈퇴",notes = "회원 탈퇴")

@@ -22,19 +22,15 @@ public class MemberService {
     private final TeamMemberRepository teamMemberRepository;
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
-
     private final JwtTokenProvider jwtTokenProvider;
     public InsertMemberResponse addMember(InsertMemberReq req) throws JsonProcessingException {
         boolean isExist = validateDuplicateMember(req.getEmail());
         if (isExist) {
-            jwtTokenProvider.reissueAtk(InsertMemberResponse.of(req.toEntity()));
-//            jwtTokenProvider.createTokensByLogin(InsertMemberResponse.of(memberRepository.findByEmail(req.getEmail()).get()));
-            return InsertMemberResponse.of(memberRepository.findByEmail(req.getEmail()).get());
+            InsertMemberResponse response = InsertMemberResponse.of(memberRepository.findByEmail(req.getEmail()).get());
+            return response;
         } else {
             Member member = memberRepository.save(req.toEntity());
-//            jwtTokenProvider.createTokensByLogin(InsertMemberResponse.of(member));
             return InsertMemberResponse.of(member);
-
         }
     }
 
