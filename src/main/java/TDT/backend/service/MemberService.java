@@ -28,14 +28,14 @@ public class MemberService {
         boolean isExist = validateDuplicateMember(req.getEmail());
         if (isExist) {
             jwtTokenProvider.reissueAtk(InsertMemberResponse.of(req.toEntity()));
-            return InsertMemberResponse.of(req.toEntity());
+//            jwtTokenProvider.createTokensByLogin(InsertMemberResponse.of(memberRepository.findByEmail(req.getEmail()).get()));
+            return InsertMemberResponse.of(memberRepository.findByEmail(req.getEmail()).get());
         } else {
             Member member = memberRepository.save(req.toEntity());
+//            jwtTokenProvider.createTokensByLogin(InsertMemberResponse.of(member));
             return InsertMemberResponse.of(member);
 
         }
-
-
     }
 
     public void addProfile(ProfileReqDto dto) {

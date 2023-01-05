@@ -30,13 +30,11 @@ public class LoginController {
 
     private final MemberService memberService;
     private final LoginService loginService;
-
     private final JwtTokenProvider jwtTokenProvider;
     @ApiOperation(value = "로그인",notes = "회원 로그인")
     @PostMapping
     public ResponseEntity<?> login(@RequestBody InsertMemberReq req) throws JsonProcessingException {
-        loginService.loginMember(req);
-        memberService.addMember(req);
+//        loginService.loginMember(req);
         return ResponseEntity.ok(memberService.addMember(req));
     }
 

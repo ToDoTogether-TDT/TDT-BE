@@ -83,14 +83,15 @@ public class JwtTokenProvider {
     }
 
     public TokenResponse reissueAtk(InsertMemberResponse response) throws JsonProcessingException {
-//        String rtkInRedis = redisDao.getValues(response.getEmail());
-        String rtkInRedis = (String) redisTemplate.opsForHash().get(response.getEmail(), "email");
+        String rtkInRedis = redisDao.getValues(response.getEmail());
+//        String rtkInRedis = (String) redisTemplate.opsForHash().get(response.getEmail(), "email");
         if (Objects.isNull(rtkInRedis)) throw new JwtException("인증 정보가 만료되었습니다.");
         Subject atkSubject = Subject.ac(
                 response.getMemberId(),
                 response.getEmail(),
                 response.getNickname());
         String atk = createToken(atkSubject, acToken);
+        System.out.println("aaaa");
         log.info(atk);
         return new TokenResponse(atk, null);
     }

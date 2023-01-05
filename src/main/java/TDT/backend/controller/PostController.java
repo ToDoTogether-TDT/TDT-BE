@@ -36,7 +36,8 @@ public class PostController {
 
     @ApiOperation(value = "게시물 조회",notes = "특정 게시물 조회")
     @GetMapping("/{category}/{postId}")
-    public ResponseEntity getPost(@PathVariable Long postId) {
+    public ResponseEntity getPost(@PathVariable("category") String category,
+                                  @PathVariable Long postId) {
 
         PostDetailResDto response = postService.getPost(postId);
 

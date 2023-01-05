@@ -41,6 +41,7 @@ public class AppConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/users").permitAll()
+                .antMatchers("/**").authenticated()
                 .anyRequest().authenticated();
         return http.build();
     }
@@ -49,7 +50,6 @@ public class AppConfig {
         @Override
         public void configure(HttpSecurity builder) throws Exception {
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtTokenProvider, loginService);
-
             builder.addFilterAfter(jwtAuthenticationFilter, BasicAuthenticationFilter.class);
 
             super.configure(builder);

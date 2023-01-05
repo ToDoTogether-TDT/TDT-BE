@@ -7,9 +7,7 @@ import lombok.Getter;
 public class InsertMemberResponse {
 
     private final Long memberId;
-
     private final String email;
-
     private final String nickname;
 
     private InsertMemberResponse(Long memberId, String email, String nickname) {

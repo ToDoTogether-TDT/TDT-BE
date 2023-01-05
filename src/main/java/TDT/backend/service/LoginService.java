@@ -22,6 +22,11 @@ public class LoginService implements UserDetailsService {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
     private final MemberRepository memberRepository;
+
+    /**
+     * 안써도 됨
+     * @param req
+     */
     public void loginMember(InsertMemberReq req) {
         HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
         Map<String,String> map = new HashMap();
