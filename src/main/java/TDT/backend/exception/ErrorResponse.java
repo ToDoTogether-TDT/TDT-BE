@@ -1,6 +1,7 @@
 package TDT.backend.exception;
 
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 
 import javax.validation.ConstraintViolation;
@@ -30,7 +31,14 @@ public class ErrorResponse {
 
     public static ErrorResponse of(BindingResult bindingResult) {
         return new ErrorResponse(FieldError.of(bindingResult));
+    }
 
+    public static ErrorResponse of(HttpStatus httpStatus) {
+        return new ErrorResponse(httpStatus.value(), httpStatus.getReasonPhrase());
+    }
+
+    public static ErrorResponse of(int status, String message) {
+        return new ErrorResponse(status, message);
     }
 
     @Getter

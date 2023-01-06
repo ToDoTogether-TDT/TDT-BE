@@ -1,8 +1,11 @@
 package TDT.backend.common.auth.jwt;
 
+
 import TDT.backend.dto.auth.Subject;
 import TDT.backend.service.LoginService;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,6 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtProvider;
     private final LoginService loginService;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -39,8 +43,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 UserDetails userDetails = loginService.loadUserByUsername(subject.getEmail());
                 Authentication token = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(token);
-            } catch (JwtException e) {
-                request.setAttribute("exception", e.getMessage());
+            } catch (SignatureException se) {
+                request.setAttribute("exception", se);
+            } catch (ExpiredJwtException ee) {
+                request.setAttribute("exception", ee);
+            } catch (Exception e) {
+                request.setAttribute("exception", e);
             }
         }
         filterChain.doFilter(request, response);

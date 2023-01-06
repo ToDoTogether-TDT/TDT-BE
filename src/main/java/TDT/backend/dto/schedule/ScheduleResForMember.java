@@ -21,7 +21,6 @@ public class ScheduleResForMember {
     public ScheduleResForMember(Team team, Schedule schedule) {
         this.teamTitle = team.getTitle();
         this.scheduleTitle = schedule.getTitle();
-        this.scheduleContents = schedule.getTitle();
         this.status = schedule.getStatus();
         this.endAt = schedule.getEndAt();
     }

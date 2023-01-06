@@ -2,6 +2,7 @@ package TDT.backend.config;
 
 import TDT.backend.common.auth.jwt.JwtAuthenticationFilter;
 import TDT.backend.common.auth.jwt.JwtTokenProvider;
+import TDT.backend.common.auth.jwt.MemberAuthenticationEntryPoint;
 import TDT.backend.service.LoginService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,6 +38,9 @@ public class AppConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable().cors().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(new MemberAuthenticationEntryPoint())
+                .and()
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeRequests()
