@@ -2,10 +2,13 @@ package TDT.backend.dto.comment;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@NoArgsConstructor
 public class CommentRes {
     private String writer;
     private String content;

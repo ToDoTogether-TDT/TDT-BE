@@ -34,9 +34,8 @@ public class Schedule {
         this.status = ScheduleStatus.ONGOING;
     }
 
-    public void edit(String title, LocalDateTime endAt, ScheduleStatus status) {
+    public void edit(String title, LocalDateTime endAt) {
         this.title = title;
         this.endAt = endAt;
-        this.status = status;
     }
 }

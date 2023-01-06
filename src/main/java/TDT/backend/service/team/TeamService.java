@@ -1,5 +1,6 @@
 package TDT.backend.service.team;
 
+import TDT.backend.dto.comment.CommentRes;
 import TDT.backend.dto.member.MemberDto;
 import TDT.backend.dto.schedule.ScheduleDto;
 import TDT.backend.dto.team.StudyJoinReqDto;
@@ -11,6 +12,7 @@ import TDT.backend.entity.Team;
 import TDT.backend.entity.TeamMember;
 import TDT.backend.exception.BusinessException;
 import TDT.backend.exception.ExceptionCode;
+import TDT.backend.repository.comment.CommentRepository;
 import TDT.backend.repository.member.MemberRepository;
 import TDT.backend.repository.memberSchedule.MemberScheduleRepository;
 import TDT.backend.repository.schedule.ScheduleRepository;
@@ -36,6 +38,7 @@ public class TeamService {
     private final MemberRepository memberRepository;
     private final ScheduleRepository scheduleRepository;
     private final MemberScheduleRepository memberScheduleRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional(readOnly = true)
     public Page<StudyListResponseDto> getAllStudy(String category, Pageable pageable) {
@@ -74,7 +77,9 @@ public class TeamService {
 
         List<MemberDto> checkedMembers = memberScheduleRepository.findMembersByStudyId(studyId);
 
-        StudyResponseDto response = StudyResponseDto.of(studyId, writer, schedules, checkedMembers);
+        List<CommentRes> comments = commentRepository.findCommentsByPostIdOrStudyId(null, studyId);
+
+        StudyResponseDto response = StudyResponseDto.of(studyId, writer, schedules, checkedMembers, comments);
 
         return response;
     }

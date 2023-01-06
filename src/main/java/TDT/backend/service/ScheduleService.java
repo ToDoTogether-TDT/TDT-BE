@@ -75,16 +75,17 @@ public class ScheduleService {
 //    }
 
     /*수정중*/
-    public void editSchedule(Long scheduleId, ScheduleEditReqDto requestDto, Member member) {
-        Schedule schedule = scheduleRepository.findById(scheduleId)
-                .orElseThrow(() -> new BusinessException(ExceptionCode.SCHEDULE_NOT_EXISTS));
+    public void editSchedule(Long studyId, ScheduleEditReqDto requestDto, Member member) {
 
-        TeamMember leader = teamMemberRepository.findLeaderByTeamId(schedule.getTeam().getId());
+        TeamMember leader = teamMemberRepository.findLeaderByTeamId(studyId);
 
         if (leader.getMember().getId().equals(member.getId())) {
 
             requestDto.getScheduleEditTitleDto().forEach(scheduleEditTitleDto -> {
-                schedule.edit(scheduleEditTitleDto.getTitle(), requestDto.getDate(), ScheduleStatus.FINISHED);
+                Schedule schedule = scheduleRepository.findById(scheduleEditTitleDto.getScheduleId())
+                        .orElseThrow(() -> new BusinessException(ExceptionCode.SCHEDULE_NOT_EXISTS));
+
+                schedule.edit(scheduleEditTitleDto.getTitle(), requestDto.getDate());
             });
 
         } else throw new BusinessException(ExceptionCode.UNAUTHORIZED_ERROR);

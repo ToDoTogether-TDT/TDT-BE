@@ -23,7 +23,7 @@ public class CustomMemberScheduleRepoImpl implements CustomMemberScheduleRepo{
         return queryFactory
                 .select(Projections.fields(ScheduleResForMember.class,
                         memberSchedule.teamMember.team.title.as("teamTitle"), memberSchedule.schedule.title.as("scheduleTitle"),
-                        memberSchedule.schedule.contents.as("scheduleContents"), memberSchedule.schedule.endAt, memberSchedule.schedule.status))
+                        memberSchedule.schedule.endAt, memberSchedule.schedule.status))
                 .from(memberSchedule)
                 .where(memberSchedule.teamMember.member.id.eq(memberId))
                 .fetch();

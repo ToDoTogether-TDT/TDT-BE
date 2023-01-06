@@ -1,5 +1,6 @@
 package TDT.backend.dto.team;
 
+import TDT.backend.dto.comment.CommentRes;
 import TDT.backend.dto.member.MemberDto;
 import TDT.backend.dto.schedule.ScheduleDto;
 import TDT.backend.entity.Category;
@@ -23,6 +24,7 @@ public class StudyResponseDto {
     private Category category;
     private String introduction;
     private List<ScheduleDto> todos = new ArrayList<>();
+    private List<CommentRes> comments = new ArrayList<>();
 
 
     @QueryProjection
@@ -34,16 +36,19 @@ public class StudyResponseDto {
     }
 
     @Builder
-    public StudyResponseDto(Long studyId, String writer, String title, Category category, String introduction, List<ScheduleDto> scheduleDto) {
+    public StudyResponseDto(Long studyId, String writer, String title, Category category, String introduction,
+                            List<ScheduleDto> scheduleDto, List<CommentRes> comments) {
         this.studyId = studyId;
         this.writer = writer;
         this.title = title;
         this.category = category;
         this.introduction = introduction;
         this.todos = scheduleDto;
+        this.comments = comments;
     }
 
-    public static StudyResponseDto of(Long studyId, TeamMember writer, List<ScheduleDto> schedules, List<MemberDto> checkedMembers) {
+    public static StudyResponseDto of(Long studyId, TeamMember writer, List<ScheduleDto> schedules,
+                                      List<MemberDto> checkedMembers, List<CommentRes> comments) {
 
         schedules.forEach(scheduleDto -> scheduleDto.getLists().forEach(scheduleCheckedDto -> {
             for (MemberDto member : checkedMembers) {
@@ -58,6 +63,7 @@ public class StudyResponseDto {
                 .introduction(writer.getTeam().getIntroduction())
                 .category(writer.getTeam().getCategory())
                 .scheduleDto(schedules)
+                .comments(comments)
                 .build();
     }
 

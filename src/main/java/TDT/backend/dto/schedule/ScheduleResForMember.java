@@ -10,7 +10,6 @@ public class ScheduleResForMember {
 
     private String teamTitle;
     private String scheduleTitle;
-    private String scheduleContents;
     private LocalDateTime endAt;
     private ScheduleStatus status;
 }

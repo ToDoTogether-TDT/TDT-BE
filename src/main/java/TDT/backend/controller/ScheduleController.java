@@ -42,12 +42,12 @@ public class ScheduleController {
 //    }
 
     @ApiOperation(value = "Todo 수정")
-    @PutMapping("/{scheduleId}")
-    public ResponseEntity editSchedule(@PathVariable Long scheduleId,
+    @PutMapping("/{studyId}")
+    public ResponseEntity editSchedule(@PathVariable Long studyId,
                                        @RequestBody ScheduleEditReqDto requestDto,
                                        @AuthenticationPrincipal MemberDetails memberDetails) {
 
-        scheduleService.editSchedule(scheduleId, requestDto, memberDetails.getMember());
+        scheduleService.editSchedule(studyId, requestDto, memberDetails.getMember());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

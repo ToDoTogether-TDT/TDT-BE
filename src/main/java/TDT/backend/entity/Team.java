@@ -30,6 +30,9 @@ public class Team {
     @Enumerated(value = EnumType.STRING)
     private StudyTypes studyTypes;
 
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+    private List<Comment> comments;
+
 
     @OneToMany(mappedBy = "team")
     private List<TeamMember> teamMembers = new ArrayList<>();

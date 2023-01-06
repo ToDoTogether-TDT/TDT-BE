@@ -47,7 +47,7 @@ public class PostService {
 
         Post post = findPost(postId);
 
-        List<CommentRes> comments = commentRepository.findCommentsByPostId(postId);
+        List<CommentRes> comments = commentRepository.findCommentsByPostIdOrStudyId(postId, null);
         post.addView();
 
         PostDetailResDto response = PostDetailResDto.of(post, comments);
