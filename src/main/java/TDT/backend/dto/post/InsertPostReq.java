@@ -5,11 +5,14 @@ import TDT.backend.entity.Member;
 import TDT.backend.entity.Post;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@NoArgsConstructor
 public class InsertPostReq {
     @NotBlank(message = "제목을 입력해주세요")
     private String title;

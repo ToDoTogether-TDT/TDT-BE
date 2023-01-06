@@ -57,6 +57,11 @@ public class TeamService {
         return teamRepository.save(team).getId();
     }
 
+
+    /**
+     * 1. 팀 등록시
+     * Todo Notice엔티티에 값이랑 카테고리 넣기
+     */
     public void joinTeam(StudyJoinReqDto params) {
         Member member = memberRepository.findById(params.getMemberId())
                 .orElseThrow(() -> new BusinessException(ExceptionCode.MEMBER_NOT_EXISTS));

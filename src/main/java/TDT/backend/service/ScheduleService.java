@@ -27,6 +27,11 @@ public class ScheduleService {
     private final TeamMemberRepository teamMemberRepository;
     private final MemberScheduleRepository memberScheduleRepository;
 
+
+    /**
+     * 2. 스케줄 등록시
+     * Todo Notice엔티티에 값이랑 카테고리 넣기
+     */
     public void addSchedule(Long studyId, ScheduleAddReqDto dto, Member member) {
         Team team = teamRepository.findById(studyId)
                 .orElseThrow(() -> new BusinessException(ExceptionCode.TEAM_NOT_EXISTS));
@@ -102,9 +107,11 @@ public class ScheduleService {
         } else throw new BusinessException(ExceptionCode.UNAUTHORIZED_ERROR);
     }
 
-    public void isDoneTodo(TodoCheckRequestDto dto) {
+    public boolean isDoneTodo(TodoCheckRequestDto dto) {
 
+        return memberScheduleRepository.findByMemberIdAndScheduleId(dto.getMemberId(), dto.getScheduleId());
     }
+
 }
 
 

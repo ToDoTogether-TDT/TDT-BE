@@ -23,6 +23,7 @@ public class ScheduleController {
     public ResponseEntity<?> addSchedule(@PathVariable Long studyId,
                                          @RequestBody ScheduleAddReqDto dto,
                                          @AuthenticationPrincipal MemberDetails memberDetails) {
+        System.out.println(memberDetails.getMember().getName());
         scheduleService.addSchedule(studyId, dto, memberDetails.getMember());
         return new ResponseEntity<>(HttpStatus.OK);
     }

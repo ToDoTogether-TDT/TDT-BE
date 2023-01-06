@@ -24,6 +24,9 @@ public class TeamMember {
     private Team team;
     private Boolean isLeader;
 
+    @Enumerated(EnumType.STRING)
+    private MemberStatus status;
+
     public static TeamMember of(Member member, Team team) {
         return TeamMember.builder()
                 .member(member)
@@ -37,6 +40,7 @@ public class TeamMember {
                 .member(member)
                 .team(team)
                 .isLeader(false)
+                .status(MemberStatus.guest)
                 .build();
     }
 
