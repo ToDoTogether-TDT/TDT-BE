@@ -1,11 +1,15 @@
 package TDT.backend.controller;
 
+import TDT.backend.common.utils.CategoryClassifier;
 import TDT.backend.dto.schedule.TodoCheckRequestDto;
 import TDT.backend.dto.team.StudyJoinReqDto;
 import TDT.backend.dto.team.StudyListResponseDto;
 import TDT.backend.dto.team.StudyRequestDto;
 import TDT.backend.dto.team.StudyResponseDto;
+import TDT.backend.entity.NoticeCategory;
+import TDT.backend.service.NoticeService;
 import TDT.backend.service.ScheduleService;
+import TDT.backend.service.member.MemberDetails;
 import TDT.backend.service.team.TeamService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.data.domain.Pageable;
@@ -24,6 +29,8 @@ public class TeamController {
 
     private final TeamService teamService;
     private final ScheduleService scheduleService;
+    private final NoticeService noticeService;
+
 
 
     @ApiOperation(value = "모든 스터디 조회", notes = "##추가 -> 모든 스터디 조회")
@@ -64,20 +71,29 @@ public class TeamController {
         return ResponseEntity.ok(teamService.getStudy(studyId));
     }
 
-    @ApiOperation(value = "스터디 참여 수락")
-    @PostMapping("/{category}/{id}/join")
+    @ApiOperation(value = "스터디 참여 요청")
+    @PostMapping("/{category}/join")
     public ResponseEntity joinStudy(@PathVariable("category") String category,
-                                    @PathVariable("id") Long studyId,
                                     @RequestBody StudyJoinReqDto params) {
         teamService.joinTeam(params);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    //    @PostMapping("/{studyId}")
-//    public ResponseEntity<Boolean> updateStudy(@PathVariable("sutdyId") Long studyId,
-//                                               @RequestParam Long id) {
-//        return ResponseEntity.ok(teamService.updateStudy(studyId, id));
-//    }
+    @ApiOperation(value = "스터디 참석 요청 확인", notes = "현재 멤버가 스터디장일때만 response 있음")
+    @GetMapping("/{category}/{id}/notice")
+    public ResponseEntity getRequestToAttendStudyMemberList(@PathVariable("category") String category,
+                                                            @PathVariable("id") Long studyId,
+                                                            @AuthenticationPrincipal MemberDetails memberDetails) {
+        /**
+         *
+         * 멤버가 스터디 장일때만 리턴값이 있음
+         */
+        String noticeCategory = CategoryClassifier.classifier(category);
+        noticeService.getStudyNotice(studyId, noticeCategory, memberDetails.getMember());
+
+        return new ResponseEntity<>(null);
+    }
+
     @ApiOperation(value = "스터디 삭제")
     @DeleteMapping
     public ResponseEntity<Boolean> deleteStudy(@RequestParam Long studyId,
@@ -85,13 +101,16 @@ public class TeamController {
         return ResponseEntity.ok(teamService.deleteStudy(studyId, id));
     }
 
+
+    /**
+     * @return Todo를 했으면 True 안했으면 False
+     */
     @ApiOperation(value = "Todo 시행 여부 확인")
     @PostMapping("/{category}/{id}")
-    public ResponseEntity<?> isDoneTodo(@PathVariable("category") String category,
+    public ResponseEntity<Boolean> isDoneTodo(@PathVariable("category") String category,
                                         @PathVariable("id") Long studyId,
                                         @RequestBody TodoCheckRequestDto dto) {
-        scheduleService.isDoneTodo(dto);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok(scheduleService.isDoneTodo(dto));
     }
 
 }

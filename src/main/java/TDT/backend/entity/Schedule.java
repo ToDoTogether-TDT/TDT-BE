@@ -25,7 +25,6 @@ public class Schedule {
     @Enumerated(value = EnumType.STRING)
     private ScheduleStatus status;
 
-    private Boolean isDone;
     @Builder
     public Schedule(Team team, String title, LocalDateTime endAt) {
         this.team = team;

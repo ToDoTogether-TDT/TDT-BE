@@ -1,17 +1,20 @@
 package TDT.backend.dto.auth;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class Subject {
 
-    private final Long memberId;
+    private Long memberId;
 
-    private final String email;
+    private String email;
 
-    private final String nickname;
+    private String nickname;
 
-    private final String type;
+    private String type;
 
     private Subject(Long memberId, String email, String nickname, String type) {
         this.memberId = memberId;
