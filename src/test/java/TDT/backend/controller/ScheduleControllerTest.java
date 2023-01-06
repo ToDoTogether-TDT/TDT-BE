@@ -1,6 +1,6 @@
 package TDT.backend.controller;
 
-import TDT.backend.dto.schedule.ScheduleRequestDto;
+import TDT.backend.dto.schedule.ScheduleAddReqDto;
 import TDT.backend.entity.*;
 import TDT.backend.repository.member.MemberRepository;
 import TDT.backend.repository.schedule.ScheduleRepository;
@@ -63,7 +63,7 @@ class ScheduleControllerTest {
     @DisplayName("스케줄 생성 요청시 DB에 값 저장")
     public void createScheduleTest() throws Exception {
         //given
-        ScheduleRequestDto requestDto = ScheduleRequestDto.builder()
+        ScheduleAddReqDto requestDto = ScheduleAddReqDto.builder()
                 .memberId(1L)
                 .studyId(1L)
                 .title("title")
@@ -151,7 +151,7 @@ class ScheduleControllerTest {
                 .build();
         scheduleRepository.save(schedule);
 
-        ScheduleRequestDto requestDto = ScheduleRequestDto.builder()
+        ScheduleAddReqDto requestDto = ScheduleAddReqDto.builder()
                 .memberId(1L).studyId(1L)
                 .title("editTitle").contents("editContents")
                 .status(ScheduleStatus.FINISHED).endAt(LocalDateTime.MAX)

@@ -28,4 +28,11 @@ public class MemberSchedule {
         this.schedule = schedule;
         this.isDoneTodo = isDoneTodo;
     }
+
+    public static MemberSchedule of(TeamMember teamMember, Schedule schedule) {
+        return MemberSchedule.builder()
+                .teamMember(teamMember)
+                .schedule(schedule)
+                .build();
+    }
 }

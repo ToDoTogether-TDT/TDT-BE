@@ -29,12 +29,7 @@ public class CommentService {
         Member member = memberRepository.findByNickname(insertCommentReq.getWriter())
                 .orElseThrow(() -> new BusinessException(ExceptionCode.MEMBER_NOT_EXISTS));
 
-        Comment comment = Comment.builder()
-                .post(post)
-                .member(member)
-                .content(insertCommentReq.getContent())
-                .createdAt(LocalDateTime.now())
-                .build();
+        Comment comment = insertCommentReq.toEntity(post, member);
 
         commentRepository.save(comment);
 

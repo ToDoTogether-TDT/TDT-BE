@@ -21,24 +21,21 @@ public class Schedule {
     @JoinColumn(name = "team_id")
     private Team team;
     private String title;
-    private String contents;
     private LocalDateTime endAt;
     @Enumerated(value = EnumType.STRING)
     private ScheduleStatus status;
 
     private Boolean isDone;
     @Builder
-    public Schedule(Team team, String title, String contents, LocalDateTime endAt, ScheduleStatus status) {
+    public Schedule(Team team, String title, LocalDateTime endAt) {
         this.team = team;
         this.title = title;
-        this.contents = contents;
         this.endAt = endAt;
-        this.status = status;
+        this.status = ScheduleStatus.ONGOING;
     }
 
-    public void edit(String title, String contents, LocalDateTime endAt, ScheduleStatus status) {
+    public void edit(String title, LocalDateTime endAt, ScheduleStatus status) {
         this.title = title;
-        this.contents = contents;
         this.endAt = endAt;
         this.status = status;
     }

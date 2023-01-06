@@ -1,9 +1,11 @@
 package TDT.backend.dto.team;
 
+import TDT.backend.dto.member.MemberDto;
 import TDT.backend.dto.schedule.ScheduleDto;
 import TDT.backend.entity.Category;
 import TDT.backend.entity.Member;
 import TDT.backend.entity.Team;
+import TDT.backend.entity.TeamMember;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,6 +41,24 @@ public class StudyResponseDto {
         this.category = category;
         this.introduction = introduction;
         this.todos = scheduleDto;
+    }
+
+    public static StudyResponseDto of(Long studyId, TeamMember writer, List<ScheduleDto> schedules, List<MemberDto> checkedMembers) {
+
+        schedules.forEach(scheduleDto -> scheduleDto.getLists().forEach(scheduleCheckedDto -> {
+            for (MemberDto member : checkedMembers) {
+                if (member.getScheduleId().equals(scheduleCheckedDto.getScheduleId()))
+                    scheduleCheckedDto.getCheckedMembers().add(member.toMemberDto());
+            }}));
+
+        return StudyResponseDto.builder()
+                .studyId(studyId)
+                .writer(writer.getMember().getNickname())
+                .title(writer.getTeam().getTitle())
+                .introduction(writer.getTeam().getIntroduction())
+                .category(writer.getTeam().getCategory())
+                .scheduleDto(schedules)
+                .build();
     }
 
     /**

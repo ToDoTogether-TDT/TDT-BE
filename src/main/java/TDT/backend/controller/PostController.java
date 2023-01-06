@@ -7,6 +7,7 @@ import TDT.backend.dto.post.PostPageResDto;
 import TDT.backend.dto.team.StudyListResponseDto;
 import TDT.backend.entity.Category;
 import TDT.backend.service.PostService;
+import TDT.backend.service.member.MemberDetails;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,9 +29,10 @@ public class PostController {
     private final PostService postService;
     @ApiOperation(value = "게시판 작성",notes = "게시판 작성")
     @PostMapping
-    public ResponseEntity post(@RequestBody @Valid InsertPostReq insertPostReq) {
+    public ResponseEntity post(@RequestBody @Valid InsertPostReq insertPostReq,
+                               @AuthenticationPrincipal MemberDetails memberDetails) {
 
-        Long postId = postService.post(insertPostReq);
+        Long postId = postService.post(insertPostReq, memberDetails.getMember());
 
         return new ResponseEntity<>(postId, HttpStatus.OK);
     }
@@ -69,9 +72,10 @@ public class PostController {
     @PutMapping("/{category}/{postId}")
     public ResponseEntity editPost(@PathVariable(value = "postId") Long postId,
                                    @PathVariable(value = "category") Category category,
-                                   @RequestBody @Valid EditPostReq editPostReqDto) {
+                                   @RequestBody @Valid EditPostReq editPostReqDto,
+                                   @AuthenticationPrincipal MemberDetails memberDetails) {
 
-        postService.editPost(postId, editPostReqDto);
+        postService.editPost(postId, editPostReqDto, memberDetails.getMember());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -79,9 +83,9 @@ public class PostController {
     @DeleteMapping("/{category}/{postId}")
     public ResponseEntity deletePost(@PathVariable(value = "category") Category category,
                                      @PathVariable(value = "postId") Long postId,
-                                     @RequestParam String nickname) {
+                                     @AuthenticationPrincipal MemberDetails memberDetails) {
 
-        postService.deletePost(postId, nickname);
+        postService.deletePost(postId, memberDetails.getMember());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -67,29 +68,13 @@ public class TeamService {
     @Transactional(readOnly = true)
     public StudyResponseDto getStudy(Long studyId) {
 
-        TeamMember leader = teamMemberRepository.findLeaderByTeamId(studyId);
+        TeamMember writer = teamMemberRepository.findLeaderByTeamId(studyId);
 
         List<ScheduleDto> schedules = scheduleRepository.findScheduleByStudyId(studyId);
 
-        List<MemberDto> members = memberScheduleRepository.findMembersByStudyId(studyId);
+        List<MemberDto> checkedMembers = memberScheduleRepository.findMembersByStudyId(studyId);
 
-
-        schedules.forEach(scheduleDto -> scheduleDto.getLists().stream().forEach(scheduleCheckedDto -> {
-                    for (MemberDto member : members) {
-                        if (member.getScheduleId().equals(scheduleCheckedDto.getScheduleId()))
-                            scheduleCheckedDto.getCheckedMembers().add(member.toMemberDto());
-                    }}));
-
-
-
-        StudyResponseDto response = StudyResponseDto.builder()
-                .studyId(studyId)
-                .writer(leader.getMember().getNickname())
-                .title(leader.getTeam().getTitle())
-                .introduction(leader.getTeam().getIntroduction())
-                .category(leader.getTeam().getCategory())
-                .scheduleDto(schedules)
-                .build();
+        StudyResponseDto response = StudyResponseDto.of(studyId, writer, schedules, checkedMembers);
 
         return response;
     }

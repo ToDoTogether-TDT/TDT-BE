@@ -1,15 +1,12 @@
 package TDT.backend.controller;
 
-import TDT.backend.dto.schedule.ScheduleRequestDto;
 import TDT.backend.dto.schedule.TodoCheckRequestDto;
 import TDT.backend.dto.team.StudyJoinReqDto;
 import TDT.backend.dto.team.StudyListResponseDto;
 import TDT.backend.dto.team.StudyRequestDto;
 import TDT.backend.dto.team.StudyResponseDto;
-import TDT.backend.entity.Category;
 import TDT.backend.service.ScheduleService;
 import TDT.backend.service.team.TeamService;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,8 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.data.domain.Pageable;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequiredArgsConstructor
