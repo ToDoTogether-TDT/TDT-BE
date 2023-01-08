@@ -44,4 +44,8 @@ public class TeamMember {
                 .build();
     }
 
+    public static Member toMember(TeamMember teamMember) {
+        return Member.builder().name(teamMember.getMember().getName()).nickname(teamMember.getMember().getNickname())
+                .picture(teamMember.getMember().getPicture()).email(teamMember.getMember().getEmail()).build();
+    }
 }

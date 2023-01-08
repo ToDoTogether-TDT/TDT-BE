@@ -91,7 +91,8 @@ public class TeamController {
          *
          * 멤버가 스터디 장일때만 리턴값이 있음
          */
-        String noticeCategory = CategoryClassifier.classifier(category);
+        NoticeCategory noticeCategory = CategoryClassifier.classifier(category);
+        System.out.println(noticeCategory);
         return ResponseEntity.ok(noticeService.getStudyNotice(studyId, noticeCategory, memberDetails.getMember()));
     }
 

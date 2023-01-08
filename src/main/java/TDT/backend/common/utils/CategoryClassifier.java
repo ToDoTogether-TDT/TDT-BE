@@ -13,23 +13,23 @@ import lombok.extern.slf4j.Slf4j;
 public class CategoryClassifier {
 
 
-    public static String classifier(String category) {
+    public static NoticeCategory classifier(String category) {
 
         String ct = "";
         // "programming"
         for (Category c : Category.values()) {
-            System.out.println("c:"+c);
-            log.info(category);
-            if (c.equals(category) && c.getType() == "스터디") {
-                ct = "study";
+            if (c.getType().equals("스터디")) {
+//                ct = "study";
+                return NoticeCategory.study;
             } else{
                 ct = "post";
             }
-            return ct;
+            return NoticeCategory.post;
 
         }
         ct = "comment";
-        return ct;
+        log.info(ct);
+        return NoticeCategory.comment;
 
     }
 }

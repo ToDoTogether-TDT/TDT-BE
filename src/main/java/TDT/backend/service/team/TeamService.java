@@ -7,14 +7,13 @@ import TDT.backend.dto.team.StudyJoinReqDto;
 import TDT.backend.dto.team.StudyListResponseDto;
 import TDT.backend.dto.team.StudyRequestDto;
 import TDT.backend.dto.team.StudyResponseDto;
-import TDT.backend.entity.Member;
-import TDT.backend.entity.Team;
-import TDT.backend.entity.TeamMember;
+import TDT.backend.entity.*;
 import TDT.backend.exception.BusinessException;
 import TDT.backend.exception.ExceptionCode;
 import TDT.backend.repository.comment.CommentRepository;
 import TDT.backend.repository.member.MemberRepository;
 import TDT.backend.repository.memberSchedule.MemberScheduleRepository;
+import TDT.backend.repository.notice.NoticeRepository;
 import TDT.backend.repository.schedule.ScheduleRepository;
 import TDT.backend.repository.team.TeamRepository;
 import TDT.backend.repository.teamMember.TeamMemberRepository;
@@ -39,6 +38,7 @@ public class TeamService {
     private final ScheduleRepository scheduleRepository;
     private final MemberScheduleRepository memberScheduleRepository;
     private final CommentRepository commentRepository;
+    private final NoticeRepository noticeRepository;
 
     @Transactional(readOnly = true)
     public Page<StudyListResponseDto> getAllStudy(String category, Pageable pageable) {
@@ -71,6 +71,7 @@ public class TeamService {
         Team team = teamRepository.findById(params.getStudyId())
                 .orElseThrow(() -> new BusinessException(ExceptionCode.TEAM_NOT_EXISTS));
         teamMemberRepository.save(TeamMember.join(member, team));
+        noticeRepository.save(Notice.of(member, NoticeCategory.study));
     }
 
     @Transactional(readOnly = true)

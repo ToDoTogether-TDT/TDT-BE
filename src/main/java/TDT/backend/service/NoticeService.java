@@ -2,6 +2,7 @@ package TDT.backend.service;
 
 import TDT.backend.dto.notice.NoticeResponseDto;
 import TDT.backend.entity.Member;
+import TDT.backend.entity.NoticeCategory;
 import TDT.backend.entity.TeamMember;
 import TDT.backend.repository.member.MemberRepository;
 import TDT.backend.repository.notice.NoticeRepository;
@@ -27,10 +28,12 @@ public class NoticeService {
 
     }
 
-    public List<NoticeResponseDto> getStudyNotice(Long studyId, String noticeCategory, Member member) {
+    public List<NoticeResponseDto> getStudyNotice(Long studyId, NoticeCategory noticeCategory, Member member) {
 
         if (teamMemberRepository.isLeader(member.getId(), studyId)) {
             List<NoticeResponseDto> dto = noticeRepository.findAllByMemberIdAndStudyIdAndNoticeCategory(member.getId(), studyId, noticeCategory);
+//            dto.stream().forEach(dtos -> dtos.updateToStudy(noticeCategory));
+
             return dto;
         } else {
             return null;
