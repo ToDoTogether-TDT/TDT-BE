@@ -10,5 +10,6 @@ public interface CustomNoticeRepository {
 
     List<NoticeResponseDto> findAllNoticeByMember(Member member);
 
-    List<NoticeResponseDto> findAllByMemberIdAndNoticeCategory(Long memberId, String noticeCategory);
+
+    List<NoticeResponseDto> findAllByMemberIdAndStudyIdAndNoticeCategory(Long memberId, Long studyId,String noticeCategory);
 }

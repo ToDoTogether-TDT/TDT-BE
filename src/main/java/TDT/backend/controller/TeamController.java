@@ -1,6 +1,7 @@
 package TDT.backend.controller;
 
 import TDT.backend.common.utils.CategoryClassifier;
+import TDT.backend.dto.notice.NoticeResponseDto;
 import TDT.backend.dto.schedule.TodoCheckRequestDto;
 import TDT.backend.dto.team.StudyJoinReqDto;
 import TDT.backend.dto.team.StudyListResponseDto;
@@ -21,6 +22,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -81,17 +84,15 @@ public class TeamController {
 
     @ApiOperation(value = "스터디 참석 요청 확인", notes = "현재 멤버가 스터디장일때만 response 있음")
     @GetMapping("/{category}/{id}/notice")
-    public ResponseEntity getRequestToAttendStudyMemberList(@PathVariable("category") String category,
-                                                            @PathVariable("id") Long studyId,
-                                                            @AuthenticationPrincipal MemberDetails memberDetails) {
+    public ResponseEntity<List<NoticeResponseDto>> getRequestToAttendStudyMemberList(@PathVariable("category") String category,
+                                                                                     @PathVariable("id") Long studyId,
+                                                                                     @AuthenticationPrincipal MemberDetails memberDetails) {
         /**
          *
          * 멤버가 스터디 장일때만 리턴값이 있음
          */
         String noticeCategory = CategoryClassifier.classifier(category);
-        noticeService.getStudyNotice(studyId, noticeCategory, memberDetails.getMember());
-
-        return new ResponseEntity<>(null);
+        return ResponseEntity.ok(noticeService.getStudyNotice(studyId, noticeCategory, memberDetails.getMember()));
     }
 
     @ApiOperation(value = "스터디 삭제")

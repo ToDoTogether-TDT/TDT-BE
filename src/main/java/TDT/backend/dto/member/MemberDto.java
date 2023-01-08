@@ -21,6 +21,8 @@ public class MemberDto {
         this.isDoneTodo = isDoneTodo;
     }
 
+
+
     @Builder
     public static class MemberDtoRes {
         @JsonProperty
