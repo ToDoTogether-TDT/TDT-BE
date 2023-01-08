@@ -40,4 +40,12 @@ public class NoticeService {
         }
 
     }
+
+    /**
+     * Todo PostNotice
+     * @return
+     */
+    public List<NoticeResponseDto> getPostNotice() {
+        return null;
+    }
 }
