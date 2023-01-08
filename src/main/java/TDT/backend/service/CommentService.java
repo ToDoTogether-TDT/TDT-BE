@@ -33,16 +33,15 @@ public class CommentService {
             Comment comment = insertCommentReq.toEntity(post, member);
             NoticeCategory nCategory = CategoryClassifier.classifier(String.valueOf(post.getCategory()));
             System.out.println(nCategory);
-            noticeRepository.save(Notice.of(member, nCategory));
             commentRepository.save(comment);
+            noticeRepository.save(Notice.ofComment(member, nCategory, insertCommentReq.getContent()));
         } else {
             Team team = teamRepository.findById(studyId)
                     .orElseThrow(() -> new BusinessException(ExceptionCode.TEAM_NOT_EXISTS));
             Comment comment = insertCommentReq.toEntity(team, member);
             NoticeCategory nCategory = CategoryClassifier.classifier(String.valueOf(team.getCategory()));
-
-            noticeRepository.save(Notice.of(member, nCategory));
             commentRepository.save(comment);
+            noticeRepository.save(Notice.ofComment(member, nCategory, insertCommentReq.getContent()));
         }
     }
 

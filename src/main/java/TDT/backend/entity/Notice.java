@@ -32,7 +32,13 @@ public class Notice {
 
     public static Notice of(Member member,NoticeCategory noticeCategory) {
         return Notice.builder().receiver(member).dateTime(LocalDateTime.now())
-                .contents("가입인사").noticeCategory(noticeCategory).build();
+                .contents("스터디 가입요청").noticeCategory(noticeCategory).build();
+
+    }
+
+    public static Notice ofComment(Member member,NoticeCategory noticeCategory, String contents) {
+        return Notice.builder().receiver(member).dateTime(LocalDateTime.now())
+                .contents(contents).noticeCategory(noticeCategory).build();
 
     }
 }
