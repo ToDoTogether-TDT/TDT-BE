@@ -79,7 +79,6 @@ public class ScheduleService {
 //        return schedules;
 //    }
 
-    /*수정중*/
     public void editSchedule(Long studyId, ScheduleEditReqDto requestDto, Member member) {
 
         TeamMember leader = teamMemberRepository.findLeaderByTeamId(studyId);

@@ -32,7 +32,7 @@ public class CustomNoticeRepositoryImpl implements CustomNoticeRepository{
 //        List<NoticeResponseDto> fetch =
         return jpaQueryFactory.select(new QNoticeResponseDto(teamMember, notice))
                 .from(notice, teamMember)
-                .where(teamMember.team.id.eq(studyId), teamMember.status.eq(MemberStatus.guest))
+                .where(teamMember.team.id.eq(studyId).and(teamMember.status.eq(MemberStatus.guest)).and(notice.receiver.id.eq(memberId)))
                 .fetch();
 
 //                .and(notice.noticeCategory.eq(NoticeCategory.valueOf(noticeCategory)))

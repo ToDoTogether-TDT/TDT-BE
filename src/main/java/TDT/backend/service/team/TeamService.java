@@ -51,13 +51,11 @@ public class TeamService {
     }
 
 
-    public Long addTeam(final StudyRequestDto params) {
-        Member member = memberRepository.findByNickname(
-                params.getWriter()).orElseThrow(() -> new BusinessException(ExceptionCode.MEMBER_NOT_EXISTS));
-        Team team = Team.fromStudyRequestDto(params);
+    public Long addTeam(final StudyRequestDto params, Member member) {
+        Team team = Team.fromStudyRequestDto(params, member);
         TeamMember teamMember = TeamMember.of(member, team);
-        teamMemberRepository.save(teamMember);
-        return teamRepository.save(team).getId();
+        teamRepository.save(team);
+        return teamMemberRepository.save(teamMember).getTeam().getId();
     }
 
 
@@ -65,13 +63,10 @@ public class TeamService {
      * 1. 팀 등록시
      * Todo Notice엔티티에 값이랑 카테고리 넣기
      */
-    public void joinTeam(StudyJoinReqDto params) {
-        Member member = memberRepository.findById(params.getMemberId())
-                .orElseThrow(() -> new BusinessException(ExceptionCode.MEMBER_NOT_EXISTS));
-        Team team = teamRepository.findById(params.getStudyId())
-                .orElseThrow(() -> new BusinessException(ExceptionCode.TEAM_NOT_EXISTS));
-        teamMemberRepository.save(TeamMember.join(member, team));
-        noticeRepository.save(Notice.of(member, NoticeCategory.study));
+    public void joinTeam(Long studyId, Member member) {
+        TeamMember leader = teamMemberRepository.findLeaderByTeamId(studyId);
+        teamMemberRepository.save(TeamMember.join(member, leader.getTeam()));
+        noticeRepository.save(Notice.of(leader.getMember(), NoticeCategory.study));
     }
 
     @Transactional(readOnly = true)

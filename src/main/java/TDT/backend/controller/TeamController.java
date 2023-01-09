@@ -51,8 +51,9 @@ public class TeamController {
 
     @ApiOperation(value = "스터디 추가",notes = "하나의 스터디 추가")
     @PostMapping
-    public ResponseEntity<Long> addStudy(@RequestBody StudyRequestDto params) {
-        return ResponseEntity.ok(teamService.addTeam(params));
+    public ResponseEntity<Long> addStudy(@RequestBody StudyRequestDto params,
+                                         @AuthenticationPrincipal MemberDetails memberDetails) {
+        return ResponseEntity.ok(teamService.addTeam(params, memberDetails.getMember()));
     }
 
     /**
@@ -75,10 +76,11 @@ public class TeamController {
     }
 
     @ApiOperation(value = "스터디 참여 요청")
-    @PostMapping("/{category}/join")
+    @PostMapping("/{category}/join/{studyId}")
     public ResponseEntity joinStudy(@PathVariable("category") String category,
-                                    @RequestBody StudyJoinReqDto params) {
-        teamService.joinTeam(params);
+                                    @PathVariable Long studyId,
+                                    @AuthenticationPrincipal MemberDetails memberDetails) {
+        teamService.joinTeam(studyId, memberDetails.getMember());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

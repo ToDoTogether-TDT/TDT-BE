@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 public class StudyRequestDto {
     private String title;
     private String introduction;
-    private String writer;
     private Category category;
     private StudyTypes studyTypes;
 
@@ -23,7 +22,6 @@ public class StudyRequestDto {
                    .introduction(introduction)
                    .category(category)
                    .studyTypes(studyTypes)
-                   .name(writer)
                    .build();
 
     }

@@ -1,5 +1,6 @@
 package TDT.backend.entity;
 
+import TDT.backend.dto.notice.NoticeMemberResponseDto;
 import TDT.backend.dto.team.StudyRequestDto;
 import lombok.*;
 import org.springframework.data.jpa.repository.query.JpaQueryMethodFactory;
@@ -32,6 +33,7 @@ public class TeamMember {
                 .member(member)
                 .team(team)
                 .isLeader(true)
+                .status(MemberStatus.leader)
                 .build();
     }
 
@@ -44,8 +46,11 @@ public class TeamMember {
                 .build();
     }
 
-    public static Member toMember(TeamMember teamMember) {
-        return Member.builder().name(teamMember.getMember().getName()).nickname(teamMember.getMember().getNickname())
-                .picture(teamMember.getMember().getPicture()).email(teamMember.getMember().getEmail()).build();
+    public static NoticeMemberResponseDto toNoticeMember(TeamMember teamMember) {
+        return NoticeMemberResponseDto.builder()
+                .memberId(teamMember.getMember().getId())
+                .nickname(teamMember.getMember().getNickname())
+                .image(teamMember.getMember().getPicture())
+                .build();
     }
 }

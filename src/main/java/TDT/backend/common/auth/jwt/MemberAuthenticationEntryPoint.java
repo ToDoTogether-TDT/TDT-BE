@@ -2,6 +2,8 @@ package TDT.backend.common.auth.jwt;
 
 import TDT.backend.exception.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -35,9 +37,12 @@ public class MemberAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
     public static void sendErrorResponse(HttpServletResponse response, Exception exception) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
+        ErrorResponse errorResponse;
 
-        ErrorResponse errorResponse = ErrorResponse.of(401, exception.getMessage());
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        if (exception.getClass().equals(ExpiredJwtException.class)) errorResponse = ErrorResponse.of(401, "만료된 토큰입니다.");
+        else if (exception.getClass().equals(SignatureException.class)) errorResponse = ErrorResponse.of(401, "유효하지 않은 토큰입니다.");
+        else errorResponse = ErrorResponse.of(401, exception.getMessage());
+        response.setContentType("application/json;charset=UTF-8");
         response.setStatus(errorResponse.getStatus());
         response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
     }
