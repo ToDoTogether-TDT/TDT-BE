@@ -15,7 +15,6 @@ public class NoticeResponseDto {
     private NoticeCategory noticeCategory;
     private LocalDateTime localDateTime;
     private Member member;
-
     /**
      * Todo member -> NoticeMemberResponseDto 객체로 변경하기
      */
@@ -24,6 +23,7 @@ public class NoticeResponseDto {
     @QueryProjection
     public NoticeResponseDto(TeamMember teamMember, Notice notice) {
 
+        this.noticeMember = NoticeMemberResponseDto.builder().member(TeamMember.toMember(teamMember)).build();
         this.member = TeamMember.toMember(teamMember);
         this.localDateTime = notice.getDateTime();
         this.noticeCategory = notice.getNoticeCategory();
