@@ -46,11 +46,8 @@ public class TeamMember {
                 .build();
     }
 
-    public static NoticeMemberResponseDto toNoticeMember(TeamMember teamMember) {
-        return NoticeMemberResponseDto.builder()
-                .memberId(teamMember.getMember().getId())
-                .nickname(teamMember.getMember().getNickname())
-                .image(teamMember.getMember().getPicture())
-                .build();
+    public static Member toMember(TeamMember teamMember) {
+        return Member.builder().name(teamMember.getMember().getName()).nickname(teamMember.getMember().getNickname())
+                .picture(teamMember.getMember().getPicture()).email(teamMember.getMember().getEmail()).build();
     }
 }

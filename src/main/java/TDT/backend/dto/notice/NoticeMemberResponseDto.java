@@ -1,5 +1,6 @@
 package TDT.backend.dto.notice;
 
+import TDT.backend.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,14 +9,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class NoticeMemberResponseDto {
 
-    private Long memberId;
+
     private String nickname;
-    private String image;
+    private String introduction;
+    private String picture;
+
 
     @Builder
-    public NoticeMemberResponseDto(Long memberId, String nickname, String image) {
-        this.memberId = memberId;
-        this.nickname = nickname;
-        this.image = image;
+    public NoticeMemberResponseDto(Member member) {
+        this.nickname = member.getNickname();
+        this.introduction = member.getIntroduction();
+        this.picture = member.getPicture();
     }
+
+
 }
