@@ -1,11 +1,16 @@
 package TDT.backend.dto.post;
 
 import TDT.backend.entity.Category;
-import lombok.Data;
+import TDT.backend.entity.Member;
+import TDT.backend.entity.Post;
+import com.querydsl.core.annotations.QueryProjection;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@NoArgsConstructor
 public class PostPageResDto {
 
     private Long id;
@@ -16,5 +21,16 @@ public class PostPageResDto {
     private Category category;
     private Integer commentsLength;
     private Integer view;
+
+    @QueryProjection
+    public PostPageResDto(Post post, Member member) {
+        this.id = post.getId();
+        this.title = post.getTitle();
+        this.content = post.getContent();
+        this.nickname = member.getNickname();
+        this.createdAt = post.getCreatedAt();
+        this.category = post.getCategory();
+        this.view = post.getView();
+    }
 
 }

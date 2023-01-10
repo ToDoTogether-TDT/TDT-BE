@@ -1,13 +1,10 @@
 package TDT.backend.service;
 
-import TDT.backend.dto.schedule.ScheduleRequestDto;
+import TDT.backend.dto.schedule.ScheduleAddReqDto;
+import TDT.backend.dto.schedule.ScheduleEditReqDto;
 import TDT.backend.dto.schedule.ScheduleResForMember;
-import TDT.backend.dto.schedule.ScheduleResForTeam;
 import TDT.backend.dto.schedule.TodoCheckRequestDto;
-import TDT.backend.entity.MemberSchedule;
-import TDT.backend.entity.Schedule;
-import TDT.backend.entity.Team;
-import TDT.backend.entity.TeamMember;
+import TDT.backend.entity.*;
 import TDT.backend.exception.BusinessException;
 import TDT.backend.exception.ExceptionCode;
 import TDT.backend.repository.memberSchedule.MemberScheduleRepository;
@@ -19,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -31,32 +27,26 @@ public class ScheduleService {
     private final TeamMemberRepository teamMemberRepository;
     private final MemberScheduleRepository memberScheduleRepository;
 
-    public void addSchedule(ScheduleRequestDto dto) {
-        Team team = teamRepository.findById(dto.getStudyId())
+
+    /**
+     * 2. 스케줄 등록시
+     * Todo Notice엔티티에 값이랑 카테고리 넣기
+     */
+    public void addSchedule(Long studyId, ScheduleAddReqDto dto, Member member) {
+        Team team = teamRepository.findById(studyId)
                 .orElseThrow(() -> new BusinessException(ExceptionCode.TEAM_NOT_EXISTS));
 
-        TeamMember member = teamMemberRepository.findByMemberIdAndTeamId(dto.getMemberId(), dto.getStudyId())
-                .orElseThrow(() -> new BusinessException(ExceptionCode.NOT_TEAM_MEMBERS));
+        TeamMember leader = teamMemberRepository.findLeaderByTeamId(studyId);
 
-        if (member.getIsLeader()) {
-            Schedule schedule = Schedule.builder()
-                    .team(team)
-                    .title(dto.getTitle())
-                    .contents(dto.getContents())
-                    .endAt(dto.getEndAt())
-                    .status(dto.getStatus())
-                    .build();
+        if (leader.getMember().getId().equals(member.getId())) {
+            dto.getSchedules().forEach(scheduleTitleDto -> {
+                Schedule schedule = dto.toEntity(team, scheduleTitleDto);
+                scheduleRepository.save(schedule);
 
-            scheduleRepository.save(schedule);
-
-            for (TeamMember teamMember : team.getTeamMembers()) {
-                memberScheduleRepository.save(
-                        MemberSchedule.builder()
-                                .teamMember(teamMember)
-                                .schedule(schedule)
-                                .isDoneTodo(false)
-                                .build());
-            }
+                for (TeamMember teamMember : team.getTeamMembers()) {
+                    memberScheduleRepository.save(MemberSchedule.of(teamMember, schedule));
+                }
+            });
         } else throw new BusinessException(ExceptionCode.UNAUTHORIZED_ERROR);
 
     }
@@ -69,52 +59,39 @@ public class ScheduleService {
         return schedules;
     }
 
-    @Transactional(readOnly = true)
-    public List<ScheduleResForTeam> getSchedulesForTeam(Long studyId) {
+    public void editSchedule(Long studyId, ScheduleEditReqDto requestDto, Member member) {
 
-        Team team = teamRepository.findById(studyId)
-                .orElseThrow(() -> new BusinessException(ExceptionCode.TEAM_NOT_EXISTS));
+        TeamMember leader = teamMemberRepository.findLeaderByTeamId(studyId);
 
-        List<ScheduleResForTeam> schedules =
-                team.getSchedules().stream().map(schedule ->
-                ScheduleResForTeam.builder()
-                        .title(schedule.getTitle())
-                        .contents(schedule.getContents())
-                        .endAt(schedule.getEndAt())
-                        .status(schedule.getStatus())
-                        .build()
-        ).collect(Collectors.toList());
+        if (leader.getMember().getId().equals(member.getId())) {
 
-        return schedules;
-    }
+            requestDto.getScheduleEditTitleDto().forEach(scheduleEditTitleDto -> {
+                Schedule schedule = scheduleRepository.findById(scheduleEditTitleDto.getScheduleId())
+                        .orElseThrow(() -> new BusinessException(ExceptionCode.SCHEDULE_NOT_EXISTS));
 
-    public void editSchedule(Long scheduleId, ScheduleRequestDto requestDto) {
-        Schedule schedule = scheduleRepository.findById(scheduleId)
-                .orElseThrow(() -> new BusinessException(ExceptionCode.SCHEDULE_NOT_EXISTS));
+                schedule.edit(scheduleEditTitleDto.getTitle(), requestDto.getDate());
+            });
 
-        TeamMember member = teamMemberRepository.findByMemberIdAndTeamId(requestDto.getMemberId(), requestDto.getStudyId())
-                .orElseThrow(() -> new BusinessException(ExceptionCode.NOT_TEAM_MEMBERS));
-
-        if (member.getIsLeader()) {
-            schedule.edit(requestDto.getTitle(), requestDto.getContents(), requestDto.getEndAt(), requestDto.getStatus());
         } else throw new BusinessException(ExceptionCode.UNAUTHORIZED_ERROR);
     }
 
-    public void deleteSchedule(Long scheduleId, Long memberId, Long studyId) {
+    public void deleteSchedule(Long scheduleId, Member member, Long studyId) {
         Schedule schedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new BusinessException(ExceptionCode.SCHEDULE_NOT_EXISTS));
 
-        TeamMember member = teamMemberRepository.findByMemberIdAndTeamId(memberId, studyId)
+        TeamMember teamMember = teamMemberRepository.findByMemberIdAndTeamId(member.getId(), studyId)
                 .orElseThrow(() -> new BusinessException(ExceptionCode.NOT_TEAM_MEMBERS));
 
-        if (member.getIsLeader()) {
+        if (teamMember.getIsLeader()) {
             scheduleRepository.delete(schedule);
         } else throw new BusinessException(ExceptionCode.UNAUTHORIZED_ERROR);
     }
 
-    public void isDoneTodo(TodoCheckRequestDto dto) {
+    public boolean isDoneTodo(TodoCheckRequestDto dto) {
 
+        return memberScheduleRepository.findByMemberIdAndScheduleId(dto.getMemberId(), dto.getScheduleId());
     }
+
 }
 
 

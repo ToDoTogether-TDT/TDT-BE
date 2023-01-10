@@ -6,7 +6,6 @@ import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 @Getter
 @NoArgsConstructor
@@ -15,7 +14,7 @@ public class MessageResponseDto {
     private MemberDto memberDto;
 
     @QueryProjection
-    public MessageResponseDto(Message message, Member member){
+    public MessageResponseDto(Message message, Member member) {
         this.contents = message.getContent();
         this.memberDto = new MemberDto(member.getNickname(), member.getPicture(), member.getIntroduction());
     }
@@ -23,10 +22,10 @@ public class MessageResponseDto {
 
     @Getter
     @AllArgsConstructor
-    static class MemberDto{
+    static class MemberDto {
         private String nickname;
         private String image;
         private String introduction;
     }
 
-    }
+}

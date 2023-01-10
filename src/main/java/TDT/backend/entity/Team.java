@@ -30,8 +30,11 @@ public class Team {
     @Enumerated(value = EnumType.STRING)
     private StudyTypes studyTypes;
 
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+    private List<Comment> comments;
 
-    @OneToMany(mappedBy = "team")
+
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
     private List<TeamMember> teamMembers = new ArrayList<>();
 
     @Builder
@@ -43,13 +46,13 @@ public class Team {
         this.name = name;
     }
 
-    public static Team fromStudyRequestDto(StudyRequestDto dto) {
+    public static Team fromStudyRequestDto(StudyRequestDto dto, Member member) {
         return Team.builder()
                 .title(dto.getTitle())
                 .introduction(dto.getIntroduction())
                 .category(dto.getCategory())
                 .studyTypes(dto.getStudyTypes())
-                .name(dto.getWriter())
+                .name(member.getNickname())
                 .build();
 
     }

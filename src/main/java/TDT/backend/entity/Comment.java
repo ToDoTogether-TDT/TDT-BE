@@ -20,6 +20,9 @@ public class Comment {
     @JoinColumn(name = "post_id")
     private Post post;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id")
+    private Team team;
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
     private String content;
@@ -28,6 +31,13 @@ public class Comment {
     @Builder
     public Comment(Post post, Member member, String content, LocalDateTime createdAt) {
         this.post = post;
+        this.member = member;
+        this.content = content;
+        this.createdAt = createdAt;
+    }
+
+    public Comment(Team team, Member member, String content, LocalDateTime createdAt) {
+        this.team = team;
         this.member = member;
         this.content = content;
         this.createdAt = createdAt;

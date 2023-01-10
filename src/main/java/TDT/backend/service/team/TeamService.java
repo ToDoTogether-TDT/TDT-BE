@@ -1,24 +1,27 @@
 package TDT.backend.service.team;
 
-import TDT.backend.dto.team.StudyJoinReqDto;
+import TDT.backend.dto.comment.CommentRes;
+import TDT.backend.dto.member.MemberDto;
+import TDT.backend.dto.schedule.ScheduleDto;
 import TDT.backend.dto.team.StudyListResponseDto;
 import TDT.backend.dto.team.StudyRequestDto;
 import TDT.backend.dto.team.StudyResponseDto;
-import TDT.backend.entity.Member;
-import TDT.backend.entity.Team;
-import TDT.backend.entity.TeamMember;
+import TDT.backend.entity.*;
 import TDT.backend.exception.BusinessException;
 import TDT.backend.exception.ExceptionCode;
-import TDT.backend.repository.member.MemberRepository;
+import TDT.backend.repository.comment.CommentRepository;
+import TDT.backend.repository.memberSchedule.MemberScheduleRepository;
+import TDT.backend.repository.notice.NoticeRepository;
+import TDT.backend.repository.schedule.ScheduleRepository;
 import TDT.backend.repository.team.TeamRepository;
 import TDT.backend.repository.teamMember.TeamMemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.data.domain.Pageable;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +30,10 @@ public class TeamService {
 
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
-    private final MemberRepository memberRepository;
+    private final ScheduleRepository scheduleRepository;
+    private final MemberScheduleRepository memberScheduleRepository;
+    private final CommentRepository commentRepository;
+    private final NoticeRepository noticeRepository;
 
     @Transactional(readOnly = true)
     public Page<StudyListResponseDto> getAllStudy(String category, Pageable pageable) {
@@ -40,43 +46,62 @@ public class TeamService {
     }
 
 
-    public Long addTeam(final StudyRequestDto params) {
-        Member member = memberRepository.findByNickname(
-                params.getWriter()).orElseThrow(() -> new BusinessException(ExceptionCode.MEMBER_NOT_EXISTS));
-        Team team = Team.fromStudyRequestDto(params);
-        TeamMember teamMember = TeamMember.of(member,team);
-        teamMemberRepository.save(teamMember);
-        return teamRepository.save(team).getId();
+    public Long addTeam(final StudyRequestDto params, Member member) {
+        Team team = Team.fromStudyRequestDto(params, member);
+        TeamMember teamMember = TeamMember.of(member, team);
+        teamRepository.save(team);
+        return teamMemberRepository.save(teamMember).getTeam().getId();
     }
 
-    public void joinTeam(StudyJoinReqDto params) {
-        Member member = memberRepository.findById(params.getMemberId())
+
+    /**
+     * 1. 팀 등록시
+     * Todo Notice엔티티에 값이랑 카테고리 넣기
+     */
+    public void joinTeam(Long studyId, Member member) {
+        if (teamMemberRepository.findByMemberIdAndTeamId(member.getId(), studyId).isEmpty()) {
+            TeamMember leader = teamMemberRepository.findLeaderByTeamId(studyId);
+            teamMemberRepository.save(TeamMember.joinRequest(member, leader.getTeam()));
+            noticeRepository.save(Notice.of(leader.getMember(), NoticeCategory.studyJoin));
+        } else throw new BusinessException(ExceptionCode.ALREADY_JOIN_REQUEST);
+    }
+
+    public boolean acceptJoinStudy(Long studyId, Long memberId) {
+        TeamMember teamMember = teamMemberRepository.findByMemberIdAndTeamId(memberId, studyId)
                 .orElseThrow(() -> new BusinessException(ExceptionCode.MEMBER_NOT_EXISTS));
-        Team team = teamRepository.findById(params.getStudyId())
-                .orElseThrow(() -> new BusinessException(ExceptionCode.TEAM_NOT_EXISTS));
-        teamMemberRepository.save(TeamMember.join(member, team));
+        if (teamMember.getStatus().equals(MemberStatus.guest)) {
+            teamMember.joinAccept();
+            return true;
+        } else return false;
     }
 
     @Transactional(readOnly = true)
-    public StudyResponseDto getStudy(String category, Long studyId) {
-        return teamRepository.findByIdAndCategory(studyId, category);
+    public StudyResponseDto getStudy(Long studyId) {
+
+        TeamMember writer = teamMemberRepository.findLeaderByTeamId(studyId);
+
+        List<ScheduleDto> schedules = scheduleRepository.findScheduleByStudyId(studyId);
+
+        List<MemberDto> checkedMembers = memberScheduleRepository.findMembersByStudyId(studyId);
+
+        List<CommentRes> comments = commentRepository.findCommentsByPostIdOrStudyId(null, studyId);
+
+        StudyResponseDto response = StudyResponseDto.of(studyId, writer, schedules, checkedMembers, comments);
+
+        return response;
     }
 
-    public boolean deleteStudy(Long studyId, Long memberId) {
+    public boolean deleteStudy(Long studyId, Member member) {
 
         Team team = teamRepository.findById(studyId).orElseThrow(
                 () -> new BusinessException(ExceptionCode.TEAM_NOT_EXISTS));
 
-        Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new BusinessException(ExceptionCode.MEMBER_NOT_EXISTS));
+        TeamMember leader = teamMemberRepository.findLeaderByTeamId(studyId);
 
-        if (member.getNickname().equals(team.getName())) {
-            TeamMember teamMember = teamMemberRepository.findByTeamId(studyId).orElseThrow(
-                    () -> new BusinessException(ExceptionCode.TEAM_NOT_EXISTS));
-            teamMemberRepository.delete(teamMember);
+        if (member.getId().equals(leader.getMember().getId())) {
             teamRepository.delete(team);
         } else {
-            new BusinessException(ExceptionCode.UNAUTHORIZED_ERROR);
+            throw new BusinessException(ExceptionCode.UNAUTHORIZED_ERROR);
         }
 
         return true;

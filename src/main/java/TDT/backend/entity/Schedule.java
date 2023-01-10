@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -21,26 +20,20 @@ public class Schedule {
     @JoinColumn(name = "team_id")
     private Team team;
     private String title;
-    private String contents;
     private LocalDateTime endAt;
     @Enumerated(value = EnumType.STRING)
     private ScheduleStatus status;
-    @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL)
-    private List<MemberSchedule> memberSchedules;
 
     @Builder
-    public Schedule(Team team, String title, String contents, LocalDateTime endAt, ScheduleStatus status) {
+    public Schedule(Team team, String title, LocalDateTime endAt) {
         this.team = team;
         this.title = title;
-        this.contents = contents;
         this.endAt = endAt;
-        this.status = status;
+        this.status = ScheduleStatus.ONGOING;
     }
 
-    public void edit(String title, String contents, LocalDateTime endAt, ScheduleStatus status) {
+    public void edit(String title, LocalDateTime endAt) {
         this.title = title;
-        this.contents = contents;
         this.endAt = endAt;
-        this.status = status;
     }
 }

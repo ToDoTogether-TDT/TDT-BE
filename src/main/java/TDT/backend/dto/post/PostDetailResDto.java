@@ -2,13 +2,16 @@ package TDT.backend.dto.post;
 
 import TDT.backend.dto.comment.CommentRes;
 import TDT.backend.entity.Category;
+import TDT.backend.entity.Post;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+@Getter
+@NoArgsConstructor
 public class PostDetailResDto {
     private Long postId;
     private String writer;
@@ -31,5 +34,19 @@ public class PostDetailResDto {
         this.comments = comments;
         this.createdAt = createdAt;
         this.view = view;
+    }
+
+    public static PostDetailResDto of(Post post, List<CommentRes> comments) {
+
+        return PostDetailResDto.builder()
+                .postId(post.getId())
+                .writer(post.getMember().getNickname())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .category(post.getCategory())
+                .comments(comments)
+                .createdAt(post.getCreatedAt())
+                .view(post.getView())
+                .build();
     }
 }

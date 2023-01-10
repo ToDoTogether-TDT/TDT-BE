@@ -1,7 +1,6 @@
 package TDT.backend.entity;
 
 import TDT.backend.dto.message.MessageRequestDto;
-import TDT.backend.service.MessageService;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -61,6 +60,5 @@ public class Member {
     }
 
     public void toMessageResponseDto(MessageRequestDto dto) {
-
     }
 }

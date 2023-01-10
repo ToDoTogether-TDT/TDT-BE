@@ -1,11 +1,11 @@
 package TDT.backend.entity;
 
-import TDT.backend.dto.team.StudyRequestDto;
-import lombok.*;
-import org.springframework.data.jpa.repository.query.JpaQueryMethodFactory;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter
@@ -23,23 +23,34 @@ public class TeamMember {
     @JoinColumn(name = "team_id")
     private Team team;
     private Boolean isLeader;
-    @OneToMany(mappedBy = "teamMember", cascade = CascadeType.ALL)
-    private List<MemberSchedule> memberSchedules;
+
+    @Enumerated(EnumType.STRING)
+    private MemberStatus status;
+
+    public void joinAccept() {
+        this.status = MemberStatus.member;
+    }
 
     public static TeamMember of(Member member, Team team) {
         return TeamMember.builder()
                 .member(member)
                 .team(team)
                 .isLeader(true)
+                .status(MemberStatus.leader)
                 .build();
     }
 
-    public static TeamMember join(Member member, Team team) {
+    public static TeamMember joinRequest(Member member, Team team) {
         return TeamMember.builder()
                 .member(member)
                 .team(team)
                 .isLeader(false)
+                .status(MemberStatus.guest)
                 .build();
     }
 
+    public static Member toMember(TeamMember teamMember) {
+        return Member.builder().name(teamMember.getMember().getName()).nickname(teamMember.getMember().getNickname())
+                .picture(teamMember.getMember().getPicture()).email(teamMember.getMember().getEmail()).build();
+    }
 }

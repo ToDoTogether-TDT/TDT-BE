@@ -14,10 +14,10 @@ public class MemberSchedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "team_member_id")
     private TeamMember teamMember;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "schedule_id")
     private Schedule schedule;
     private Boolean isDoneTodo;
@@ -27,5 +27,12 @@ public class MemberSchedule {
         this.teamMember = teamMember;
         this.schedule = schedule;
         this.isDoneTodo = isDoneTodo;
+    }
+
+    public static MemberSchedule of(TeamMember teamMember, Schedule schedule) {
+        return MemberSchedule.builder()
+                .teamMember(teamMember)
+                .schedule(schedule)
+                .build();
     }
 }

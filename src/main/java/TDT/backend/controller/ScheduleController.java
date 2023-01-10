@@ -1,16 +1,15 @@
 package TDT.backend.controller;
 
-import TDT.backend.dto.schedule.ScheduleRequestDto;
-import TDT.backend.dto.schedule.ScheduleResForMember;
-import TDT.backend.dto.schedule.ScheduleResForTeam;
+import TDT.backend.dto.schedule.ScheduleAddReqDto;
+import TDT.backend.dto.schedule.ScheduleEditReqDto;
 import TDT.backend.service.ScheduleService;
+import TDT.backend.service.member.MemberDetails;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/study/todo")
@@ -18,34 +17,24 @@ import java.util.List;
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
+
     @ApiOperation(value = "Todo 추가")
-    @PostMapping
-    public ResponseEntity<?> addSchedule(@RequestBody ScheduleRequestDto dto) {
-        scheduleService.addSchedule(dto);
+    @PostMapping("/{studyId}")
+    public ResponseEntity<?> addSchedule(@PathVariable Long studyId,
+                                         @RequestBody ScheduleAddReqDto dto,
+                                         @AuthenticationPrincipal MemberDetails memberDetails) {
+        System.out.println(memberDetails.getMember().getName());
+        scheduleService.addSchedule(studyId, dto, memberDetails.getMember());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @ApiOperation(value = "사용 안함")
-    @GetMapping
-    public ResponseEntity getSchedulesForMemberOrTeam(@RequestParam(name = "memberId", required = false) Long memberId,
-                                                      @RequestParam(name = "studyId", required = false) Long studyId) {
-
-        if(memberId != null) {
-            List<ScheduleResForMember> schedules = scheduleService.getSchedulesForMember(memberId);
-            return new ResponseEntity<>(schedules, HttpStatus.OK);
-        }
-        else {
-            List<ScheduleResForTeam> schedules = scheduleService.getSchedulesForTeam(studyId);
-            return new ResponseEntity<>(schedules, HttpStatus.OK);
-        }
-    }
-
     @ApiOperation(value = "Todo 수정")
-    @PutMapping("/{scheduleId}")
-    public ResponseEntity editSchedule(@PathVariable Long scheduleId,
-                                       @RequestBody ScheduleRequestDto requestDto) {
+    @PutMapping("/{studyId}")
+    public ResponseEntity editSchedule(@PathVariable Long studyId,
+                                       @RequestBody ScheduleEditReqDto requestDto,
+                                       @AuthenticationPrincipal MemberDetails memberDetails) {
 
-        scheduleService.editSchedule(scheduleId, requestDto);
+        scheduleService.editSchedule(studyId, requestDto, memberDetails.getMember());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -53,10 +42,10 @@ public class ScheduleController {
     @ApiOperation(value = "Todo 삭제")
     @DeleteMapping("/{scheduleId}")
     public ResponseEntity deleteSchedule(@PathVariable Long scheduleId,
-                                         @RequestParam(name = "memberId") Long memberId,
-                                         @RequestParam(name = "studyId") Long studyId) {
+                                         @RequestParam(name = "studyId") Long studyId,
+                                         @AuthenticationPrincipal MemberDetails memberDetails) {
 
-        scheduleService.deleteSchedule(scheduleId, memberId, studyId);
+        scheduleService.deleteSchedule(scheduleId, memberDetails.getMember(), studyId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
