@@ -1,38 +1,42 @@
 package TDT.backend.repository.notice;
 
+
 import TDT.backend.dto.notice.NoticeResponseDto;
 import TDT.backend.dto.notice.QNoticeResponseDto;
+import TDT.backend.dto.notice.QStudyNoticeResponseDto;
+import TDT.backend.dto.notice.StudyNoticeResponseDto;
 import TDT.backend.entity.*;
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-import static TDT.backend.entity.QNotice.notice;
-import static com.querydsl.core.group.GroupBy.groupBy;
-import static com.querydsl.core.types.Projections.list;
-
 @RequiredArgsConstructor
-public class CustomNoticeRepositoryImpl implements CustomNoticeRepository{
+public class CustomNoticeRepositoryImpl implements CustomNoticeRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
+
     @Override
     public List<NoticeResponseDto> findAllNoticeByMember(Member member) {
-        return null;
+
+        QNotice notice = QNotice.notice;
+        return jpaQueryFactory.select(new QNoticeResponseDto(notice))
+                .from(notice)
+                .where(notice.receiver.id.eq(member.getId()))
+                .fetch();
     }
 
 
     @Override
-    public List<NoticeResponseDto> findAllByMemberIdAndStudyIdAndNoticeCategory(Long memberId, Long studyId, NoticeCategory noticeCategory) {
+    public List<StudyNoticeResponseDto> findStudyJoinNoticeByMemberIdAndStudyId(Long memberId, Long studyId) {
         QTeamMember teamMember = QTeamMember.teamMember;
         QNotice notice = QNotice.notice;
 //        List<NoticeResponseDto> fetch =
-        return jpaQueryFactory.select(new QNoticeResponseDto(teamMember, notice))
-                .from(notice, teamMember)
-                .where(teamMember.team.id.eq(studyId).and(teamMember.status.eq(MemberStatus.guest)).and(notice.receiver.id.eq(memberId)))
+        return jpaQueryFactory.select(new QStudyNoticeResponseDto(teamMember, notice))
+                .from(notice)
+                .join(teamMember)
+                .on(teamMember.team.id.eq(studyId).and(teamMember.status.eq(MemberStatus.guest)))
+                .where(notice.receiver.id.eq(memberId).and(notice.noticeCategory.eq(NoticeCategory.studyJoin)))
                 .fetch();
 
 //                .and(notice.noticeCategory.eq(NoticeCategory.valueOf(noticeCategory)))

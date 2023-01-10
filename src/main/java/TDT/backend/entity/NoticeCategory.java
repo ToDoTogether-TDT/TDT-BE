@@ -5,9 +5,9 @@ import lombok.Getter;
 @Getter
 public enum NoticeCategory {
 
-    study("스터디 알림","스터디"),
-    post("게시판 알림", "게시판"),
-    comment("댓글 알림", "댓글");
+    studyJoin("스터디 요청","스터디"),
+    postComment("게시판 댓글", "댓글"),
+    studyComment("스터디 댓글", "댓글");
 
     private String name;
     private String type;

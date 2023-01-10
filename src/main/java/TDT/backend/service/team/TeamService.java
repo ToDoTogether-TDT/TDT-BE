@@ -64,9 +64,11 @@ public class TeamService {
      * Todo Notice엔티티에 값이랑 카테고리 넣기
      */
     public void joinTeam(Long studyId, Member member) {
-        TeamMember leader = teamMemberRepository.findLeaderByTeamId(studyId);
-        teamMemberRepository.save(TeamMember.join(member, leader.getTeam()));
-        noticeRepository.save(Notice.of(leader.getMember(), NoticeCategory.study));
+        if(teamMemberRepository.findByMemberIdAndTeamId(member.getId(), studyId).isEmpty()) {
+            TeamMember leader = teamMemberRepository.findLeaderByTeamId(studyId);
+            teamMemberRepository.save(TeamMember.join(member, leader.getTeam()));
+            noticeRepository.save(Notice.of(leader.getMember(), NoticeCategory.studyJoin));
+        } else throw new BusinessException(ExceptionCode.ALREADY_JOIN_REQUEST);
     }
 
     @Transactional(readOnly = true)

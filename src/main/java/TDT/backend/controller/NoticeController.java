@@ -1,7 +1,9 @@
 package TDT.backend.controller;
 
 
+
 import TDT.backend.dto.notice.NoticeResponseDto;
+import TDT.backend.dto.notice.StudyNoticeResponseDto;
 import TDT.backend.entity.Member;
 import TDT.backend.service.NoticeService;
 import TDT.backend.service.member.MemberDetails;
