@@ -4,11 +4,13 @@ import TDT.backend.entity.Comment;
 import TDT.backend.entity.Member;
 import TDT.backend.entity.Post;
 import TDT.backend.entity.Team;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@NoArgsConstructor
 public class InsertCommentReq {
 
     private String content;

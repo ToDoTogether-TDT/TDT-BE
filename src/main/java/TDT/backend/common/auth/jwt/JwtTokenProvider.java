@@ -1,8 +1,7 @@
 package TDT.backend.common.auth.jwt;
 
 import TDT.backend.dao.RedisDao;
-import TDT.backend.dto.InsertMemberReq;
-import TDT.backend.dto.InsertMemberResponse;
+import TDT.backend.dto.member.InsertMemberResponse;
 import TDT.backend.dto.auth.Subject;
 import TDT.backend.dto.auth.jwt.TokenResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -29,7 +28,6 @@ import java.util.Objects;
 public class JwtTokenProvider {
 
     private final RedisDao redisDao;
-    private final RedisTemplate<String, Object> redisTemplate;
     private final ObjectMapper objectMapper;
 
     @Value("${spring.jwt.key}")
@@ -83,16 +81,16 @@ public class JwtTokenProvider {
         return objectMapper.readValue(subjectStr, Subject.class);
     }
 
-    public TokenResponse reissueAtk(InsertMemberResponse response) throws JsonProcessingException {
+    public TokenResponse reissueAtk(InsertMemberResponse response, String rtk) throws JsonProcessingException {
         String rtkInRedis = redisDao.getValues(response.getEmail());
-//        String rtkInRedis = (String) redisTemplate.opsForHash().get(response.getEmail(), "email");
-        if (Objects.isNull(rtkInRedis)) throw new JwtException("인증 정보가 만료되었습니다.");
-        Subject atkSubject = Subject.ac(
-                response.getMemberId(),
-                response.getEmail(),
-                response.getNickname());
-        String atk = createToken(atkSubject, acToken);
-        log.info("atk : {}", atk);
-        return new TokenResponse(atk, null);
+        if(!Objects.isNull(rtkInRedis) && rtkInRedis.equals(rtk)) {
+            Subject atkSubject = Subject.ac(
+                    response.getMemberId(),
+                    response.getEmail(),
+                    response.getNickname());
+            String atk = createToken(atkSubject, acToken);
+            log.info("atk : {}", atk);
+            return new TokenResponse(atk, null);
+        } else throw new JwtException("인증 정보가 만료되었습니다.");
     }
 }

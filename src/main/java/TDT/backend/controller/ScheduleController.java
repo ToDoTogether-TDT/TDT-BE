@@ -28,20 +28,6 @@ public class ScheduleController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-//    @ApiOperation(value = "사용 안함")
-//    @GetMapping
-//    public ResponseEntity getSchedulesForMemberOrTeam(@RequestParam(name = "memberId", required = false) Long memberId,
-//                                                      @RequestParam(name = "studyId", required = false) Long studyId) {
-//
-//        if (memberId != null) {
-//            List<ScheduleResForMember> schedules = scheduleService.getSchedulesForMember(memberId);
-//            return new ResponseEntity<>(schedules, HttpStatus.OK);
-//        } else {
-//            List<ScheduleResForTeam> schedules = scheduleService.getSchedulesForTeam(studyId);
-//            return new ResponseEntity<>(schedules, HttpStatus.OK);
-//        }
-//    }
-
     @ApiOperation(value = "Todo 수정")
     @PutMapping("/{studyId}")
     public ResponseEntity editSchedule(@PathVariable Long studyId,

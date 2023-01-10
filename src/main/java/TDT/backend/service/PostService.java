@@ -5,15 +5,12 @@ import TDT.backend.dto.post.EditPostReq;
 import TDT.backend.dto.post.InsertPostReq;
 import TDT.backend.dto.post.PostDetailResDto;
 import TDT.backend.dto.post.PostPageResDto;
-import TDT.backend.entity.Category;
 import TDT.backend.entity.Member;
 import TDT.backend.entity.Post;
 import TDT.backend.exception.BusinessException;
 import TDT.backend.exception.ExceptionCode;
 import TDT.backend.repository.comment.CommentRepository;
-import TDT.backend.repository.member.MemberRepository;
 import TDT.backend.repository.post.PostRepository;
-import TDT.backend.service.member.MemberDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,9 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

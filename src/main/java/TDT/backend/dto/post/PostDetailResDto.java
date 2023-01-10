@@ -4,12 +4,14 @@ import TDT.backend.dto.comment.CommentRes;
 import TDT.backend.entity.Category;
 import TDT.backend.entity.Post;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+@Getter
+@NoArgsConstructor
 public class PostDetailResDto {
     private Long postId;
     private String writer;

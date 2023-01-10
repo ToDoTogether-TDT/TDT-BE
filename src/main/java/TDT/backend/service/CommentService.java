@@ -1,6 +1,5 @@
 package TDT.backend.service;
 
-import TDT.backend.common.utils.CategoryClassifier;
 import TDT.backend.dto.comment.EditCommentReq;
 import TDT.backend.dto.comment.InsertCommentReq;
 import TDT.backend.entity.*;
@@ -11,7 +10,6 @@ import TDT.backend.repository.notice.NoticeRepository;
 import TDT.backend.repository.post.PostRepository;
 import TDT.backend.repository.team.TeamRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -24,6 +22,7 @@ public class CommentService {
     private final TeamRepository teamRepository;
 
     private final NoticeRepository noticeRepository;
+
     public void createComment(Long postId, Long studyId, InsertCommentReq insertCommentReq, Member member) {
 
         if (!Objects.isNull(postId)) {

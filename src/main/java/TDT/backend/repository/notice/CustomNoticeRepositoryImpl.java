@@ -31,19 +31,12 @@ public class CustomNoticeRepositoryImpl implements CustomNoticeRepository {
     public List<StudyNoticeResponseDto> findStudyJoinNoticeByMemberIdAndStudyId(Long memberId, Long studyId) {
         QTeamMember teamMember = QTeamMember.teamMember;
         QNotice notice = QNotice.notice;
-//        List<NoticeResponseDto> fetch =
+
         return jpaQueryFactory.select(new QStudyNoticeResponseDto(teamMember, notice))
                 .from(notice)
                 .join(teamMember)
                 .on(teamMember.team.id.eq(studyId).and(teamMember.status.eq(MemberStatus.guest)))
                 .where(notice.receiver.id.eq(memberId).and(notice.noticeCategory.eq(NoticeCategory.studyJoin)))
                 .fetch();
-
-//                .and(notice.noticeCategory.eq(NoticeCategory.valueOf(noticeCategory)))
-//                .from(teamMember,)
-//                .join(teamMember.member, notice.receiver).fetchJoin()
-//                .where(teamMember.team.id.eq(studyId).and(teamMember.status.eq(MemberStatus.guest))
-//                        .and(notice.noticeCategory.eq(NoticeCategory.valueOf(noticeCategory)))).fetch();
-//        return fetch;
     }
 }

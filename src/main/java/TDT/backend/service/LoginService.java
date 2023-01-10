@@ -1,6 +1,6 @@
 package TDT.backend.service;
 
-import TDT.backend.dto.InsertMemberReq;
+import TDT.backend.dto.member.InsertMemberReq;
 import TDT.backend.entity.Member;
 import TDT.backend.repository.member.MemberRepository;
 import TDT.backend.service.member.MemberDetails;

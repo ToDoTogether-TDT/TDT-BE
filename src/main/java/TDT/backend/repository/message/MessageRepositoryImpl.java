@@ -2,7 +2,6 @@ package TDT.backend.repository.message;
 
 import TDT.backend.dto.message.MessageResponseDto;
 import TDT.backend.dto.message.QMessageResponseDto;
-import TDT.backend.entity.QMessage;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,7 @@ import org.springframework.data.domain.Pageable;
 import static TDT.backend.entity.QMessage.message;
 
 @RequiredArgsConstructor
-public class MessageRepositoryImpl implements MessageRepositoryCustom{
+public class MessageRepositoryImpl implements MessageRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 

@@ -1,11 +1,8 @@
 package TDT.backend.repository.schedule;
 
-import TDT.backend.dto.member.MemberDto;
 import TDT.backend.dto.schedule.ScheduleCheckedDto;
 import TDT.backend.dto.schedule.ScheduleDto;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -20,23 +17,6 @@ import static com.querydsl.core.group.GroupBy.list;
 public class CustomScheduleRepoImpl implements CustomScheduleRepo {
 
     private final JPAQueryFactory queryFactory;
-
-//    @Override
-//    public List<ScheduleDto> findScheduleByStudyId(Long studyId) {
-//        return queryFactory
-//                .select(Projections.fields(ScheduleDto.class,
-//                        schedule.id, schedule.title,
-//                        JPAExpressions.select(Projections.fields(MemberDto.class,
-//                                        memberSchedule.teamMember.member.nickname, memberSchedule.teamMember.member.picture.as("image"),
-//                                        memberSchedule.teamMember.member.introduction))
-//                                .from(memberSchedule)
-//                                .where(memberSchedule.schedule.id.eq(schedule.id))))
-//                .from(schedule)
-//                .join(memberSchedule).fetchJoin()
-//                .where(memberSchedule.teamMember.team.id.eq(studyId))
-//                .fetch();
-//
-//    }
 
     public List<ScheduleDto> findScheduleByStudyId(Long studyId) {
         List<ScheduleDto> scheduleDtos = queryFactory

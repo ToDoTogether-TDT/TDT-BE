@@ -3,7 +3,6 @@ package TDT.backend.repository.comment;
 import TDT.backend.dto.comment.CommentRes;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -23,7 +22,7 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
     public List<CommentRes> findCommentsByPostIdOrStudyId(Long postId, Long studyId) {
 
         BooleanBuilder builder = new BooleanBuilder();
-        if(postId != null) builder.and(comment.post.id.eq(postId));
+        if (postId != null) builder.and(comment.post.id.eq(postId));
         else builder.and(comment.team.id.eq(studyId));
 
         return queryFactory

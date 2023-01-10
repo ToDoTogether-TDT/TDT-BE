@@ -1,16 +1,16 @@
 package TDT.backend.dto.post;
 
-import TDT.backend.dto.team.StudyListResponseDto;
 import TDT.backend.entity.Category;
 import TDT.backend.entity.Member;
 import TDT.backend.entity.Post;
-import TDT.backend.entity.Team;
 import com.querydsl.core.annotations.QueryProjection;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@NoArgsConstructor
 public class PostPageResDto {
 
     private Long id;

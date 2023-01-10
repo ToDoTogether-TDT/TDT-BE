@@ -6,8 +6,6 @@ import TDT.backend.dto.team.StudyListResponseDto;
 import TDT.backend.dto.team.StudyResponseDto;
 import TDT.backend.entity.Category;
 import TDT.backend.entity.QTeamMember;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +14,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import static TDT.backend.entity.QTeam.team;
-import static TDT.backend.entity.QTeamMember.*;
 
 @RequiredArgsConstructor
 public class CustomTeamRepositoryImpl implements CustomTeamRepository {

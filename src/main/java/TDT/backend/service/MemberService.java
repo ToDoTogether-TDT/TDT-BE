@@ -1,8 +1,8 @@
 package TDT.backend.service;
 
 import TDT.backend.common.auth.jwt.JwtTokenProvider;
-import TDT.backend.dto.InsertMemberReq;
-import TDT.backend.dto.InsertMemberResponse;
+import TDT.backend.dto.member.InsertMemberReq;
+import TDT.backend.dto.member.InsertMemberResponse;
 import TDT.backend.dto.member.ProfileReqDto;
 import TDT.backend.entity.Member;
 import TDT.backend.exception.BusinessException;

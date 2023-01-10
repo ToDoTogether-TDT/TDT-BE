@@ -1,4 +1,4 @@
-package TDT.backend.dto;
+package TDT.backend.dto.member;
 
 import lombok.Data;
 

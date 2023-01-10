@@ -59,26 +59,6 @@ public class ScheduleService {
         return schedules;
     }
 
-    /*사용안함*/
-//    @Transactional(readOnly = true)
-//    public List<ScheduleResForTeam> getSchedulesForTeam(Long studyId) {
-//
-//        Team team = teamRepository.findById(studyId)
-//                .orElseThrow(() -> new BusinessException(ExceptionCode.TEAM_NOT_EXISTS));
-//
-//        List<ScheduleResForTeam> schedules =
-//                team.getSchedules().stream().map(schedule ->
-//                        ScheduleResForTeam.builder()
-//                                .title(schedule.getTitle())
-//                                .contents(schedule.getContents())
-//                                .endAt(schedule.getEndAt())
-//                                .status(schedule.getStatus())
-//                                .build()
-//                ).collect(Collectors.toList());
-//
-//        return schedules;
-//    }
-
     public void editSchedule(Long studyId, ScheduleEditReqDto requestDto, Member member) {
 
         TeamMember leader = teamMemberRepository.findLeaderByTeamId(studyId);

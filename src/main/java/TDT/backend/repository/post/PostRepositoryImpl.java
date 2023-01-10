@@ -3,8 +3,6 @@ package TDT.backend.repository.post;
 import TDT.backend.dto.post.PostPageResDto;
 import TDT.backend.dto.post.QPostPageResDto;
 import TDT.backend.entity.Category;
-import TDT.backend.entity.QPost;
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -17,23 +15,17 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static TDT.backend.entity.QPost.*;
+import static TDT.backend.entity.QPost.post;
 
 @Repository
 @RequiredArgsConstructor
-public class PostRepositoryImpl implements PostRepositoryCustom{
+public class PostRepositoryImpl implements PostRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
 
     @Override
     public Page<PostPageResDto> getList(Pageable pageable, String category) {
-//
-//        BooleanBuilder builder = new BooleanBuilder();
-//        if(category != null) {
-//            builder.and(post.category.eq(category));
-//        }
-
 
         List<PostPageResDto> content = queryFactory
                 .select(Projections.fields(PostPageResDto.class,

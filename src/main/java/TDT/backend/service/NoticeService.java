@@ -4,11 +4,8 @@ import TDT.backend.dto.notice.NoticeResponseDto;
 import TDT.backend.dto.notice.StudyNoticeResponseDto;
 import TDT.backend.entity.Member;
 import TDT.backend.entity.Notice;
-import TDT.backend.entity.NoticeCategory;
-import TDT.backend.entity.TeamMember;
 import TDT.backend.exception.BusinessException;
 import TDT.backend.exception.ExceptionCode;
-import TDT.backend.repository.member.MemberRepository;
 import TDT.backend.repository.notice.NoticeRepository;
 import TDT.backend.repository.teamMember.TeamMemberRepository;
 import TDT.backend.service.member.MemberDetails;
@@ -36,8 +33,6 @@ public class NoticeService {
 
         if (teamMemberRepository.isLeader(member.getId(), studyId)) {
             List<StudyNoticeResponseDto> dto = noticeRepository.findStudyJoinNoticeByMemberIdAndStudyId(member.getId(), studyId);
-//            dto.stream().forEach(dtos -> dtos.updateToStudy(noticeCategory));
-
             return dto;
         } else {
             return null;
@@ -54,6 +49,7 @@ public class NoticeService {
 
     /**
      * Todo PostNotice
+     *
      * @return
      */
     public List<StudyNoticeResponseDto> getPostNotice() {

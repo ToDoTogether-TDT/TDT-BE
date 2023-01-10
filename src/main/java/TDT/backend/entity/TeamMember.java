@@ -1,12 +1,11 @@
 package TDT.backend.entity;
 
-import TDT.backend.dto.notice.NoticeMemberResponseDto;
-import TDT.backend.dto.team.StudyRequestDto;
-import lombok.*;
-import org.springframework.data.jpa.repository.query.JpaQueryMethodFactory;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter

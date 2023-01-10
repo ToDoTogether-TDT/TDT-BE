@@ -4,7 +4,6 @@ import TDT.backend.entity.Category;
 import TDT.backend.entity.Member;
 import TDT.backend.entity.Post;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

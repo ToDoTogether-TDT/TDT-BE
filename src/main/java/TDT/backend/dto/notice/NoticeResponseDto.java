@@ -1,6 +1,5 @@
 package TDT.backend.dto.notice;
 
-import TDT.backend.entity.Member;
 import TDT.backend.entity.Notice;
 import TDT.backend.entity.NoticeCategory;
 import com.querydsl.core.annotations.QueryProjection;

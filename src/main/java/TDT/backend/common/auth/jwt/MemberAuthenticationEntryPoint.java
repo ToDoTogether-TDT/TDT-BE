@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -40,7 +38,8 @@ public class MemberAuthenticationEntryPoint implements AuthenticationEntryPoint 
         ErrorResponse errorResponse;
 
         if (exception.getClass().equals(ExpiredJwtException.class)) errorResponse = ErrorResponse.of(401, "만료된 토큰입니다.");
-        else if (exception.getClass().equals(SignatureException.class)) errorResponse = ErrorResponse.of(401, "유효하지 않은 토큰입니다.");
+        else if (exception.getClass().equals(SignatureException.class))
+            errorResponse = ErrorResponse.of(401, "유효하지 않은 토큰입니다.");
         else errorResponse = ErrorResponse.of(401, exception.getMessage());
         response.setContentType("application/json;charset=UTF-8");
         response.setStatus(errorResponse.getStatus());

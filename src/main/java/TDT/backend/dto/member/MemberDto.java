@@ -2,7 +2,6 @@ package TDT.backend.dto.member;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,7 +19,6 @@ public class MemberDto {
         this.image = image;
         this.isDoneTodo = isDoneTodo;
     }
-
 
 
     @Builder

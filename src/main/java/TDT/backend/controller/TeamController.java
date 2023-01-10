@@ -1,13 +1,10 @@
 package TDT.backend.controller;
 
-import TDT.backend.common.utils.CategoryClassifier;
 import TDT.backend.dto.notice.StudyNoticeResponseDto;
 import TDT.backend.dto.schedule.TodoCheckRequestDto;
-import TDT.backend.dto.team.StudyJoinReqDto;
 import TDT.backend.dto.team.StudyListResponseDto;
 import TDT.backend.dto.team.StudyRequestDto;
 import TDT.backend.dto.team.StudyResponseDto;
-import TDT.backend.entity.NoticeCategory;
 import TDT.backend.service.NoticeService;
 import TDT.backend.service.ScheduleService;
 import TDT.backend.service.member.MemberDetails;
@@ -15,13 +12,12 @@ import TDT.backend.service.team.TeamService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -35,7 +31,6 @@ public class TeamController {
     private final NoticeService noticeService;
 
 
-
     @ApiOperation(value = "모든 스터디 조회", notes = "##추가 -> 모든 스터디 조회")
     @GetMapping
     public ResponseEntity<Page<StudyListResponseDto>> getAllKindOfStudy(@PageableDefault(page = 0, size = 10) Pageable pageable) {
@@ -45,11 +40,11 @@ public class TeamController {
     @ApiOperation(value = "특정 카테고리 스터디 조회", notes = "##추가 -> 특정 카테고리 스터디 조회")
     @GetMapping("/{category}")
     public ResponseEntity<Page<StudyListResponseDto>> getAllStudy(@PathVariable(value = "category", required = false) String category,
-                                                                     @PageableDefault(page = 0, size = 10) Pageable pageable) {
+                                                                  @PageableDefault(page = 0, size = 10) Pageable pageable) {
         return ResponseEntity.ok(teamService.getAllStudy(category, pageable));
     }
 
-    @ApiOperation(value = "스터디 추가",notes = "하나의 스터디 추가")
+    @ApiOperation(value = "스터디 추가", notes = "하나의 스터디 추가")
     @PostMapping
     public ResponseEntity<Long> addStudy(@RequestBody StudyRequestDto params,
                                          @AuthenticationPrincipal MemberDetails memberDetails) {
@@ -90,10 +85,6 @@ public class TeamController {
         return ResponseEntity.ok(noticeService.getStudyNotice(studyId, memberDetails.getMember()));
     }
 
-    /**
-     * TodoList
-     * 스터디 참여요청받으면 요청 확인해서 스터디 참여시키기
-     */
     @ApiOperation(value = "스터디 참여 수락", notes = "한명의 신청자 참여 수락")
     @PostMapping("/accept")
     public ResponseEntity acceptJoinStudy(@RequestParam Long studyId,
@@ -116,8 +107,8 @@ public class TeamController {
     @ApiOperation(value = "Todo 시행 여부 확인")
     @PostMapping("/{category}/{id}")
     public ResponseEntity<Boolean> isDoneTodo(@PathVariable("category") String category,
-                                        @PathVariable("id") Long studyId,
-                                        @RequestBody TodoCheckRequestDto dto) {
+                                              @PathVariable("id") Long studyId,
+                                              @RequestBody TodoCheckRequestDto dto) {
         return ResponseEntity.ok(scheduleService.isDoneTodo(dto));
     }
 

@@ -1,7 +1,9 @@
 package TDT.backend.entity;
 
-import TDT.backend.dto.message.MessageRequestDto;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -29,14 +31,13 @@ public class Notice {
     private Member receiver;
 
 
-
-    public static Notice of(Member member,NoticeCategory noticeCategory) {
+    public static Notice of(Member member, NoticeCategory noticeCategory) {
         return Notice.builder().receiver(member).dateTime(LocalDateTime.now())
                 .contents("스터디 가입요청").noticeCategory(noticeCategory).build();
 
     }
 
-    public static Notice ofComment(Member member,NoticeCategory noticeCategory, String contents) {
+    public static Notice ofComment(Member member, NoticeCategory noticeCategory, String contents) {
         return Notice.builder().receiver(member).dateTime(LocalDateTime.now())
                 .contents(contents).noticeCategory(noticeCategory).build();
 

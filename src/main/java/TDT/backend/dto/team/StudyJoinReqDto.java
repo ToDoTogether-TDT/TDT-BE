@@ -1,8 +1,10 @@
 package TDT.backend.dto.team;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
+@Getter
+@NoArgsConstructor
 public class StudyJoinReqDto {
     private Long studyId;
     private Long memberId;

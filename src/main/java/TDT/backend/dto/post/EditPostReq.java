@@ -1,9 +1,11 @@
 package TDT.backend.dto.post;
 
 import TDT.backend.entity.Category;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
+@Getter
+@NoArgsConstructor
 public class EditPostReq {
     private String title;
     private String content;

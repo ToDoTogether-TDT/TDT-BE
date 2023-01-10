@@ -3,7 +3,6 @@ package TDT.backend.service.team;
 import TDT.backend.dto.comment.CommentRes;
 import TDT.backend.dto.member.MemberDto;
 import TDT.backend.dto.schedule.ScheduleDto;
-import TDT.backend.dto.team.StudyJoinReqDto;
 import TDT.backend.dto.team.StudyListResponseDto;
 import TDT.backend.dto.team.StudyRequestDto;
 import TDT.backend.dto.team.StudyResponseDto;
@@ -11,7 +10,6 @@ import TDT.backend.entity.*;
 import TDT.backend.exception.BusinessException;
 import TDT.backend.exception.ExceptionCode;
 import TDT.backend.repository.comment.CommentRepository;
-import TDT.backend.repository.member.MemberRepository;
 import TDT.backend.repository.memberSchedule.MemberScheduleRepository;
 import TDT.backend.repository.notice.NoticeRepository;
 import TDT.backend.repository.schedule.ScheduleRepository;
@@ -24,8 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +30,6 @@ public class TeamService {
 
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
-    private final MemberRepository memberRepository;
     private final ScheduleRepository scheduleRepository;
     private final MemberScheduleRepository memberScheduleRepository;
     private final CommentRepository commentRepository;
@@ -64,7 +59,7 @@ public class TeamService {
      * Todo Notice엔티티에 값이랑 카테고리 넣기
      */
     public void joinTeam(Long studyId, Member member) {
-        if(teamMemberRepository.findByMemberIdAndTeamId(member.getId(), studyId).isEmpty()) {
+        if (teamMemberRepository.findByMemberIdAndTeamId(member.getId(), studyId).isEmpty()) {
             TeamMember leader = teamMemberRepository.findLeaderByTeamId(studyId);
             teamMemberRepository.save(TeamMember.joinRequest(member, leader.getTeam()));
             noticeRepository.save(Notice.of(leader.getMember(), NoticeCategory.studyJoin));
@@ -74,7 +69,7 @@ public class TeamService {
     public boolean acceptJoinStudy(Long studyId, Long memberId) {
         TeamMember teamMember = teamMemberRepository.findByMemberIdAndTeamId(memberId, studyId)
                 .orElseThrow(() -> new BusinessException(ExceptionCode.MEMBER_NOT_EXISTS));
-        if(teamMember.getStatus().equals(MemberStatus.guest)) {
+        if (teamMember.getStatus().equals(MemberStatus.guest)) {
             teamMember.joinAccept();
             return true;
         } else return false;

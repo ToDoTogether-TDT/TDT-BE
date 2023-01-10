@@ -1,6 +1,5 @@
 package TDT.backend.dto.schedule;
 
-import TDT.backend.entity.Member;
 import TDT.backend.entity.Schedule;
 import TDT.backend.entity.ScheduleStatus;
 import TDT.backend.entity.Team;
