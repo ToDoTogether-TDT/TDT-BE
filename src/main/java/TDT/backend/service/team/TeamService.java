@@ -66,9 +66,18 @@ public class TeamService {
     public void joinTeam(Long studyId, Member member) {
         if(teamMemberRepository.findByMemberIdAndTeamId(member.getId(), studyId).isEmpty()) {
             TeamMember leader = teamMemberRepository.findLeaderByTeamId(studyId);
-            teamMemberRepository.save(TeamMember.join(member, leader.getTeam()));
+            teamMemberRepository.save(TeamMember.joinRequest(member, leader.getTeam()));
             noticeRepository.save(Notice.of(leader.getMember(), NoticeCategory.studyJoin));
         } else throw new BusinessException(ExceptionCode.ALREADY_JOIN_REQUEST);
+    }
+
+    public boolean acceptJoinStudy(Long studyId, Long memberId) {
+        TeamMember teamMember = teamMemberRepository.findByMemberIdAndTeamId(memberId, studyId)
+                .orElseThrow(() -> new BusinessException(ExceptionCode.MEMBER_NOT_EXISTS));
+        if(teamMember.getStatus().equals(MemberStatus.guest)) {
+            teamMember.joinAccept();
+            return true;
+        } else return false;
     }
 
     @Transactional(readOnly = true)
@@ -87,21 +96,17 @@ public class TeamService {
         return response;
     }
 
-    public boolean deleteStudy(Long studyId, Long memberId) {
+    public boolean deleteStudy(Long studyId, Member member) {
 
         Team team = teamRepository.findById(studyId).orElseThrow(
                 () -> new BusinessException(ExceptionCode.TEAM_NOT_EXISTS));
 
-        Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new BusinessException(ExceptionCode.MEMBER_NOT_EXISTS));
+        TeamMember leader = teamMemberRepository.findLeaderByTeamId(studyId);
 
-        if (member.getNickname().equals(team.getName())) {
-            TeamMember teamMember = teamMemberRepository.findByTeamId(studyId).orElseThrow(
-                    () -> new BusinessException(ExceptionCode.TEAM_NOT_EXISTS));
-            teamMemberRepository.delete(teamMember);
+        if (member.getId().equals(leader.getMember().getId())) {
             teamRepository.delete(team);
         } else {
-            new BusinessException(ExceptionCode.UNAUTHORIZED_ERROR);
+            throw new BusinessException(ExceptionCode.UNAUTHORIZED_ERROR);
         }
 
         return true;

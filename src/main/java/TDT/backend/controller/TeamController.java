@@ -56,14 +56,6 @@ public class TeamController {
         return ResponseEntity.ok(teamService.addTeam(params, memberDetails.getMember()));
     }
 
-    /**
-     * TodoList
-     * 스터디 참여요청받으면 요청 확인해서 스터디 참여시키기
-     */
-
-
-
-
     @ApiOperation(value = "스터디 상세정보 조회")
     @GetMapping("/{category}/{id}")
     public ResponseEntity<StudyResponseDto> getStudy(@PathVariable("category") String category,
@@ -98,11 +90,23 @@ public class TeamController {
         return ResponseEntity.ok(noticeService.getStudyNotice(studyId, memberDetails.getMember()));
     }
 
+    /**
+     * TodoList
+     * 스터디 참여요청받으면 요청 확인해서 스터디 참여시키기
+     */
+    @ApiOperation(value = "스터디 참여 수락", notes = "한명의 신청자 참여 수락")
+    @PostMapping("/accept")
+    public ResponseEntity acceptJoinStudy(@RequestParam Long studyId,
+                                          @RequestParam Long memberId,
+                                          @AuthenticationPrincipal MemberDetails memberDetails) {
+        return ResponseEntity.ok(teamService.acceptJoinStudy(studyId, memberId));
+    }
+
     @ApiOperation(value = "스터디 삭제")
-    @DeleteMapping
-    public ResponseEntity<Boolean> deleteStudy(@RequestParam Long studyId,
-                                               @RequestParam Long id) {
-        return ResponseEntity.ok(teamService.deleteStudy(studyId, id));
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Boolean> deleteStudy(@PathVariable("id") Long studyId,
+                                               @AuthenticationPrincipal MemberDetails memberDetails) {
+        return ResponseEntity.ok(teamService.deleteStudy(studyId, memberDetails.getMember()));
     }
 
 

@@ -28,6 +28,10 @@ public class TeamMember {
     @Enumerated(EnumType.STRING)
     private MemberStatus status;
 
+    public void joinAccept() {
+        this.status = MemberStatus.member;
+    }
+
     public static TeamMember of(Member member, Team team) {
         return TeamMember.builder()
                 .member(member)
@@ -37,7 +41,7 @@ public class TeamMember {
                 .build();
     }
 
-    public static TeamMember join(Member member, Team team) {
+    public static TeamMember joinRequest(Member member, Team team) {
         return TeamMember.builder()
                 .member(member)
                 .team(team)

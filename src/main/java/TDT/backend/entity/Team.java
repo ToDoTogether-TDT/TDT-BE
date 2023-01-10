@@ -34,7 +34,7 @@ public class Team {
     private List<Comment> comments;
 
 
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
     private List<TeamMember> teamMembers = new ArrayList<>();
 
     @Builder
