@@ -18,9 +18,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class LoginService implements UserDetailsService {
-
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
     private final MemberRepository memberRepository;
 
     /**
