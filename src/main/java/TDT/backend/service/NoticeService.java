@@ -3,8 +3,11 @@ package TDT.backend.service;
 import TDT.backend.dto.notice.NoticeResponseDto;
 import TDT.backend.dto.notice.StudyNoticeResponseDto;
 import TDT.backend.entity.Member;
+import TDT.backend.entity.Notice;
 import TDT.backend.entity.NoticeCategory;
 import TDT.backend.entity.TeamMember;
+import TDT.backend.exception.BusinessException;
+import TDT.backend.exception.ExceptionCode;
 import TDT.backend.repository.member.MemberRepository;
 import TDT.backend.repository.notice.NoticeRepository;
 import TDT.backend.repository.teamMember.TeamMemberRepository;
@@ -40,6 +43,13 @@ public class NoticeService {
             return null;
         }
 
+    }
+
+    public void deleteNotice(Long noticeId) {
+        Notice notice = noticeRepository.findById(noticeId)
+                .orElseThrow(() -> new BusinessException(ExceptionCode.NOTICE_NOT_EXISTS));
+
+        noticeRepository.delete(notice);
     }
 
     /**

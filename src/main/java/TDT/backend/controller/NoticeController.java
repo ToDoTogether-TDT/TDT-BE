@@ -13,9 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,5 +30,13 @@ public class NoticeController {
     public ResponseEntity<List<NoticeResponseDto>> getNotice(@AuthenticationPrincipal MemberDetails member) {
         List<NoticeResponseDto> notice = noticeService.getNotice(member);
         return new ResponseEntity<>(notice, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "알림 삭제", notes = "하나의 알림 삭제")
+    @DeleteMapping("/{noticeId}")
+    public ResponseEntity deleteNotice(@PathVariable Long noticeId,
+                                       @AuthenticationPrincipal MemberDetails memberDetails) {
+        noticeService.deleteNotice(noticeId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -12,12 +12,14 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 public class NoticeResponseDto {
+    private Long noticeId;
     private NoticeCategory noticeCategory;
     private LocalDateTime dateTime;
     private String contents;
 
     @QueryProjection
     public NoticeResponseDto(Notice notice) {
+        this.noticeId = notice.getId();
         this.noticeCategory = notice.getNoticeCategory();
         this.dateTime = notice.getDateTime();
         this.contents = notice.getContents();
