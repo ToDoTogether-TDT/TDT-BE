@@ -8,20 +8,6 @@ on:
     branches:
       - main
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        redis-version: [4, 5]
-
-    steps:
-    - name: Start Redis v${{ matrix.redis-version }}
-      uses: superchargejs/redis-github-action@1.1.0
-      with:
-        redis-version: ${{ matrix.redis-version }}
-
-    - run: echo „done“
-    
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
