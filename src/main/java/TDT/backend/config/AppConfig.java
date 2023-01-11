@@ -48,6 +48,7 @@ public class AppConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/users").permitAll()
+                .antMatchers("/healthCheck").permitAll()
                 .antMatchers("/**").authenticated()
                 .anyRequest().authenticated();
         return http.build();
