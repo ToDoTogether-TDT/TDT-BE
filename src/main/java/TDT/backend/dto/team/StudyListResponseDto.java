@@ -8,6 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 public class StudyListResponseDto {
@@ -16,7 +19,7 @@ public class StudyListResponseDto {
     private String title;
     private Category category;
     private String introduction;
-    private MemberDto memberDto;
+    private List<MemberDto> memberDto = new ArrayList<>();
 
     @QueryProjection
     public StudyListResponseDto(Team team, Member member) {
@@ -24,7 +27,7 @@ public class StudyListResponseDto {
         this.title = team.getTitle();
         this.category = team.getCategory();
         this.introduction = team.getIntroduction();
-        this.memberDto = new MemberDto(member.getNickname(), member.getPicture(), member.getIntroduction());
+        this.memberDto = (List<MemberDto>) new MemberDto(member.getNickname(), member.getPicture(), member.getIntroduction());
     }
 
     @Getter
