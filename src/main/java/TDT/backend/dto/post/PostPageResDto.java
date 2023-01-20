@@ -30,6 +30,7 @@ public class PostPageResDto {
         this.nickname = member.getNickname();
         this.createdAt = post.getCreatedAt();
         this.category = post.getCategory();
+        this.commentsLength = post.getComments().size();
         this.view = post.getView();
     }
 

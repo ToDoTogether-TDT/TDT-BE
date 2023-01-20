@@ -9,16 +9,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class NoticeMemberResponseDto {
 
-
+    private Long memberId;
     private String nickname;
-    private String introduction;
     private String picture;
 
 
     @Builder
     public NoticeMemberResponseDto(Member member) {
+        this.memberId = member.getId();
         this.nickname = member.getNickname();
-        this.introduction = member.getIntroduction();
         this.picture = member.getPicture();
     }
 

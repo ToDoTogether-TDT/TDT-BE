@@ -36,29 +36,17 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
     @Builder
-    public Member(String name, String email, Role role, String picture, String nickname) {
+    public Member(String name, String email, String picture, String nickname) {
         this.name = name;
         this.email = email;
-        this.role = role;
         this.picture = picture;
         this.nickname = nickname;
-    }
-    public Member update(String name, String email) {
-        this.name = name;
-        this.email = email;
-        return this;
     }
 
     public void profileUpdate (String nickname, String introduction, Category category) {
         this.nickname = nickname;
         this.introduction = introduction;
         this.category = category;
-    }
-
-    public void toMessageResponseDto(MessageRequestDto dto) {
     }
 }

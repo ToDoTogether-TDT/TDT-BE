@@ -18,11 +18,12 @@ public class ScheduleAddReqDto {
     public Schedule toEntity(Team team, ScheduleTitleDto scheduleTitleDto) {
         return Schedule.builder()
                 .team(team)
-                .title(scheduleTitleDto.title)
+                .title(scheduleTitleDto.getTitle())
                 .endAt(this.getDate())
                 .build();
     }
 
+    @Getter
     public static class ScheduleTitleDto {
         private String title;
     }

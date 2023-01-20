@@ -13,7 +13,6 @@ public class StudyRequestDto {
     private String title;
     private String introduction;
     private Category category;
-    private StudyTypes studyTypes;
 
     private String content;
 
@@ -23,7 +22,6 @@ public class StudyRequestDto {
                 .title(title)
                 .introduction(introduction)
                 .category(category)
-                .studyTypes(studyTypes)
                 .build();
 
     }

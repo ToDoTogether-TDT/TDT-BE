@@ -11,11 +11,13 @@ import TDT.backend.repository.post.PostRepository;
 import TDT.backend.repository.team.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
@@ -30,15 +32,14 @@ public class CommentService {
                     .orElseThrow(() -> new BusinessException(ExceptionCode.POST_NOT_EXISTS));
 
             Comment comment = insertCommentReq.toEntity(post, member);
-//            NoticeCategory nCategory = CategoryClassifier.classifier(String.valueOf(post.getCategory().getType()));
-//            System.out.println(nCategory);
+
             commentRepository.save(comment);
             noticeRepository.save(Notice.ofComment(member, NoticeCategory.postComment, insertCommentReq.getContent()));
         } else {
             Team team = teamRepository.findById(studyId)
                     .orElseThrow(() -> new BusinessException(ExceptionCode.TEAM_NOT_EXISTS));
             Comment comment = insertCommentReq.toEntity(team, member);
-//            NoticeCategory nCategory = CategoryClassifier.classifier(String.valueOf(team.getCategory().getType()));
+
             commentRepository.save(comment);
             noticeRepository.save(Notice.ofComment(member, NoticeCategory.studyComment, insertCommentReq.getContent()));
         }

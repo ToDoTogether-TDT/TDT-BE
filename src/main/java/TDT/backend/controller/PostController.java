@@ -6,11 +6,9 @@ import TDT.backend.dto.post.PostDetailResDto;
 import TDT.backend.dto.post.PostPageResDto;
 import TDT.backend.entity.Category;
 import TDT.backend.service.PostService;
-import TDT.backend.service.member.MemberDetails;
+import TDT.backend.common.auth.MemberDetails;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -46,16 +44,11 @@ public class PostController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
-    /**
-     * ##추가 -> Controller
-     */
     @ApiOperation(value = "모든 게시판 조회", notes = "##추가 -> 모든 게시판 조회")
     @GetMapping
-    public ResponseEntity getAllKindOfPost(@PageableDefault(page = 0, size = 10) Pageable pageable) {
-        return new ResponseEntity<>(postService.getAllKindOfPost(pageable), HttpStatus.OK);
+    public ResponseEntity getAllKindOfPost(@RequestParam(value = "page", defaultValue = "1") int page) {
+        return new ResponseEntity<>(postService.getAllKindOfPost(page), HttpStatus.OK);
     }
-
 
     @ApiOperation(value = "특정 카테고리게시판 조회", notes = "##추가 -> 특정 카테고리 게시물 조회")
     @GetMapping("/{category}")

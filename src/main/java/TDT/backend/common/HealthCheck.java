@@ -1,4 +1,4 @@
-package TDT.backend.controller;
+package TDT.backend.common;
 
 
 import org.springframework.http.HttpStatus;

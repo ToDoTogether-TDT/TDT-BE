@@ -3,7 +3,7 @@ package TDT.backend.controller;
 import TDT.backend.dto.schedule.ScheduleAddReqDto;
 import TDT.backend.dto.schedule.ScheduleEditReqDto;
 import TDT.backend.service.ScheduleService;
-import TDT.backend.service.member.MemberDetails;
+import TDT.backend.common.auth.MemberDetails;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,7 +23,7 @@ public class ScheduleController {
     public ResponseEntity<?> addSchedule(@PathVariable Long studyId,
                                          @RequestBody ScheduleAddReqDto dto,
                                          @AuthenticationPrincipal MemberDetails memberDetails) {
-        System.out.println(memberDetails.getMember().getName());
+
         scheduleService.addSchedule(studyId, dto, memberDetails.getMember());
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -40,9 +40,9 @@ public class ScheduleController {
     }
 
     @ApiOperation(value = "Todo 삭제")
-    @DeleteMapping("/{scheduleId}")
+    @DeleteMapping("/{studyId}/{scheduleId}")
     public ResponseEntity deleteSchedule(@PathVariable Long scheduleId,
-                                         @RequestParam(name = "studyId") Long studyId,
+                                         @PathVariable Long studyId,
                                          @AuthenticationPrincipal MemberDetails memberDetails) {
 
         scheduleService.deleteSchedule(scheduleId, memberDetails.getMember(), studyId);

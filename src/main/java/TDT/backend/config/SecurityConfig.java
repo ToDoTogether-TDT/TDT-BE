@@ -1,8 +1,8 @@
 package TDT.backend.config;
 
-import TDT.backend.common.auth.jwt.JwtAuthenticationFilter;
-import TDT.backend.common.auth.jwt.JwtTokenProvider;
-import TDT.backend.common.auth.jwt.MemberAuthenticationEntryPoint;
+import TDT.backend.common.jwt.JwtAuthenticationFilter;
+import TDT.backend.common.jwt.JwtTokenProvider;
+import TDT.backend.common.auth.MemberAuthenticationEntryPoint;
 import TDT.backend.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +22,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class AppConfig {
+public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final LoginService loginService;

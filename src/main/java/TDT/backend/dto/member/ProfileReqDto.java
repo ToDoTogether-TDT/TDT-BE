@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProfileReqDto {
 
-    private String email;
-    private String name;
-    private String picture;
+    private String nickname;
+    private String introduction;
+    private String category;
 
 }
 

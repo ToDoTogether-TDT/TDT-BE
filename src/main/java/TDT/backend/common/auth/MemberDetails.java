@@ -1,4 +1,4 @@
-package TDT.backend.service.member;
+package TDT.backend.common.auth;
 
 import TDT.backend.entity.Member;
 import lombok.Getter;

@@ -3,7 +3,7 @@ package TDT.backend.controller;
 import TDT.backend.dto.comment.EditCommentReq;
 import TDT.backend.dto.comment.InsertCommentReq;
 import TDT.backend.service.CommentService;
-import TDT.backend.service.member.MemberDetails;
+import TDT.backend.common.auth.MemberDetails;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +24,6 @@ public class CommentController {
                                         @RequestParam(value = "studyId", required = false) Long studyId,
                                         @RequestBody InsertCommentReq insertCommentReq,
                                         @AuthenticationPrincipal MemberDetails memberDetails) {
-
-        log.info(String.valueOf(postId));
-        log.info(String.valueOf(studyId));
 
         commentService.createComment(postId, studyId, insertCommentReq, memberDetails.getMember());
 

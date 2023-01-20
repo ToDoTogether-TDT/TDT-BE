@@ -21,7 +21,7 @@ public class CustomScheduleRepoImpl implements CustomScheduleRepo {
     public List<ScheduleDto> findScheduleByStudyId(Long studyId) {
         List<ScheduleDto> scheduleDtos = queryFactory
                 .from(schedule)
-                .join(memberSchedule).fetchJoin()
+                .join(memberSchedule).fetchJoin().distinct()
                 .on(memberSchedule.schedule.id.eq(schedule.id))
                 .where(schedule.team.id.eq(studyId))
                 .transform(groupBy(schedule.endAt.as("date"))

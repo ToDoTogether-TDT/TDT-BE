@@ -3,9 +3,8 @@ package TDT.backend.service;
 import TDT.backend.dto.member.InsertMemberReq;
 import TDT.backend.entity.Member;
 import TDT.backend.repository.member.MemberRepository;
-import TDT.backend.service.member.MemberDetails;
+import TDT.backend.common.auth.MemberDetails;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,7 +29,7 @@ public class LoginService implements UserDetailsService {
         Map<String,String> map = new HashMap();
         map.put("name", req.getName());
         map.put("email", req.getEmail());
-        map.put("nickname", req.getNickname());
+        map.put("nickname", "@"+req.getName());
         map.put("picture", req.getPicture());
         hashOperations.putAll(req.getEmail(), map);
     }

@@ -12,16 +12,13 @@ public class InsertMemberReq {
     private String name;
     private String email;
     private String picture;
-    private String nickname;
-    private Role role;
 
     public Member toEntity() {
         return Member.builder()
                 .name(name)
                 .email(email)
                 .picture(picture)
-                .role(Role.GUEST)
-                .nickname(nickname)
+                .nickname("@" + name)
                 .build();
     }
 

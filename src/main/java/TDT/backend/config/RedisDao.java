@@ -1,4 +1,4 @@
-package TDT.backend.dao;
+package TDT.backend.config;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
