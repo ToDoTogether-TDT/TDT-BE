@@ -1,4 +1,4 @@
-package TDT.backend.common.auth.jwt;
+package TDT.backend.common.auth;
 
 import TDT.backend.exception.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;

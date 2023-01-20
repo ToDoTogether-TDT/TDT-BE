@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 public class CommentRes {
+    private Long commentId;
     private String writer;
     private String content;
     private LocalDateTime createdAt;

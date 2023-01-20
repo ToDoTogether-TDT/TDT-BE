@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class StudyListResponseDto {
-
+    private Long studyId;
     private String writer;
     private String title;
     private Category category;
@@ -26,8 +26,9 @@ public class StudyListResponseDto {
         List<MemberDto> memberDto = new ArrayList<>();
         team.getTeamMembers().forEach(teamMember -> {
             if (!teamMember.getStatus().equals(MemberStatus.guest)) {
-                memberDto.add(new MemberDto(teamMember.getMember().getNickname(), teamMember.getMember().getPicture(), teamMember.getMember().getIntroduction()));
+                memberDto.add(new MemberDto(teamMember.getMember().getNickname(), teamMember.getMember().getPicture()));
             }
+            this.studyId = team.getId();
             this.writer = team.getName();
             this.title = team.getTitle();
             this.category = team.getCategory();
@@ -41,6 +42,5 @@ public class StudyListResponseDto {
     static class MemberDto {
         private String nickname;
         private String image;
-        private String introduction;
     }
 }

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,6 +24,8 @@ public class Schedule {
     private LocalDateTime endAt;
     @Enumerated(value = EnumType.STRING)
     private ScheduleStatus status;
+    @OneToMany(mappedBy = "schedule")
+    private List<MemberSchedule> memberSchedule;
 
     @Builder
     public Schedule(Team team, String title, LocalDateTime endAt) {

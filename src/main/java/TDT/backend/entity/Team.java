@@ -27,9 +27,6 @@ public class Team {
     @Enumerated(value = EnumType.STRING)
     private Category category;
 
-    @Enumerated(value = EnumType.STRING)
-    private StudyTypes studyTypes;
-
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
@@ -38,11 +35,10 @@ public class Team {
     private List<TeamMember> teamMembers = new ArrayList<>();
 
     @Builder
-    public Team(String title, String introduction, Category category, StudyTypes studyTypes, String name) {
+    public Team(String title, String introduction, Category category, String name) {
         this.title = title;
         this.introduction = introduction;
         this.category = category;
-        this.studyTypes = studyTypes;
         this.name = name;
     }
 
@@ -51,7 +47,6 @@ public class Team {
                 .title(dto.getTitle())
                 .introduction(dto.getIntroduction())
                 .category(dto.getCategory())
-                .studyTypes(dto.getStudyTypes())
                 .name(member.getNickname())
                 .build();
 

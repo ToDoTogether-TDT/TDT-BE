@@ -19,8 +19,6 @@ public class MessageController {
 
     public final MessageService service;
 
-
-    //메시지보내기
     @ApiOperation(value = "메시지 보내기")
     @PostMapping
     public ResponseEntity<?> sendMessage(@RequestParam("receiverId") Long receiverId,
@@ -29,7 +27,6 @@ public class MessageController {
         return ResponseEntity.ok(service.sendMessage(dto, receiverId, senderId));
     }
 
-    //메시지 보관함
     @ApiOperation(value = "메시지 보관함 확인")
     @GetMapping
     public ResponseEntity<Page<MessageResponseDto>> getMessages(@RequestParam Long id,
@@ -37,20 +34,10 @@ public class MessageController {
         return ResponseEntity.ok(service.getMessages(id, pageable));
     }
 
-    //메시지 보관함에서 메시지삭제
-
     @ApiOperation(value = "메시지 보관함에서 메시지 삭제")
     @DeleteMapping
     public ResponseEntity<Boolean> deleteMessages(@RequestParam Long id) {
         service.deleteMessage(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-    //보낸 메시지 삭제
-
-    /**
-     * 알람 컨트롤러
-     * 메시지, 팀 가입 요청, 댓글 알림이 있을시
-     * 그 내용 전송
-     */
 }

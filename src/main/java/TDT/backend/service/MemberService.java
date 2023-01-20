@@ -1,29 +1,29 @@
 package TDT.backend.service;
 
-import TDT.backend.common.auth.jwt.JwtTokenProvider;
 import TDT.backend.dto.member.InsertMemberReq;
 import TDT.backend.dto.member.InsertMemberResponse;
 import TDT.backend.dto.member.ProfileReqDto;
+import TDT.backend.entity.Category;
 import TDT.backend.entity.Member;
 import TDT.backend.exception.BusinessException;
 import TDT.backend.exception.ExceptionCode;
 import TDT.backend.repository.member.MemberRepository;
 import TDT.backend.repository.post.PostRepository;
 import TDT.backend.repository.teamMember.TeamMemberRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MemberService {
 
     private final TeamMemberRepository teamMemberRepository;
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
-    private final JwtTokenProvider jwtTokenProvider;
-    public InsertMemberResponse addMember(InsertMemberReq req) throws JsonProcessingException {
+
+    public InsertMemberResponse addMember(InsertMemberReq req) {
         boolean isExist = validateDuplicateMember(req.getEmail());
         if (isExist) {
             InsertMemberResponse response = InsertMemberResponse.of(memberRepository.findByEmail(req.getEmail()).get());
@@ -34,10 +34,9 @@ public class MemberService {
         }
     }
 
-    public void addProfile(ProfileReqDto dto) {
-        Member member = memberRepository.findByEmail(dto.getEmail()).orElseThrow(
-                () -> new BusinessException(ExceptionCode.MEMBER_NOT_EXISTS)
-        );
+    public void updateProfile(ProfileReqDto dto, Member member) {
+        member.profileUpdate(dto.getNickname(), dto.getIntroduction(), Category.valueOf(dto.getCategory()));
+        memberRepository.save(member);
     }
 
     @Transactional(readOnly = false)

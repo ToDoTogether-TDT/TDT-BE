@@ -1,8 +1,9 @@
-package TDT.backend.service.team;
+package TDT.backend.service;
 
 import TDT.backend.dto.comment.CommentRes;
 import TDT.backend.dto.member.MemberDto;
 import TDT.backend.dto.schedule.ScheduleDto;
+import TDT.backend.dto.team.StudyJoinReqMemberDto;
 import TDT.backend.dto.team.StudyListResponseDto;
 import TDT.backend.dto.team.StudyRequestDto;
 import TDT.backend.dto.team.StudyResponseDto;
@@ -17,11 +18,14 @@ import TDT.backend.repository.team.TeamRepository;
 import TDT.backend.repository.teamMember.TeamMemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -36,12 +40,14 @@ public class TeamService {
     private final NoticeRepository noticeRepository;
 
     @Transactional(readOnly = true)
-    public Page<StudyListResponseDto> getAllStudy(String category, Pageable pageable) {
+    public Page<StudyListResponseDto> getAllStudy(String category, int page) {
+        Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("id").descending());
         return teamRepository.findAllByCategoryAndPageable(category, pageable);
     }
 
     @Transactional(readOnly = true)
-    public Page<StudyListResponseDto> getAllKindOfStudy(Pageable pageable) {
+    public Page<StudyListResponseDto> getAllKindOfStudy(int page) {
+        Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("id").descending());
         return teamRepository.findAllByPageable(pageable);
     }
 
@@ -53,11 +59,6 @@ public class TeamService {
         return teamMemberRepository.save(teamMember).getTeam().getId();
     }
 
-
-    /**
-     * 1. 팀 등록시
-     * Todo Notice엔티티에 값이랑 카테고리 넣기
-     */
     public void joinTeam(Long studyId, Member member) {
         if (teamMemberRepository.findByMemberIdAndTeamId(member.getId(), studyId).isEmpty()) {
             TeamMember leader = teamMemberRepository.findLeaderByTeamId(studyId);
@@ -66,13 +67,19 @@ public class TeamService {
         } else throw new BusinessException(ExceptionCode.ALREADY_JOIN_REQUEST);
     }
 
-    public boolean acceptJoinStudy(Long studyId, Long memberId) {
+    public List<StudyJoinReqMemberDto> getJoinReqMembers(Long studyId, Member member) {
+        TeamMember leader = teamMemberRepository.findLeaderByTeamId(studyId);
+        if (Objects.equals(member.getId(), leader.getMember().getId())) {
+            return teamRepository.findStudyJoinReqMembers(studyId);
+        } else throw new BusinessException(ExceptionCode.UNAUTHORIZED_ERROR);
+    }
+
+    public void acceptJoinStudy(Long studyId, Long memberId) {
         TeamMember teamMember = teamMemberRepository.findByMemberIdAndTeamId(memberId, studyId)
                 .orElseThrow(() -> new BusinessException(ExceptionCode.MEMBER_NOT_EXISTS));
         if (teamMember.getStatus().equals(MemberStatus.guest)) {
             teamMember.joinAccept();
-            return true;
-        } else return false;
+        } else throw new BusinessException(ExceptionCode.ALREADY_EXIST_TEAM_MEMBER);
     }
 
     @Transactional(readOnly = true)
@@ -91,7 +98,7 @@ public class TeamService {
         return response;
     }
 
-    public boolean deleteStudy(Long studyId, Member member) {
+    public void deleteStudy(Long studyId, Member member) {
 
         Team team = teamRepository.findById(studyId).orElseThrow(
                 () -> new BusinessException(ExceptionCode.TEAM_NOT_EXISTS));
@@ -100,21 +107,6 @@ public class TeamService {
 
         if (member.getId().equals(leader.getMember().getId())) {
             teamRepository.delete(team);
-        } else {
-            throw new BusinessException(ExceptionCode.UNAUTHORIZED_ERROR);
-        }
-
-        return true;
+        } else throw new BusinessException(ExceptionCode.UNAUTHORIZED_ERROR);
     }
-    /**
-     * Todo 권한주기
-     *
-     */
-
-//    public Boolean updateStudy(Long studyId, Long id) {
-//        /**
-//         *
-//         *
-//         */
-//    }
 }

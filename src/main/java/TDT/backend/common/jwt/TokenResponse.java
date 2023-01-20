@@ -1,4 +1,4 @@
-package TDT.backend.dto.auth.jwt;
+package TDT.backend.common.jwt;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

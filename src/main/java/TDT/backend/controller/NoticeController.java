@@ -3,7 +3,7 @@ package TDT.backend.controller;
 
 import TDT.backend.dto.notice.NoticeResponseDto;
 import TDT.backend.service.NoticeService;
-import TDT.backend.service.member.MemberDetails;
+import TDT.backend.common.auth.MemberDetails;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

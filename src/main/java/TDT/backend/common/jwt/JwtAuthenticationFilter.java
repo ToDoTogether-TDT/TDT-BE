@@ -1,7 +1,5 @@
-package TDT.backend.common.auth.jwt;
+package TDT.backend.common.jwt;
 
-
-import TDT.backend.dto.auth.Subject;
 import TDT.backend.service.LoginService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;

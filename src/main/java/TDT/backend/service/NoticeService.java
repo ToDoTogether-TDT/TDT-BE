@@ -8,7 +8,7 @@ import TDT.backend.exception.BusinessException;
 import TDT.backend.exception.ExceptionCode;
 import TDT.backend.repository.notice.NoticeRepository;
 import TDT.backend.repository.teamMember.TeamMemberRepository;
-import TDT.backend.service.member.MemberDetails;
+import TDT.backend.common.auth.MemberDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

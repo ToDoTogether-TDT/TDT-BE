@@ -27,7 +27,7 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
 
         return queryFactory
                 .select(Projections.fields(CommentRes.class,
-                        comment.member.nickname.as("writer"), comment.content, comment.createdAt))
+                        comment.id.as("commentId"), comment.member.nickname.as("writer"), comment.content, comment.createdAt))
                 .from(comment)
                 .where(builder)
                 .fetch();

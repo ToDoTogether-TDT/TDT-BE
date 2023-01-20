@@ -37,7 +37,6 @@ public class PostService {
         return post.getId();
     }
 
-    @Transactional
     public PostDetailResDto getPost(Long postId) {
 
         Post post = findPost(postId);
@@ -50,10 +49,9 @@ public class PostService {
         return response;
     }
 
-    /**
-     * ##추가->> 카테고리 특정없이 모든 게시판 조회
-     */
-    public Page<PostPageResDto> getAllKindOfPost(Pageable pageable) {
+    @Transactional(readOnly = true)
+    public Page<PostPageResDto> getAllKindOfPost(int page) {
+        Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("id").descending());
         return postRepository.findAllByPageable(pageable);
     }
 

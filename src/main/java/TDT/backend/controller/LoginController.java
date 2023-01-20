@@ -1,14 +1,12 @@
 package TDT.backend.controller;
 
-import TDT.backend.common.auth.jwt.JwtTokenProvider;
-import TDT.backend.dto.auth.jwt.TokenResponse;
+import TDT.backend.common.jwt.JwtTokenProvider;
+import TDT.backend.common.jwt.TokenResponse;
 import TDT.backend.dto.member.InsertMemberReq;
 import TDT.backend.dto.member.InsertMemberResponse;
 import TDT.backend.dto.member.ProfileReqDto;
-import TDT.backend.dto.member.ProfileResDto;
-import TDT.backend.entity.Member;
 import TDT.backend.service.MemberService;
-import TDT.backend.service.member.MemberDetails;
+import TDT.backend.common.auth.MemberDetails;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -54,12 +52,11 @@ public class LoginController {
 
     @ApiOperation(value = "프로필 작성", notes = "회원 프로필 작성")
     @PatchMapping("/edit")
-    public ResponseEntity<?> addProfile(@RequestBody ProfileReqDto dto) {
-        memberService.addProfile(dto);
-        //Command Query Separation
-        Member findMember = memberService.findOne(dto.getEmail());
-        return ResponseEntity.ok(new ProfileResDto(findMember));
+    public ResponseEntity<?> addProfile(@RequestBody ProfileReqDto profileReqDto,
+                                        @AuthenticationPrincipal MemberDetails memberDetails) {
+        memberService.updateProfile(profileReqDto, memberDetails.getMember());
 
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/reissue")
