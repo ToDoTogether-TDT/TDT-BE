@@ -7,6 +7,7 @@ import TDT.backend.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -50,6 +51,8 @@ public class SecurityConfig {
                 .antMatchers("/users").permitAll()
                 .antMatchers("/healthCheck").permitAll()
                 .antMatchers("/").permitAll()
+                .antMatchers(HttpMethod.GET, "/post/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/study/**").permitAll()
                 .antMatchers("/**").authenticated()
                 .anyRequest().authenticated();
         return http.build();
