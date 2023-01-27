@@ -26,13 +26,15 @@ public class Schedule {
     private ScheduleStatus status;
     @OneToMany(mappedBy = "schedule")
     private List<MemberSchedule> memberSchedule;
+    private String uuid;
 
     @Builder
-    public Schedule(Team team, String title, LocalDateTime endAt) {
+    public Schedule(Team team, String title, LocalDateTime endAt, String uuid) {
         this.team = team;
         this.title = title;
         this.endAt = endAt;
         this.status = ScheduleStatus.ONGOING;
+        this.uuid = uuid;
     }
 
     public void edit(String title, LocalDateTime endAt) {

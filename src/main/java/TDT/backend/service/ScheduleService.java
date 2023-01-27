@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -27,7 +28,7 @@ public class ScheduleService {
     private final TeamMemberRepository teamMemberRepository;
     private final MemberScheduleRepository memberScheduleRepository;
 
-    public void addSchedule(Long studyId, ScheduleAddReqDto dto, Member member) {
+    public List<ScheduleAddReqDto.ScheduleTitleDto> addSchedule(Long studyId, ScheduleAddReqDto dto, Member member) {
         Team team = teamRepository.findById(studyId)
                 .orElseThrow(() -> new BusinessException(ExceptionCode.TEAM_NOT_EXISTS));
 
@@ -43,7 +44,8 @@ public class ScheduleService {
                 }
             });
         } else throw new BusinessException(ExceptionCode.UNAUTHORIZED_ERROR);
-
+        List<ScheduleAddReqDto.ScheduleTitleDto> response = new ArrayList<>(dto.getSchedules());
+        return response;
     }
 
     @Transactional(readOnly = true)

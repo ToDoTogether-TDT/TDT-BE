@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/study/todo")
 @RequiredArgsConstructor
@@ -24,8 +26,8 @@ public class ScheduleController {
                                          @RequestBody ScheduleAddReqDto dto,
                                          @AuthenticationPrincipal MemberDetails memberDetails) {
 
-        scheduleService.addSchedule(studyId, dto, memberDetails.getMember());
-        return new ResponseEntity<>(HttpStatus.OK);
+        List<ScheduleAddReqDto.ScheduleTitleDto> scheduleTitleDtos = scheduleService.addSchedule(studyId, dto, memberDetails.getMember());
+        return new ResponseEntity<>(scheduleTitleDtos, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Todo 수정")

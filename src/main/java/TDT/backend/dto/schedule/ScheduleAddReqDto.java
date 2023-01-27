@@ -25,6 +25,7 @@ public class ScheduleAddReqDto {
 
     @Getter
     public static class ScheduleTitleDto {
+        private String id;
         private String title;
     }
 
