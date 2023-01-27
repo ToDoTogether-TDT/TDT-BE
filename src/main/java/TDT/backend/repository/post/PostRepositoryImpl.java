@@ -29,7 +29,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
         List<PostPageResDto> content = queryFactory
                 .select(Projections.fields(PostPageResDto.class,
-                        post.id, post.title, post.content, post.member.nickname, post.createdAt, post.category,
+                        post.id, post.title, post.content, post.member.nickname,
+                        post.member.picture.as("image"), post.createdAt, post.category,
                         post.comments.size().as("commentsLength"), post.view))
                 .from(post)
                 .where(post.category.eq(Category.valueOf(category)))

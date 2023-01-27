@@ -17,6 +17,7 @@ public class PostPageResDto {
     private String title;
     private String content;
     private String nickname;
+    private String image;
     private LocalDateTime createdAt;
     private Category category;
     private Integer commentsLength;
@@ -28,6 +29,7 @@ public class PostPageResDto {
         this.title = post.getTitle();
         this.content = post.getContent();
         this.nickname = member.getNickname();
+        this.image = member.getPicture();
         this.createdAt = post.getCreatedAt();
         this.category = post.getCategory();
         this.commentsLength = post.getComments().size();

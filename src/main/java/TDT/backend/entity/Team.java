@@ -49,7 +49,6 @@ public class Team {
                 .category(dto.getCategory())
                 .name(member.getNickname())
                 .build();
-
     }
 
 
