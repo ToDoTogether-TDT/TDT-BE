@@ -16,6 +16,7 @@ import java.util.List;
 public class StudyListResponseDto {
     private Long studyId;
     private String writer;
+    private String image;
     private String title;
     private Category category;
     private String introduction;
@@ -27,6 +28,7 @@ public class StudyListResponseDto {
         team.getTeamMembers().forEach(teamMember -> {
             if (!teamMember.getStatus().equals(MemberStatus.guest)) {
                 memberDto.add(new MemberDto(teamMember.getMember().getNickname(), teamMember.getMember().getPicture()));
+                if(teamMember.getIsLeader()) this.image = teamMember.getMember().getPicture();
             }
             this.studyId = team.getId();
             this.writer = team.getName();
