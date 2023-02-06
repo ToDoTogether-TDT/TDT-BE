@@ -2,6 +2,10 @@
 로컬 서버 실행후 
 http://localhost:8080/swagger-ui.html 접속
 
+# Architecture
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/62d16389-cbc9-4acf-af6e-1d553427055e/Untitled.png)
+
 # TDT-BE
 TDT project backend repository
 
