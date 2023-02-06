@@ -4,7 +4,8 @@ http://localhost:8080/swagger-ui.html 접속
 
 # Architecture
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/62d16389-cbc9-4acf-af6e-1d553427055e/Untitled.png)
+<img width="886" alt="스크린샷 2023-01-19 오전 2 11 15" src="https://user-images.githubusercontent.com/88434960/216900181-0590fc64-713d-40a9-aa4b-e924204e7ba2.png">
+
 
 # TDT-BE
 TDT project backend repository
