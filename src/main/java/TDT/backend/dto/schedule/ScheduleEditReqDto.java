@@ -4,13 +4,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Getter
 @NoArgsConstructor
 public class ScheduleEditReqDto {
 
-    private LocalDateTime date;
+    private Date date;
     private List<ScheduleEditTitleDto> scheduleEditTitleDto;
 
     @Getter

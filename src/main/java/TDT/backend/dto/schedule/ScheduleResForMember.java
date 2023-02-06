@@ -7,13 +7,14 @@ import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 public class ScheduleResForMember {
 
     private String teamTitle;
     private String scheduleTitle;
-    private LocalDateTime endAt;
+    private Date endAt;
     private ScheduleStatus status;
 
     @QueryProjection

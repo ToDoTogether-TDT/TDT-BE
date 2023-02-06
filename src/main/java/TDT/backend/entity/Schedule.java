@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -21,7 +22,7 @@ public class Schedule {
     @JoinColumn(name = "team_id")
     private Team team;
     private String title;
-    private LocalDateTime endAt;
+    private Date endAt;
     @Enumerated(value = EnumType.STRING)
     private ScheduleStatus status;
     @OneToMany(mappedBy = "schedule")
@@ -29,7 +30,7 @@ public class Schedule {
     private String uuid;
 
     @Builder
-    public Schedule(Team team, String title, LocalDateTime endAt, String uuid) {
+    public Schedule(Team team, String title, Date endAt, String uuid) {
         this.team = team;
         this.title = title;
         this.endAt = endAt;
@@ -37,7 +38,7 @@ public class Schedule {
         this.uuid = uuid;
     }
 
-    public void edit(String title, LocalDateTime endAt) {
+    public void edit(String title, Date endAt) {
         this.title = title;
         this.endAt = endAt;
     }
